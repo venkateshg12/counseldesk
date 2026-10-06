@@ -4,6 +4,7 @@ import { createApp } from "./app.js";
 import { logger } from "./utils/logger.js";
 import { connectDB, closeDB } from "./config/db.js";
 import { redisConnection } from "./jobs/redis/connection.js";
+import { closeWorkers } from "./worker.js";
 
 const SHUTDOWN_GRACE_MS = 10_000;
 
@@ -31,6 +32,7 @@ async function main() {
 
     try {
       await new Promise<void>((resolve) => server.close(() => resolve()));
+      await closeWorkers();
       await closeDB();
       await redisConnection.quit();
       logger.info("shutdown complete");

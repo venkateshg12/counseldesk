@@ -14,7 +14,8 @@
     "db:migrate": "prisma db migrate",
     "db:verify": "prisma db verify",
     "db:sql": "tsx src/scripts/write-migration-sql.ts",
-    "seed:staff": "tsx src/scripts/seed-staff.ts"
+    "seed:staff": "tsx src/scripts/seed-staff.ts",
+    "worker": "tsx watch src/worker.ts"
   },
   "dependencies": {
     "@bull-board/api": "^8.6.1",
