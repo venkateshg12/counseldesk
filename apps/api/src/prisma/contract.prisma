@@ -191,3 +191,29 @@ model LlmCall {
     @@index([createdAt])
     @@index([conversationId])
 }
+
+model User {
+    id           Uuid              @id @default(uuid())
+    email        String            @unique
+    name         String
+    passwordHash String
+    createdAt    TimestamptzString @default(now())
+    sessions     Session[]
+}
+
+// Copied from the e-commerce port's Session model unchanged.
+model Session {
+    id             Uuid               @id @default(uuid())
+    userId         Uuid
+    userAgent      String?
+    createdAt      TimestamptzString  @default(now())
+    expiresAt      TimestamptzString  @default(sql`(CURRENT_TIMESTAMP + '30 days'::interval)`)
+    refreshJti     String
+    prevRefreshJti String?
+    rotatedAt      TimestamptzString?
+    user           User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@index([userId])
+    @@index([expiresAt])
+}
+
