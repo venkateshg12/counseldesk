@@ -10,6 +10,8 @@ import { requestId } from "./middleware/requestId.js";
 import { pool } from "./config/db.js";
 import { SERVICE_UNAVAILABLE } from "./constants/http.js";
 
+import { authRoutes } from "./routes/auth.route.js";
+
 export function createApp() {
   const app = express();
 
@@ -49,6 +51,7 @@ export function createApp() {
   });
 
   // Feature routers are mounted here, one phase at a time.
+  app.use("/auth", authRoutes);
 
   app.use(notFound);
   app.use(errorHandler);
