@@ -1,0 +1,37 @@
+services:
+  postgres:
+    image: pgvector/pgvector:0.8.7-pg17
+    container_name: counseldesk-postgres
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: counseldesk
+      POSTGRES_PASSWORD: counseldesk
+      POSTGRES_DB: counseldesk
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U counseldesk -d counseldesk"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  # BullMQ jobs and rate-limit windows. `noeviction`: Redis must never drop a queued job to free
+  # memory. AOF keeps queued jobs across a restart.
+  redis:
+    image: redis:7.4
+    container_name: counseldesk-redis
+    ports:
+      - "6381:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes --maxmemory-policy noeviction
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+volumes:
+  postgres_data:
+  redis_data:
