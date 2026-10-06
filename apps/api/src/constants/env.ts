@@ -35,3 +35,10 @@ if (
 if (JWT_SECRET === JWT_REFRESH_SECRET) {
   throw new Error("JWT_SECRET and JWT_REFRESH_SECRET must be different values");
 }
+
+export const REDIS_HOST = getEnv("REDIS_HOST");
+export const REDIS_PORT = getEnv("REDIS_PORT");
+// Empty for a local passwordless Redis; set both for a hosted one.
+export const REDIS_USERNAME = getEnv("REDIS_USERNAME", "");
+export const REDIS_PASSWORD = getEnv("REDIS_PASSWORD", "");
+export const TRUSTED_PROXY_CIDRS = getEnv("TRUSTED_PROXY_CIDRS", "");
