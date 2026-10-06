@@ -11,9 +11,15 @@ import { pool } from "./config/db.js";
 import { SERVICE_UNAVAILABLE } from "./constants/http.js";
 
 import { authRoutes } from "./routes/auth.route.js";
+import { trustProxy } from "./utils/rateLimiter/index.js";
+import { visitorIdMiddleware } from "./middleware/visitorId.js";
+import { globalLimiter } from "./config/rateLimiter.js";
 
 export function createApp() {
   const app = express();
+
+  // Trust exactly the proxies the rate limiter trusts, so req.ip and the limiter agree.
+  app.set("trust proxy", trustProxy);
 
   app.use(requestId);
 
@@ -33,6 +39,8 @@ export function createApp() {
   // Chat messages are short; a small body limit stops someone posting megabytes into the LLM path.
   app.use(express.json({ limit: "32kb" }));
   app.use(cookieParser());
+  app.use(visitorIdMiddleware);
+  app.use(globalLimiter);
 
   // Declared before the feature routers, so a router that applies auth to everything it sees can
   // never put /health behind a login (that bug happened in e-commerce).

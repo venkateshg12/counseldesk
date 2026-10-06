@@ -5,6 +5,7 @@ declare global {
     interface Request {
       userId: Models.public_User["id"];
       sessionId: Models.public_Session["id"];
+      visitorId?: string;
     }
   }
 }

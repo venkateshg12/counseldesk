@@ -76,8 +76,10 @@ export interface RateLimiterStore {
   resetKey(key: string): Promise<void>;
 }
 
-export type LimitProvider = (req: unknown) => Promise<number> | number;
-export type KeyResolver = (req: unknown) => Promise<string> | string;
+import type { Request } from "express";
+
+export type LimitProvider = (req: Request) => Promise<number> | number;
+export type KeyResolver = (req: Request) => Promise<string> | string;
 
 export interface CircuitBreakerOptions {
   failureThreshold: number; // Number of consecutive errors to trip circuit
@@ -91,7 +93,7 @@ export interface RateLimiterOptions {
   max: number | LimitProvider;
   algorithm?: RateLimiterAlgorithm;
   keyResolver?: KeyResolver;
-  skip?: (req: unknown) => boolean | Promise<boolean>;
+  skip?: (req: Request) => boolean | Promise<boolean>;
   store?: RateLimiterStore;
 }
 
@@ -103,7 +105,7 @@ export interface DualRateLimiterOptions {
   ipLimit: number | LimitProvider;
   visitorKeyResolver?: KeyResolver;
   ipKeyResolver?: KeyResolver;
-  skip?: (req: unknown) => boolean | Promise<boolean>;
+  skip?: (req: Request) => boolean | Promise<boolean>;
   store?: RateLimiterStore;
 }
 
