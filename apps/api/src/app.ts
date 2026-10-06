@@ -15,6 +15,8 @@ import { trustProxy } from "./utils/rateLimiter/index.js";
 import { visitorIdMiddleware } from "./middleware/visitorId.js";
 import { globalLimiter } from "./config/rateLimiter.js";
 
+import { redisConnection } from "./jobs/redis/connection.js";
+
 export function createApp() {
   const app = express();
 
@@ -45,15 +47,24 @@ export function createApp() {
   // Declared before the feature routers, so a router that applies auth to everything it sees can
   // never put /health behind a login (that bug happened in e-commerce).
   app.get("/health", async (_req, res) => {
-    const postgresUp = await pool.query("SELECT 1").then(
-      () => true,
-      () => false,
-    );
+    const [postgresUp, redisUp] = await Promise.all([
+      pool.query("SELECT 1").then(
+        () => true,
+        () => false,
+      ),
+      redisConnection.status === "ready"
+        ? redisConnection.ping().then(
+            () => true,
+            () => false,
+          )
+        : Promise.resolve(false),
+    ]);
 
     res.status(postgresUp ? 200 : SERVICE_UNAVAILABLE).json(
       ok({
         status: postgresUp ? "ok" : "degraded",
         postgres: postgresUp ? "up" : "down",
+        redis: redisUp ? "up" : "down",
       }),
     );
   });
