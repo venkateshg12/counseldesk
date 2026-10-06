@@ -39,9 +39,9 @@ import type {
 } from "@prisma/orm-postgres/contract/types";
 
 export type StorageHash =
-  StorageHashBase<"8d16c2ec2abe44814677807784b03c6a4e3fbcec51e7133d6e701c0d5f6db2dd">;
+  StorageHashBase<"b77779e7a682e279868da330251ae9c1cbd945b406339e44f30695127ba71d9a">;
 export type ExecutionHash =
-  ExecutionHashBase<"f18ef2e143bd1d879382dc2b668757a403e36e10f6b65c76c3da7ff6b1f8554e">;
+  ExecutionHashBase<"0163ee65001c4a256e98fbd4c2088a4590c6b4f6787253224e032f23e161ae6e">;
 export type ProfileHash =
   ProfileHashBase<"3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2">;
 
@@ -552,6 +552,19 @@ export type FieldOutputTypes = {
       readonly title: CodecTypes["pg/text@1"]["output"];
       readonly updatedAt: CodecTypes["pg/timestamptz-string@1"]["output"];
     };
+    readonly Section: {
+      readonly anchor: CodecTypes["pg/text@1"]["output"];
+      readonly content: CodecTypes["pg/text@1"]["output"];
+      readonly contentHash: CodecTypes["pg/text@1"]["output"];
+      readonly createdAt: CodecTypes["pg/timestamptz-string@1"]["output"];
+      readonly embedding: Vector<768>;
+      readonly embeddingModel: CodecTypes["pg/text@1"]["output"];
+      readonly heading: CodecTypes["pg/text@1"]["output"];
+      readonly id: CodecTypes["pg/uuid@1"]["output"];
+      readonly pageId: CodecTypes["pg/uuid@1"]["output"];
+      readonly position: CodecTypes["pg/int4@1"]["output"];
+      readonly searchText: CodecTypes["pg/text@1"]["output"];
+    };
   };
 };
 export type FieldInputTypes = {
@@ -563,6 +576,19 @@ export type FieldInputTypes = {
       readonly path: CodecTypes["pg/text@1"]["input"];
       readonly title: CodecTypes["pg/text@1"]["input"];
       readonly updatedAt: CodecTypes["pg/timestamptz-string@1"]["input"];
+    };
+    readonly Section: {
+      readonly anchor: CodecTypes["pg/text@1"]["input"];
+      readonly content: CodecTypes["pg/text@1"]["input"];
+      readonly contentHash: CodecTypes["pg/text@1"]["input"];
+      readonly createdAt: CodecTypes["pg/timestamptz-string@1"]["input"];
+      readonly embedding: CodecTypes["pg/vector@1"]["input"];
+      readonly embeddingModel: CodecTypes["pg/text@1"]["input"];
+      readonly heading: CodecTypes["pg/text@1"]["input"];
+      readonly id: CodecTypes["pg/uuid@1"]["input"];
+      readonly pageId: CodecTypes["pg/uuid@1"]["input"];
+      readonly position: CodecTypes["pg/int4@1"]["input"];
+      readonly searchText: CodecTypes["pg/text@1"]["input"];
     };
   };
 };
@@ -576,6 +602,19 @@ export type StorageColumnTypes = {
       readonly title: CodecTypes["pg/text@1"]["output"];
       readonly updatedAt: CodecTypes["pg/timestamptz-string@1"]["output"];
     };
+    readonly Section: {
+      readonly anchor: CodecTypes["pg/text@1"]["output"];
+      readonly content: CodecTypes["pg/text@1"]["output"];
+      readonly contentHash: CodecTypes["pg/text@1"]["output"];
+      readonly createdAt: CodecTypes["pg/timestamptz-string@1"]["output"];
+      readonly embedding: Vector<768>;
+      readonly embeddingModel: CodecTypes["pg/text@1"]["output"];
+      readonly heading: CodecTypes["pg/text@1"]["output"];
+      readonly id: CodecTypes["pg/uuid@1"]["output"];
+      readonly pageId: CodecTypes["pg/uuid@1"]["output"];
+      readonly position: CodecTypes["pg/int4@1"]["output"];
+      readonly searchText: CodecTypes["pg/text@1"]["output"];
+    };
   };
 };
 export type StorageColumnInputTypes = {
@@ -588,6 +627,19 @@ export type StorageColumnInputTypes = {
       readonly title: CodecTypes["pg/text@1"]["input"];
       readonly updatedAt: CodecTypes["pg/timestamptz-string@1"]["input"];
     };
+    readonly Section: {
+      readonly anchor: CodecTypes["pg/text@1"]["input"];
+      readonly content: CodecTypes["pg/text@1"]["input"];
+      readonly contentHash: CodecTypes["pg/text@1"]["input"];
+      readonly createdAt: CodecTypes["pg/timestamptz-string@1"]["input"];
+      readonly embedding: CodecTypes["pg/vector@1"]["input"];
+      readonly embeddingModel: CodecTypes["pg/text@1"]["input"];
+      readonly heading: CodecTypes["pg/text@1"]["input"];
+      readonly id: CodecTypes["pg/uuid@1"]["input"];
+      readonly pageId: CodecTypes["pg/uuid@1"]["input"];
+      readonly position: CodecTypes["pg/int4@1"]["input"];
+      readonly searchText: CodecTypes["pg/text@1"]["input"];
+    };
   };
 };
 
@@ -599,13 +651,30 @@ export namespace Models {
     path: CodecTypes["pg/text@1"]["output"];
     title: CodecTypes["pg/text@1"]["output"];
     updatedAt: CodecTypes["pg/timestamptz-string@1"]["output"];
-    readonly [RelationKeys]?: never;
+    sections: public_Section[];
+    readonly [RelationKeys]?: "sections";
+  };
+  export type public_Section = {
+    anchor: CodecTypes["pg/text@1"]["output"];
+    content: CodecTypes["pg/text@1"]["output"];
+    contentHash: CodecTypes["pg/text@1"]["output"];
+    createdAt: CodecTypes["pg/timestamptz-string@1"]["output"];
+    embedding: Vector<768>;
+    embeddingModel: CodecTypes["pg/text@1"]["output"];
+    heading: CodecTypes["pg/text@1"]["output"];
+    id: CodecTypes["pg/uuid@1"]["output"];
+    pageId: CodecTypes["pg/uuid@1"]["output"];
+    position: CodecTypes["pg/int4@1"]["output"];
+    searchText: CodecTypes["pg/text@1"]["output"];
+    page: public_Page;
+    readonly [RelationKeys]?: "page";
   };
 }
 
 export declare const models: {
   public: {
     Page: Models.public_Page;
+    Section: Models.public_Section;
   };
 };
 
@@ -673,6 +742,103 @@ type ContractBase = Omit<
               indexes: readonly [];
               foreignKeys: readonly [];
             };
+            readonly Section: {
+              columns: {
+                readonly anchor: {
+                  readonly nativeType: "text";
+                  readonly codecId: "pg/text@1";
+                  readonly nullable: false;
+                };
+                readonly content: {
+                  readonly nativeType: "text";
+                  readonly codecId: "pg/text@1";
+                  readonly nullable: false;
+                };
+                readonly contentHash: {
+                  readonly nativeType: "text";
+                  readonly codecId: "pg/text@1";
+                  readonly nullable: false;
+                };
+                readonly createdAt: {
+                  readonly nativeType: "timestamptz";
+                  readonly codecId: "pg/timestamptz-string@1";
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: "function";
+                    readonly expression: "now()";
+                  };
+                };
+                readonly embedding: {
+                  readonly nativeType: "vector";
+                  readonly codecId: "pg/vector@1";
+                  readonly nullable: false;
+                  readonly typeParams: { readonly length: 768 };
+                };
+                readonly embeddingModel: {
+                  readonly nativeType: "text";
+                  readonly codecId: "pg/text@1";
+                  readonly nullable: false;
+                };
+                readonly heading: {
+                  readonly nativeType: "text";
+                  readonly codecId: "pg/text@1";
+                  readonly nullable: false;
+                };
+                readonly id: {
+                  readonly nativeType: "uuid";
+                  readonly codecId: "pg/uuid@1";
+                  readonly nullable: false;
+                };
+                readonly pageId: {
+                  readonly nativeType: "uuid";
+                  readonly codecId: "pg/uuid@1";
+                  readonly nullable: false;
+                };
+                readonly position: {
+                  readonly nativeType: "int4";
+                  readonly codecId: "pg/int4@1";
+                  readonly nullable: false;
+                };
+                readonly searchText: {
+                  readonly nativeType: "text";
+                  readonly codecId: "pg/text@1";
+                  readonly nullable: false;
+                };
+              };
+              primaryKey: { readonly columns: readonly ["id"] };
+              uniques: readonly [
+                { readonly columns: readonly ["pageId", "anchor"] },
+              ];
+              indexes: readonly [
+                {
+                  readonly name: "Section_pageId_idx_8caaba4f";
+                  readonly prefix: "Section_pageId_idx";
+                  readonly columns: readonly ["pageId"];
+                  readonly unique: false;
+                },
+                {
+                  readonly name: "section_search_text_1c7a2572";
+                  readonly prefix: "section_search_text";
+                  readonly expression: "to_tsvector('english', \"searchText\")";
+                  readonly unique: false;
+                  readonly type: "gin";
+                },
+              ];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: "public" & NamespaceId;
+                    readonly tableName: "Section";
+                    readonly columns: readonly ["pageId"];
+                  };
+                  readonly target: {
+                    readonly namespaceId: "public" & NamespaceId;
+                    readonly tableName: "Page";
+                    readonly columns: readonly ["id"];
+                  };
+                },
+              ];
+            };
           };
         };
       };
@@ -687,6 +853,10 @@ type ContractBase = Omit<
     readonly Page: {
       readonly namespace: "public" & NamespaceId;
       readonly model: "Page";
+    };
+    readonly Section: {
+      readonly namespace: "public" & NamespaceId;
+      readonly model: "Section";
     };
   };
   readonly domain: {
@@ -738,7 +908,19 @@ type ContractBase = Omit<
                 };
               };
             };
-            readonly relations: Record<string, never>;
+            readonly relations: {
+              readonly sections: {
+                readonly to: {
+                  readonly namespace: "public" & NamespaceId;
+                  readonly model: "Section";
+                };
+                readonly cardinality: "1:N";
+                readonly on: {
+                  readonly localFields: readonly ["id"];
+                  readonly targetFields: readonly ["pageId"];
+                };
+              };
+            };
             readonly storage: {
               readonly table: "Page";
               readonly namespaceId: "public";
@@ -749,6 +931,119 @@ type ContractBase = Omit<
                 readonly path: { readonly column: "path" };
                 readonly title: { readonly column: "title" };
                 readonly updatedAt: { readonly column: "updatedAt" };
+              };
+            };
+          };
+          readonly Section: {
+            readonly fields: {
+              readonly anchor: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/text@1";
+                };
+              };
+              readonly content: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/text@1";
+                };
+              };
+              readonly contentHash: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/text@1";
+                };
+              };
+              readonly createdAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/timestamptz-string@1";
+                };
+              };
+              readonly embedding: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/vector@1";
+                  readonly typeParams: { readonly length: 768 };
+                };
+              };
+              readonly embeddingModel: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/text@1";
+                };
+              };
+              readonly heading: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/text@1";
+                };
+              };
+              readonly id: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/uuid@1";
+                };
+              };
+              readonly pageId: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/uuid@1";
+                };
+              };
+              readonly position: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/int4@1";
+                };
+              };
+              readonly searchText: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/text@1";
+                };
+              };
+            };
+            readonly relations: {
+              readonly page: {
+                readonly to: {
+                  readonly namespace: "public" & NamespaceId;
+                  readonly model: "Page";
+                };
+                readonly cardinality: "N:1";
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ["pageId"];
+                  readonly targetFields: readonly ["id"];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: "Section";
+              readonly namespaceId: "public";
+              readonly fields: {
+                readonly anchor: { readonly column: "anchor" };
+                readonly content: { readonly column: "content" };
+                readonly contentHash: { readonly column: "contentHash" };
+                readonly createdAt: { readonly column: "createdAt" };
+                readonly embedding: { readonly column: "embedding" };
+                readonly embeddingModel: { readonly column: "embeddingModel" };
+                readonly heading: { readonly column: "heading" };
+                readonly id: { readonly column: "id" };
+                readonly pageId: { readonly column: "pageId" };
+                readonly position: { readonly column: "position" };
+                readonly searchText: { readonly column: "searchText" };
               };
             };
           };
@@ -838,6 +1133,17 @@ type ContractBase = Omit<
           };
           readonly ref: {
             readonly entry: "Page";
+            readonly field: "id";
+            readonly namespace: "public";
+          };
+        },
+        {
+          readonly onCreate: {
+            readonly id: "uuidv4";
+            readonly kind: "generator";
+          };
+          readonly ref: {
+            readonly entry: "Section";
             readonly field: "id";
             readonly namespace: "public";
           };

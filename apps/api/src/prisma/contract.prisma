@@ -11,4 +11,29 @@ model Page {
     contentHash String
     createdAt   TimestamptzString @default(now())
     updatedAt   TimestamptzString @default(now())
+    sections    Section[]
+}
+
+// One heading-sized part of a page: what search returns and what an answer cites.
+model Section {
+    id             Uuid                          @id @default(uuid())
+    pageId         Uuid
+    // URL fragment for this heading ("fees-and-payment-plans"); citation = page path + "#" + anchor.
+    anchor         String
+    heading        String
+    content        String
+    // heading + "\n" + content: the one column keyword search indexes.
+    searchText     String
+    // Order of the section within its page, for rebuilding the page and for stable test output.
+    position       Int
+    contentHash    String
+    embedding      pgvector.Vector(length: 768)
+    // Which model produced `embedding`. Vectors from different models must never be compared.
+    embeddingModel String
+    createdAt      TimestamptzString             @default(now())
+    page           Page                          @relation(fields: [pageId], references: [id], onDelete: Cascade)
+
+    @@unique([pageId, anchor])
+    @@index([pageId])
+    @@fullTextIndex([searchText], name: "section_search_text")
 }

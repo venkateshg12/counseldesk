@@ -7,6 +7,10 @@
     "Page": {
       "model": "Page",
       "namespace": "public"
+    },
+    "Section": {
+      "model": "Section",
+      "namespace": "public"
     }
   },
   "domain": {
@@ -58,7 +62,23 @@
                 }
               }
             },
-            "relations": {},
+            "relations": {
+              "sections": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "pageId"
+                  ]
+                },
+                "to": {
+                  "model": "Section",
+                  "namespace": "public"
+                }
+              }
+            },
             "storage": {
               "fields": {
                 "contentHash": {
@@ -82,6 +102,147 @@
               },
               "namespaceId": "public",
               "table": "Page"
+            }
+          },
+          "Section": {
+            "fields": {
+              "anchor": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "content": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "contentHash": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "createdAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "kind": "scalar"
+                }
+              },
+              "embedding": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/vector@1",
+                  "kind": "scalar",
+                  "typeParams": {
+                    "length": 768
+                  }
+                }
+              },
+              "embeddingModel": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "heading": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "pageId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "position": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "searchText": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "page": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "pageId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Page",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "anchor": {
+                  "column": "anchor"
+                },
+                "content": {
+                  "column": "content"
+                },
+                "contentHash": {
+                  "column": "contentHash"
+                },
+                "createdAt": {
+                  "column": "createdAt"
+                },
+                "embedding": {
+                  "column": "embedding"
+                },
+                "embeddingModel": {
+                  "column": "embeddingModel"
+                },
+                "heading": {
+                  "column": "heading"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "pageId": {
+                  "column": "pageId"
+                },
+                "position": {
+                  "column": "position"
+                },
+                "searchText": {
+                  "column": "searchText"
+                }
+              },
+              "namespaceId": "public",
+              "table": "Section"
             }
           }
         }
@@ -148,6 +309,121 @@
                   ]
                 }
               ]
+            },
+            "Section": {
+              "columns": {
+                "anchor": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "content": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "contentHash": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "createdAt": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "embedding": {
+                  "codecId": "pg/vector@1",
+                  "nativeType": "vector",
+                  "nullable": false,
+                  "typeParams": {
+                    "length": 768
+                  }
+                },
+                "embeddingModel": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "heading": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "pageId": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "position": {
+                  "codecId": "pg/int4@1",
+                  "nativeType": "int4",
+                  "nullable": false
+                },
+                "searchText": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "pageId"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "Section"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "Page"
+                  }
+                }
+              ],
+              "indexes": [
+                {
+                  "columns": [
+                    "pageId"
+                  ],
+                  "name": "Section_pageId_idx_8caaba4f",
+                  "prefix": "Section_pageId_idx",
+                  "unique": false
+                },
+                {
+                  "expression": "to_tsvector('english', \"searchText\")",
+                  "name": "section_search_text_1c7a2572",
+                  "prefix": "section_search_text",
+                  "type": "gin",
+                  "unique": false
+                }
+              ],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ]
+              },
+              "uniques": [
+                {
+                  "columns": [
+                    "pageId",
+                    "anchor"
+                  ]
+                }
+              ]
             }
           }
         },
@@ -155,10 +431,10 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "8d16c2ec2abe44814677807784b03c6a4e3fbcec51e7133d6e701c0d5f6db2dd"
+    "storageHash": "b77779e7a682e279868da330251ae9c1cbd945b406339e44f30695127ba71d9a"
   },
   "execution": {
-    "executionHash": "f18ef2e143bd1d879382dc2b668757a403e36e10f6b65c76c3da7ff6b1f8554e",
+    "executionHash": "0163ee65001c4a256e98fbd4c2088a4590c6b4f6787253224e032f23e161ae6e",
     "mutations": {
       "defaults": [
         {
@@ -168,6 +444,17 @@
           },
           "ref": {
             "entry": "Page",
+            "field": "id",
+            "namespace": "public"
+          }
+        },
+        {
+          "onCreate": {
+            "id": "uuidv4",
+            "kind": "generator"
+          },
+          "ref": {
+            "entry": "Section",
             "field": "id",
             "namespace": "public"
           }

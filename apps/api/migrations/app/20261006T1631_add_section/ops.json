@@ -1,0 +1,203 @@
+[
+  {
+    "id": "table.Section",
+    "label": "Create table \"Section\"",
+    "summary": "Creates table \"Section\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "Section"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"Section\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Section\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"Section\"",
+        "sql": "CREATE TABLE \"public\".\"Section\" (\n  \"anchor\" text NOT NULL,\n  \"content\" text NOT NULL,\n  \"contentHash\" text NOT NULL,\n  \"createdAt\" timestamptz DEFAULT (now()) NOT NULL,\n  \"embedding\" vector(768) NOT NULL,\n  \"embeddingModel\" text NOT NULL,\n  \"heading\" text NOT NULL,\n  \"id\" uuid NOT NULL,\n  \"pageId\" uuid NOT NULL,\n  \"position\" int4 NOT NULL,\n  \"searchText\" text NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"Section\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Section\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "unique.Section.Section_pageId_anchor_key",
+    "label": "Add unique constraint on \"Section\" (pageId, anchor)",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "unique",
+        "name": "Section_pageId_anchor_key",
+        "table": "Section"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"Section_pageId_anchor_key\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Section_pageId_anchor_key",
+          "public",
+          "\"public\".\"Section\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add unique constraint \"Section_pageId_anchor_key\"",
+        "sql": "ALTER TABLE \"public\".\"Section\" ADD CONSTRAINT \"Section_pageId_anchor_key\" UNIQUE (\"pageId\", \"anchor\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"Section_pageId_anchor_key\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Section_pageId_anchor_key",
+          "public",
+          "\"public\".\"Section\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.Section.Section_pageId_idx_8caaba4f",
+    "label": "Create index \"Section_pageId_idx_8caaba4f\" on \"Section\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "Section_pageId_idx_8caaba4f",
+        "table": "Section"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"Section_pageId_idx_8caaba4f\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Section_pageId_idx_8caaba4f\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"Section_pageId_idx_8caaba4f\"",
+        "sql": "CREATE INDEX \"Section_pageId_idx_8caaba4f\" ON \"public\".\"Section\" (\"pageId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"Section_pageId_idx_8caaba4f\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Section_pageId_idx_8caaba4f\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.Section.section_search_text_1c7a2572",
+    "label": "Create index \"section_search_text_1c7a2572\" on \"Section\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "section_search_text_1c7a2572",
+        "table": "Section"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"section_search_text_1c7a2572\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"section_search_text_1c7a2572\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"section_search_text_1c7a2572\"",
+        "sql": "CREATE INDEX \"section_search_text_1c7a2572\" ON \"public\".\"Section\" USING \"gin\" (to_tsvector('english', \"searchText\"))",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"section_search_text_1c7a2572\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"section_search_text_1c7a2572\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.Section.Section_pageId_fkey",
+    "label": "Add foreign key \"Section_pageId_fkey\" on \"Section\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "Section_pageId_fkey",
+        "table": "Section"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"Section_pageId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Section_pageId_fkey",
+          "public",
+          "\"public\".\"Section\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"Section_pageId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"Section\"\nADD CONSTRAINT \"Section_pageId_fkey\"\nFOREIGN KEY (\"pageId\")\nREFERENCES \"public\".\"Page\" (\"id\")\nON DELETE CASCADE"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"Section_pageId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Section_pageId_fkey",
+          "public",
+          "\"public\".\"Section\""
+        ]
+      }
+    ]
+  }
+]
