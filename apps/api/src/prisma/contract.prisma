@@ -1,0 +1,14 @@
+// use prisma-8
+
+// One page of the demo firm's website. `path` is the URL path on the site ("/practice-areas/dui"),
+// which is also what a citation links to.
+model Page {
+    id          Uuid              @id @default(uuid())
+    path        String            @unique
+    title       String
+    // sha256 of everything that decides this page's stored sections (its markdown, the split depth
+    // and the embedding model — Phase 11), so re-running ingestion can skip unchanged pages.
+    contentHash String
+    createdAt   TimestamptzString @default(now())
+    updatedAt   TimestamptzString @default(now())
+}
