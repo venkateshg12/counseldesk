@@ -17,11 +17,14 @@
     "seed:staff": "tsx src/scripts/seed-staff.ts"
   },
   "dependencies": {
+    "@bull-board/api": "^8.6.1",
+    "@bull-board/express": "^8.6.1",
     "@prisma/cli-engine": "0.6.2",
     "@prisma/orm-extension-pgvector": "8.0.0-rc.14",
     "@prisma/orm-postgres": "8.0.0-rc.14",
     "@repo/types": "workspace:*",
     "bcrypt": "^6.0.0",
+    "bullmq": "^5.81.5",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
@@ -32,6 +35,7 @@
     "jsonwebtoken": "^9.0.3",
     "pg": "^8.23.1",
     "proxy-addr": "^2.0.8",
+    "resend": "^4.8.0",
     "zod": "^4.6.5"
   },
   "devDependencies": {

@@ -42,3 +42,15 @@ export const REDIS_PORT = getEnv("REDIS_PORT");
 export const REDIS_USERNAME = getEnv("REDIS_USERNAME", "");
 export const REDIS_PASSWORD = getEnv("REDIS_PASSWORD", "");
 export const TRUSTED_PROXY_CIDRS = getEnv("TRUSTED_PROXY_CIDRS", "");
+
+export const RESEND_API_KEY = getEnv("RESEND_API_KEY", "");
+export const EMAIL_FROM = getEnv("EMAIL_FROM", "onboarding@resend.dev");
+export const STAFF_NOTIFY_EMAIL = getEnv("STAFF_NOTIFY_EMAIL");
+// Where staff open a conversation (Phase 36). Defaults to the first allowed origin.
+export const STAFF_APP_URL = getEnv(
+  "STAFF_APP_URL",
+  CORS_ORIGIN.split(",")[0]!.trim(),
+);
+export const ENABLE_QUEUE_DASHBOARD = getEnv("ENABLE_QUEUE_DASHBOARD", "false");
+export const QUEUE_DASHBOARD_USER = getEnv("QUEUE_DASHBOARD_USER", "");
+export const QUEUE_DASHBOARD_PASSWORD = getEnv("QUEUE_DASHBOARD_PASSWORD", "");
