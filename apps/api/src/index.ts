@@ -1,12 +1,58 @@
-import { idParamSchema } from "@repo/types";
+import "dotenv/config";
+import { PORT } from "./constants/env.js";
+import { createApp } from "./app.js";
 
-// Phase 00 only proves the wiring: an ESM app importing the built shared package.
-// Phase 01 replaces this file with the real server.
-const valid = idParamSchema.safeParse({
-  id: "3f2c6c1e-8a51-4f3e-9b7a-2d4f1c0e5a77",
+const SHUTDOWN_GRACE_MS = 10_000;
+
+async function main() {
+  const app = createApp();
+
+  const server = app.listen(Number(PORT), "0.0.0.0", () => {
+    console.log(`Server is listening on port ${PORT}`);
+  });
+
+  let shuttingDown = false;
+
+  const shutdown = async (reason: string) => {
+    if (shuttingDown) return;
+    shuttingDown = true;
+    console.log(`[shutdown] ${reason} — closing`);
+
+    // A client holding a keep-alive connection open shouldn't hold the deploy open with it.
+    const forceExit = setTimeout(() => {
+      console.error(
+        "[shutdown] in-flight requests did not finish in time — exiting anyway",
+      );
+      process.exit(1);
+    }, SHUTDOWN_GRACE_MS);
+    forceExit.unref();
+
+    try {
+      await new Promise<void>((resolve) => server.close(() => resolve()));
+      console.log("[shutdown] complete");
+      process.exit(0);
+    } catch (error) {
+      console.error("[shutdown] failed:", error);
+      process.exit(1);
+    }
+  };
+
+  process.on("SIGTERM", () => void shutdown("SIGTERM"));
+  process.on("SIGINT", () => void shutdown("SIGINT"));
+
+  // A rejection nobody handled would otherwise end the process with no context.
+  process.on("unhandledRejection", (reason) => {
+    console.error("[fatal] unhandled promise rejection:", reason);
+    void shutdown("unhandledRejection");
+  });
+
+  process.on("uncaughtException", (error) => {
+    console.error("[fatal] uncaught exception:", error);
+    void shutdown("uncaughtException");
+  });
+}
+
+main().catch((error) => {
+  console.error("[startup] failed:", error);
+  process.exit(1);
 });
-const invalid = idParamSchema.safeParse({ id: "not-a-uuid" });
-
-console.log(
-  `[api] skeleton ok - valid uuid: ${valid.success}, invalid uuid: ${invalid.success}`,
-);
