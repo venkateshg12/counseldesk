@@ -6,9 +6,12 @@ import { CORS_ORIGIN, NODE_ENV } from "./constants/env.js";
 import { ok } from "./utils/api/index.js";
 import { notFound } from "./middleware/notFound.js";
 import { errorHandler } from "./middleware/errorHandler.js";
+import { requestId } from "./middleware/requestId.js";
 
 export function createApp() {
   const app = express();
+
+  app.use(requestId);
 
   // Baseline response headers. HSTS only in production, where the API is served over HTTPS.
   app.use(

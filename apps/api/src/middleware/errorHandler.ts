@@ -3,6 +3,7 @@ import { ZodError } from "zod";
 import { AppError } from "../utils/errors/index.js";
 import { fail } from "../utils/api/index.js";
 import { BAD_REQUEST, INTERNAL_SERVER_ERROR } from "../constants/http.js";
+import { logger } from "../utils/logger.js";
 
 const handleZodError = (res: Response, error: ZodError) => {
   const errors = error.issues.map((issue) => ({
@@ -14,7 +15,7 @@ const handleZodError = (res: Response, error: ZodError) => {
 
 export function errorHandler(
   error: unknown,
-  _req: Request,
+  req: Request,
   res: Response,
   _next: NextFunction,
 ) {
@@ -28,7 +29,11 @@ export function errorHandler(
       .json(fail(error.message, error.errorCode ?? "APP_ERROR"));
   }
 
-  console.error("error", error);
+  logger.error("unhandled error", {
+    error,
+    method: req.method,
+    path: req.originalUrl.split("?")[0],
+  });
   return res
     .status(INTERNAL_SERVER_ERROR)
     .json(fail("Internal Server Error", "INTERNAL_SERVER_ERROR"));
