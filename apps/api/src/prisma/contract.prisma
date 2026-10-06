@@ -1,5 +1,49 @@
 // use prisma-8
 
+enum ConversationStatus {
+    @@type("pg/text@1")
+
+    open
+    needs_human
+    closed
+}
+
+enum MessageRole {
+    @@type("pg/text@1")
+
+    user
+    assistant
+}
+
+// The practice areas the demo firm handles, plus `other`. The lead tool may only pick one of these.
+enum CaseType {
+    @@type("pg/text@1")
+
+    dui
+    criminal_defense
+    family_law
+    personal_injury
+    estate_planning
+    other
+}
+
+enum HandoffStatus {
+    @@type("pg/text@1")
+
+    pending
+    resolved
+}
+
+enum LlmPurpose {
+    @@type("pg/text@1")
+
+    route
+    answer
+    lead
+    embed_query
+    embed_document
+}
+
 // One page of the demo firm's website. `path` is the URL path on the site ("/practice-areas/dui"),
 // which is also what a citation links to.
 model Page {
@@ -32,8 +76,118 @@ model Section {
     embeddingModel String
     createdAt      TimestamptzString             @default(now())
     page           Page                          @relation(fields: [pageId], references: [id], onDelete: Cascade)
+    citations      MessageCitation[]
 
     @@unique([pageId, anchor])
     @@index([pageId])
     @@fullTextIndex([searchText], name: "section_search_text")
+}
+
+model Conversation {
+    id        Uuid               @id @default(uuid())
+    // The anonymous visitor cookie (Phase 08), so one browser's chats can be grouped and rate limited.
+    visitorId String
+    status    ConversationStatus @default(open)
+    createdAt TimestamptzString  @default(now())
+    updatedAt TimestamptzString  @default(now())
+    messages  Message[]
+    lead      Lead?
+    handoff   Handoff?
+    llmCalls  LlmCall[]
+
+    @@index([visitorId])
+    // The staff queue: "conversations needing a human, newest activity first".
+    @@index([status, updatedAt])
+}
+
+model Message {
+    id             Uuid              @id @default(uuid())
+    conversationId Uuid
+    role           MessageRole
+    content        String
+    // Set on assistant messages: what the router decided and which prompt produced the answer.
+    intent         String?
+    promptVersion  String?
+    // Stage timings for assistant messages (Phase 20), in milliseconds.
+    retrieveMs     Int?
+    firstTokenMs   Int?
+    totalMs        Int?
+    createdAt      TimestamptzString @default(now())
+    conversation   Conversation      @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+    citations      MessageCitation[]
+
+    @@index([conversationId, createdAt])
+}
+
+model MessageCitation {
+    id        Uuid     @id @default(uuid())
+    messageId Uuid
+    // Null once the section is deleted by re-ingestion; the snapshot below keeps the meaning.
+    sectionId Uuid?
+    // The [n] shown in the answer.
+    number    Int
+    url       String
+    heading   String
+    message   Message  @relation(fields: [messageId], references: [id], onDelete: Cascade)
+    section   Section? @relation(fields: [sectionId], references: [id], onDelete: SetNull)
+
+    @@unique([messageId, number])
+    @@index([sectionId])
+}
+
+model Lead {
+    id             Uuid              @id @default(uuid())
+    // Unique: one lead per conversation, however many times the model calls the tool.
+    conversationId Uuid              @unique
+    name           String
+    email          String?
+    phone          String?
+    caseType       CaseType
+    // One or two sentences from the visitor about their situation, if they gave any.
+    summary        String?
+    createdAt      TimestamptzString @default(now())
+    conversation   Conversation      @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+    @@index([createdAt])
+    @@check(expression: "email IS NOT NULL OR phone IS NOT NULL", name: "lead_has_contact")
+}
+
+model Handoff {
+    id             Uuid              @id @default(uuid())
+    conversationId Uuid              @unique
+    reason         String
+    status         HandoffStatus     @default(pending)
+    createdAt      TimestamptzString @default(now())
+    // Null until staff resolve it.
+    resolvedAt     TimestamptzString?
+    conversation   Conversation      @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+    @@index([status, createdAt])
+}
+
+model LlmCall {
+    id             Uuid              @id @default(uuid())
+    // The X-Request-Id of the request that made the call (Phase 02); null for scripts and evals.
+    requestId      String?
+    conversationId Uuid?
+    purpose        LlmPurpose
+    provider       String
+    model          String
+    promptVersion  String?
+    inputTokens    Int               @default(0)
+    outputTokens   Int               @default(0)
+    latencyMs      Int
+    // Streaming calls only: time until the first token arrived.
+    firstTokenMs   Int?
+    // Estimated cost in millionths of a US dollar (Phase 20 explains the estimate).
+    costMicros     Int               @default(0)
+    // True when the primary provider failed and this row is the fallback's answer.
+    fellBack       Boolean           @default(false)
+    ok             Boolean
+    errorCode      String?
+    createdAt      TimestamptzString @default(now())
+    conversation   Conversation?     @relation(fields: [conversationId], references: [id], onDelete: SetNull)
+
+    @@index([createdAt])
+    @@index([conversationId])
 }
