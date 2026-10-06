@@ -39,7 +39,7 @@ import type {
 } from "@prisma/orm-postgres/contract/types";
 
 export type StorageHash =
-  StorageHashBase<"8fae9ea2ae5040891a889a97e79335004b5672c6a6536d831e5abfbccbae7c9a">;
+  StorageHashBase<"98d553d811777c7f0316448a1c1bf866207185e3b5d2028586fae5021ad9c9ad">;
 export type ExecutionHash =
   ExecutionHashBase<"a80d2ef6dee1e0835493107b1d90b0d4ab811ac78f43fe45669a2ef35468d10e">;
 export type ProfileHash =
@@ -573,6 +573,8 @@ export type FieldOutputTypes = {
       readonly email: CodecTypes["pg/text@1"]["output"] | null;
       readonly id: CodecTypes["pg/uuid@1"]["output"];
       readonly name: CodecTypes["pg/text@1"]["output"];
+      readonly notifiedAt:
+        CodecTypes["pg/timestamptz-string@1"]["output"] | null;
       readonly phone: CodecTypes["pg/text@1"]["output"] | null;
       readonly summary: CodecTypes["pg/text@1"]["output"] | null;
     };
@@ -687,6 +689,8 @@ export type FieldInputTypes = {
       readonly email: CodecTypes["pg/text@1"]["input"] | null;
       readonly id: CodecTypes["pg/uuid@1"]["input"];
       readonly name: CodecTypes["pg/text@1"]["input"];
+      readonly notifiedAt:
+        CodecTypes["pg/timestamptz-string@1"]["input"] | null;
       readonly phone: CodecTypes["pg/text@1"]["input"] | null;
       readonly summary: CodecTypes["pg/text@1"]["input"] | null;
     };
@@ -800,6 +804,8 @@ export type StorageColumnTypes = {
       readonly email: CodecTypes["pg/text@1"]["output"] | null;
       readonly id: CodecTypes["pg/uuid@1"]["output"];
       readonly name: CodecTypes["pg/text@1"]["output"];
+      readonly notifiedAt:
+        CodecTypes["pg/timestamptz-string@1"]["output"] | null;
       readonly phone: CodecTypes["pg/text@1"]["output"] | null;
       readonly summary: CodecTypes["pg/text@1"]["output"] | null;
     };
@@ -914,6 +920,8 @@ export type StorageColumnInputTypes = {
       readonly email: CodecTypes["pg/text@1"]["input"] | null;
       readonly id: CodecTypes["pg/uuid@1"]["input"];
       readonly name: CodecTypes["pg/text@1"]["input"];
+      readonly notifiedAt:
+        CodecTypes["pg/timestamptz-string@1"]["input"] | null;
       readonly phone: CodecTypes["pg/text@1"]["input"] | null;
       readonly summary: CodecTypes["pg/text@1"]["input"] | null;
     };
@@ -1033,6 +1041,7 @@ export namespace Models {
     email: CodecTypes["pg/text@1"]["output"] | null;
     id: CodecTypes["pg/uuid@1"]["output"];
     name: CodecTypes["pg/text@1"]["output"];
+    notifiedAt: CodecTypes["pg/timestamptz-string@1"]["output"] | null;
     phone: CodecTypes["pg/text@1"]["output"] | null;
     summary: CodecTypes["pg/text@1"]["output"] | null;
     conversation: public_Conversation;
@@ -1327,6 +1336,11 @@ type ContractBase = Omit<
                   readonly nativeType: "text";
                   readonly codecId: "pg/text@1";
                   readonly nullable: false;
+                };
+                readonly notifiedAt: {
+                  readonly nativeType: "timestamptz";
+                  readonly codecId: "pg/timestamptz-string@1";
+                  readonly nullable: true;
                 };
                 readonly phone: {
                   readonly nativeType: "text";
@@ -2233,6 +2247,13 @@ type ContractBase = Omit<
                   readonly codecId: "pg/text@1";
                 };
               };
+              readonly notifiedAt: {
+                readonly nullable: true;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/timestamptz-string@1";
+                };
+              };
               readonly phone: {
                 readonly nullable: true;
                 readonly type: {
@@ -2272,6 +2293,7 @@ type ContractBase = Omit<
                 readonly email: { readonly column: "email" };
                 readonly id: { readonly column: "id" };
                 readonly name: { readonly column: "name" };
+                readonly notifiedAt: { readonly column: "notifiedAt" };
                 readonly phone: { readonly column: "phone" };
                 readonly summary: { readonly column: "summary" };
               };

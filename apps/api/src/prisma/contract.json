@@ -422,6 +422,13 @@
                   "kind": "scalar"
                 }
               },
+              "notifiedAt": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "kind": "scalar"
+                }
+              },
               "phone": {
                 "nullable": true,
                 "type": {
@@ -474,6 +481,9 @@
                 },
                 "name": {
                   "column": "name"
+                },
+                "notifiedAt": {
+                  "column": "notifiedAt"
                 },
                 "phone": {
                   "column": "phone"
@@ -1601,6 +1611,11 @@
                   "nativeType": "text",
                   "nullable": false
                 },
+                "notifiedAt": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "nativeType": "timestamptz",
+                  "nullable": true
+                },
                 "phone": {
                   "codecId": "pg/text@1",
                   "nativeType": "text",
@@ -2394,7 +2409,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "8fae9ea2ae5040891a889a97e79335004b5672c6a6536d831e5abfbccbae7c9a"
+    "storageHash": "98d553d811777c7f0316448a1c1bf866207185e3b5d2028586fae5021ad9c9ad"
   },
   "execution": {
     "executionHash": "a80d2ef6dee1e0835493107b1d90b0d4ab811ac78f43fe45669a2ef35468d10e",

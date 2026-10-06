@@ -146,6 +146,8 @@ model Lead {
     // One or two sentences from the visitor about their situation, if they gave any.
     summary        String?
     createdAt      TimestamptzString @default(now())
+    // Set by the notify worker after the staff email is sent; a retried job checks it first.
+    notifiedAt     TimestamptzString?
     conversation   Conversation      @relation(fields: [conversationId], references: [id], onDelete: Cascade)
 
     @@index([createdAt])
