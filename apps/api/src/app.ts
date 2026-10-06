@@ -1,0 +1,42 @@
+import express from "express";
+import helmet from "helmet";
+import cors from "cors";
+import cookieParser from "cookie-parser";
+import { CORS_ORIGIN, NODE_ENV } from "./constants/env.js";
+import { ok } from "./utils/api/index.js";
+import { notFound } from "./middleware/notFound.js";
+import { errorHandler } from "./middleware/errorHandler.js";
+
+export function createApp() {
+  const app = express();
+
+  // Baseline response headers. HSTS only in production, where the API is served over HTTPS.
+  app.use(
+    helmet({
+      crossOriginResourcePolicy: { policy: "cross-origin" },
+      hsts: NODE_ENV === "production" ? undefined : false,
+    }),
+  );
+
+  const corsOrigin = CORS_ORIGIN.split(",")
+    .map((origin) => origin.trim())
+    .filter(Boolean);
+  app.use(cors({ origin: corsOrigin, credentials: true }));
+
+  // Chat messages are short; a small body limit stops someone posting megabytes into the LLM path.
+  app.use(express.json({ limit: "32kb" }));
+  app.use(cookieParser());
+
+  // Declared before the feature routers, so a router that applies auth to everything it sees can
+  // never put /health behind a login (that bug happened in e-commerce).
+  app.get("/health", (_req, res) => {
+    res.json(ok({ status: "ok" }));
+  });
+
+  // Feature routers are mounted here, one phase at a time.
+
+  app.use(notFound);
+  app.use(errorHandler);
+
+  return app;
+}
