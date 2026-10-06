@@ -2,8 +2,10 @@ import { Router } from "express";
 import {
   loginHandler,
   logoutHandler,
+  meHandler,
   refreshHandler,
 } from "../controllers/auth.controller.js";
+import authenticate from "../middleware/authenticate.js";
 
 export const authRoutes = Router();
 
@@ -12,3 +14,4 @@ authRoutes.post("/login", loginHandler);
 authRoutes.post("/logout", logoutHandler);
 // GET, matching the port and the cookie's Path. The refresh cookie is only sent to this exact path.
 authRoutes.get("/refresh", refreshHandler);
+authRoutes.get("/me", authenticate, meHandler);

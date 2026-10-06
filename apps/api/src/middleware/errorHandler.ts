@@ -5,6 +5,8 @@ import { fail } from "../utils/api/index.js";
 import { BAD_REQUEST, INTERNAL_SERVER_ERROR } from "../constants/http.js";
 import { logger } from "../utils/logger.js";
 
+import { clearAuthCookies, REFRESH_PATH } from "../utils/auth/index.js";
+
 const handleZodError = (res: Response, error: ZodError) => {
   const errors = error.issues.map((issue) => ({
     message: issue.message,
@@ -21,6 +23,10 @@ export function errorHandler(
 ) {
   if (error instanceof ZodError) {
     return handleZodError(res, error);
+  }
+
+  if (req.path === REFRESH_PATH) {
+    clearAuthCookies(res);
   }
 
   if (error instanceof AppError) {

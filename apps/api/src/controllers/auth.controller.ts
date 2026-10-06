@@ -1,7 +1,8 @@
 import { staffLoginSchema } from "@repo/types";
 import { catchError, appAssert } from "../utils/errors/index.js";
-import { OK, UNAUTHORIZED } from "../constants/http.js";
+import { OK, NOT_FOUND, UNAUTHORIZED } from "../constants/http.js";
 import { ok } from "../utils/api/index.js";
+import { orm } from "../prisma/db.js";
 import {
   loginUser,
   revokeSessions,
@@ -55,4 +56,12 @@ export const refreshHandler = catchError(async (req, res) => {
     .cookie("refreshToken", newRefreshToken, getRefreshTokenCookieOptions())
     .cookie("accessToken", accessToken, getAccessTokenCookieOptions())
     .json(ok({ message: "Access token refreshed" }));
+});
+
+export const meHandler = catchError(async (req, res) => {
+  const user = await orm.User.where({ id: req.userId })
+    .select("id", "email", "name")
+    .first();
+  appAssert(user, NOT_FOUND, "User not found");
+  res.status(OK).json(ok({ user }));
 });
