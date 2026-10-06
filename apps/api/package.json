@@ -13,7 +13,8 @@
     "db:plan": "prisma contract emit && prisma migration plan --name",
     "db:migrate": "prisma db migrate",
     "db:verify": "prisma db verify",
-    "db:sql": "tsx src/scripts/write-migration-sql.ts"
+    "db:sql": "tsx src/scripts/write-migration-sql.ts",
+    "seed:staff": "tsx src/scripts/seed-staff.ts"
   },
   "dependencies": {
     "@prisma/cli-engine": "0.6.2",
