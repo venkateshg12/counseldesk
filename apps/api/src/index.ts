@@ -2,10 +2,12 @@ import "dotenv/config";
 import { PORT } from "./constants/env.js";
 import { createApp } from "./app.js";
 import { logger } from "./utils/logger.js";
+import { connectDB, closeDB } from "./config/db.js";
 
 const SHUTDOWN_GRACE_MS = 10_000;
 
 async function main() {
+  await connectDB();
   const app = createApp();
 
   const server = app.listen(Number(PORT), "0.0.0.0", () => {
@@ -28,6 +30,7 @@ async function main() {
 
     try {
       await new Promise<void>((resolve) => server.close(() => resolve()));
+      await closeDB();
       logger.info("shutdown complete");
       process.exit(0);
     } catch (error) {

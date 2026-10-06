@@ -7,6 +7,8 @@ import { ok } from "./utils/api/index.js";
 import { notFound } from "./middleware/notFound.js";
 import { errorHandler } from "./middleware/errorHandler.js";
 import { requestId } from "./middleware/requestId.js";
+import { pool } from "./config/db.js";
+import { SERVICE_UNAVAILABLE } from "./constants/http.js";
 
 export function createApp() {
   const app = express();
@@ -32,8 +34,18 @@ export function createApp() {
 
   // Declared before the feature routers, so a router that applies auth to everything it sees can
   // never put /health behind a login (that bug happened in e-commerce).
-  app.get("/health", (_req, res) => {
-    res.json(ok({ status: "ok" }));
+  app.get("/health", async (_req, res) => {
+    const postgresUp = await pool.query("SELECT 1").then(
+      () => true,
+      () => false,
+    );
+
+    res.status(postgresUp ? 200 : SERVICE_UNAVAILABLE).json(
+      ok({
+        status: postgresUp ? "ok" : "degraded",
+        postgres: postgresUp ? "up" : "down",
+      }),
+    );
   });
 
   // Feature routers are mounted here, one phase at a time.
