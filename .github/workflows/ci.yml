@@ -1,0 +1,112 @@
+name: ci
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+# A newer push to the same branch makes the older run pointless.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    services:
+      postgres:
+        image: pgvector/pgvector:0.8.7-pg17
+        env:
+          POSTGRES_USER: counseldesk
+          POSTGRES_PASSWORD: counseldesk
+          POSTGRES_DB: counseldesk
+        ports:
+          - 5433:5432
+        options: >-
+          --health-cmd "pg_isready -U counseldesk -d counseldesk"
+          --health-interval 5s --health-timeout 3s --health-retries 10
+      redis:
+        image: redis:7.4
+        ports:
+          - 6381:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 5s --health-timeout 3s --health-retries 10
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # `turbo --affected` diffs against the base branch, so it needs the history.
+          fetch-depth: 0
+
+      # Reads the version from "packageManager" in the root package.json.
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Choose scope
+        id: scope
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "args=--affected" >> "$GITHUB_OUTPUT"
+          else
+            echo "args=" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Build, typecheck, lint, unit tests
+        run: pnpm turbo run build typecheck lint test ${{ steps.scope.outputs.args }} --ui=stream
+
+      # Real Postgres + Redis from the services above, fake LLM, throwaway secrets from .env.test.
+      - name: Integration tests
+        run: pnpm --filter api test:integration
+
+  e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    needs: ci
+    services:
+      postgres:
+        image: pgvector/pgvector:0.8.7-pg17
+        env:
+          POSTGRES_USER: counseldesk
+          POSTGRES_PASSWORD: counseldesk
+          POSTGRES_DB: counseldesk
+        ports:
+          - 5433:5432
+        options: >-
+          --health-cmd "pg_isready -U counseldesk -d counseldesk"
+          --health-interval 5s --health-timeout 3s --health-retries 10
+      redis:
+        image: redis:7.4
+        ports:
+          - 6381:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 5s --health-timeout 3s --health-retries 10
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm turbo run build --filter=api --filter=web --ui=stream
+      - run: pnpm --filter api test:integration
+      - run: pnpm --filter web exec playwright install --with-deps chromium
+      - run: pnpm --filter web e2e
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report
+          path: apps/web/playwright-report/
+

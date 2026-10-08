@@ -1,0 +1,99 @@
+name: evals
+
+on:
+  push:
+  workflow_dispatch:
+
+concurrency:
+  group: evals-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  eval-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    services:
+      postgres:
+        image: pgvector/pgvector:0.8.7-pg17
+        env:
+          POSTGRES_USER: counseldesk
+          POSTGRES_PASSWORD: counseldesk
+          POSTGRES_DB: counseldesk
+        ports:
+          - 5433:5432
+        options: >-
+          --health-cmd "pg_isready -U counseldesk -d counseldesk"
+          --health-interval 5s --health-timeout 3s --health-retries 10
+      redis:
+        image: redis:7.4
+        ports:
+          - 6381:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 5s --health-timeout 3s --health-retries 10
+
+    env:
+      NODE_ENV: test
+      PORT: "4000"
+      CORS_ORIGIN: http://localhost:3000
+      LOG_LEVEL: warn
+      DATABASE_URL: postgresql://counseldesk:counseldesk@localhost:5433/counseldesk
+      REDIS_HOST: localhost
+      REDIS_PORT: "6381"
+      # Throwaway values: this job never issues a token anyone uses.
+      JWT_SECRET: ci-access-secret-0123456789abcdef0123456789abcdef
+      JWT_REFRESH_SECRET: ci-refresh-secret-0123456789abcdef0123456789abcd
+      STAFF_NOTIFY_EMAIL: staff@ci.local
+      SITE_URL: http://localhost:3000
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+      GEMINI_CHAT_MODEL: ${{ vars.GEMINI_CHAT_MODEL }}
+      GEMINI_EMBEDDING_MODEL: ${{ vars.GEMINI_EMBEDDING_MODEL }}
+      GROQ_CHAT_MODEL: ${{ vars.GROQ_CHAT_MODEL }}
+
+    steps:
+      - name: Skip without secrets (forks)
+        id: secrets
+        run: |
+          if [ -z "$GEMINI_API_KEY" ]; then
+            echo "::notice::GEMINI_API_KEY not available; skipping the eval gate."
+            echo "present=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/checkout@v4
+        if: steps.secrets.outputs.present == 'true'
+
+      - uses: pnpm/action-setup@v4
+        if: steps.secrets.outputs.present == 'true'
+
+      - uses: actions/setup-node@v4
+        if: steps.secrets.outputs.present == 'true'
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install, build, migrate, ingest
+        if: steps.secrets.outputs.present == 'true'
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm turbo run build --filter=api --ui=stream
+          pnpm --filter api db:migrate
+          pnpm --filter api ingest
+
+      - name: Eval gate (CI subset)
+        if: steps.secrets.outputs.present == 'true'
+        run: pnpm --filter api eval --label "ci-${GITHUB_SHA::7}" --subset ci --gate
+
+      # The folder also holds committed reports from earlier experiments; publish only this run's.
+      - name: Publish report
+        if: always() && steps.secrets.outputs.present == 'true'
+        run: cat "$(ls -t apps/api/evals/results/*.md | head -1)" >> "$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/upload-artifact@v4
+        if: always() && steps.secrets.outputs.present == 'true'
+        with:
+          name: eval-report
+          path: apps/api/evals/results/*ci-*

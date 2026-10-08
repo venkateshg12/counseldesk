@@ -8,6 +8,14 @@
       "model": "Conversation",
       "namespace": "public"
     },
+    "EvalResult": {
+      "model": "EvalResult",
+      "namespace": "public"
+    },
+    "EvalRun": {
+      "model": "EvalRun",
+      "namespace": "public"
+    },
     "Handoff": {
       "model": "Handoff",
       "namespace": "public"
@@ -278,6 +286,481 @@
               "table": "Conversation"
             }
           },
+          "EvalResult": {
+            "fields": {
+              "answer": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "caseId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "category": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "citationOk": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/bool@1",
+                  "kind": "scalar"
+                }
+              },
+              "costMicros": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "error": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "factsOk": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/bool@1",
+                  "kind": "scalar"
+                }
+              },
+              "firstTokenMs": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "intent": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "intentOk": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/bool@1",
+                  "kind": "scalar"
+                }
+              },
+              "invalidCitations": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "leadOk": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/bool@1",
+                  "kind": "scalar"
+                }
+              },
+              "notFoundOk": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/bool@1",
+                  "kind": "scalar"
+                }
+              },
+              "passed": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/bool@1",
+                  "kind": "scalar"
+                }
+              },
+              "reciprocalRank": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/float8@1",
+                  "kind": "scalar"
+                }
+              },
+              "retrievalHit": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/bool@1",
+                  "kind": "scalar"
+                }
+              },
+              "runId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "tokens": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "totalMs": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "run": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "runId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "EvalRun",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "answer": {
+                  "column": "answer"
+                },
+                "caseId": {
+                  "column": "caseId"
+                },
+                "category": {
+                  "column": "category"
+                },
+                "citationOk": {
+                  "column": "citationOk"
+                },
+                "costMicros": {
+                  "column": "costMicros"
+                },
+                "error": {
+                  "column": "error"
+                },
+                "factsOk": {
+                  "column": "factsOk"
+                },
+                "firstTokenMs": {
+                  "column": "firstTokenMs"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "intent": {
+                  "column": "intent"
+                },
+                "intentOk": {
+                  "column": "intentOk"
+                },
+                "invalidCitations": {
+                  "column": "invalidCitations"
+                },
+                "leadOk": {
+                  "column": "leadOk"
+                },
+                "notFoundOk": {
+                  "column": "notFoundOk"
+                },
+                "passed": {
+                  "column": "passed"
+                },
+                "reciprocalRank": {
+                  "column": "reciprocalRank"
+                },
+                "retrievalHit": {
+                  "column": "retrievalHit"
+                },
+                "runId": {
+                  "column": "runId"
+                },
+                "tokens": {
+                  "column": "tokens"
+                },
+                "totalMs": {
+                  "column": "totalMs"
+                }
+              },
+              "namespaceId": "public",
+              "table": "EvalResult"
+            }
+          },
+          "EvalRun": {
+            "fields": {
+              "answerPromptVersion": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "avgTokensPerCase": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "cases": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "chatModel": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "citationRate": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/float8@1",
+                  "kind": "scalar"
+                }
+              },
+              "costMicros": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "createdAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "kind": "scalar"
+                }
+              },
+              "factRate": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/float8@1",
+                  "kind": "scalar"
+                }
+              },
+              "firstTokenP50": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "firstTokenP95": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "intentRate": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/float8@1",
+                  "kind": "scalar"
+                }
+              },
+              "label": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "leadRate": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/float8@1",
+                  "kind": "scalar"
+                }
+              },
+              "mrr": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/float8@1",
+                  "kind": "scalar"
+                }
+              },
+              "notFoundRate": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/float8@1",
+                  "kind": "scalar"
+                }
+              },
+              "passRate": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/float8@1",
+                  "kind": "scalar"
+                }
+              },
+              "refusalRate": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/float8@1",
+                  "kind": "scalar"
+                }
+              },
+              "retrievalHitRate": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/float8@1",
+                  "kind": "scalar"
+                }
+              },
+              "searchMode": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "splitDepth": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "subset": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "results": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "runId"
+                  ]
+                },
+                "to": {
+                  "model": "EvalResult",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "answerPromptVersion": {
+                  "column": "answerPromptVersion"
+                },
+                "avgTokensPerCase": {
+                  "column": "avgTokensPerCase"
+                },
+                "cases": {
+                  "column": "cases"
+                },
+                "chatModel": {
+                  "column": "chatModel"
+                },
+                "citationRate": {
+                  "column": "citationRate"
+                },
+                "costMicros": {
+                  "column": "costMicros"
+                },
+                "createdAt": {
+                  "column": "createdAt"
+                },
+                "factRate": {
+                  "column": "factRate"
+                },
+                "firstTokenP50": {
+                  "column": "firstTokenP50"
+                },
+                "firstTokenP95": {
+                  "column": "firstTokenP95"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "intentRate": {
+                  "column": "intentRate"
+                },
+                "label": {
+                  "column": "label"
+                },
+                "leadRate": {
+                  "column": "leadRate"
+                },
+                "mrr": {
+                  "column": "mrr"
+                },
+                "notFoundRate": {
+                  "column": "notFoundRate"
+                },
+                "passRate": {
+                  "column": "passRate"
+                },
+                "refusalRate": {
+                  "column": "refusalRate"
+                },
+                "retrievalHitRate": {
+                  "column": "retrievalHitRate"
+                },
+                "searchMode": {
+                  "column": "searchMode"
+                },
+                "splitDepth": {
+                  "column": "splitDepth"
+                },
+                "subset": {
+                  "column": "subset"
+                }
+              },
+              "namespaceId": "public",
+              "table": "EvalRun"
+            }
+          },
           "Handoff": {
             "fields": {
               "conversationId": {
@@ -315,6 +798,13 @@
                   "kind": "scalar"
                 }
               },
+              "resolvedById": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
               "status": {
                 "nullable": false,
                 "type": {
@@ -345,6 +835,22 @@
                   "model": "Conversation",
                   "namespace": "public"
                 }
+              },
+              "resolvedBy": {
+                "cardinality": "N:1",
+                "nullable": true,
+                "on": {
+                  "localFields": [
+                    "resolvedById"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "User",
+                  "namespace": "public"
+                }
               }
             },
             "storage": {
@@ -363,6 +869,9 @@
                 },
                 "resolvedAt": {
                   "column": "resolvedAt"
+                },
+                "resolvedById": {
+                  "column": "resolvedById"
                 },
                 "status": {
                   "column": "status"
@@ -741,6 +1250,13 @@
                   "kind": "scalar"
                 }
               },
+              "requestId": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
               "retrieveMs": {
                 "nullable": true,
                 "type": {
@@ -759,6 +1275,13 @@
                   "entityName": "MessageRole",
                   "namespaceId": "public",
                   "plane": "domain"
+                }
+              },
+              "routeMs": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
                 }
               },
               "totalMs": {
@@ -825,11 +1348,17 @@
                 "promptVersion": {
                   "column": "promptVersion"
                 },
+                "requestId": {
+                  "column": "requestId"
+                },
                 "retrieveMs": {
                   "column": "retrieveMs"
                 },
                 "role": {
                   "column": "role"
+                },
+                "routeMs": {
+                  "column": "routeMs"
                 },
                 "totalMs": {
                   "column": "totalMs"
@@ -1066,7 +1595,7 @@
                   "codecId": "pg/vector@1",
                   "kind": "scalar",
                   "typeParams": {
-                    "length": 768
+                    "length": 2048
                   }
                 }
               },
@@ -1333,6 +1862,21 @@
               }
             },
             "relations": {
+              "resolvedHandoffs": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "resolvedById"
+                  ]
+                },
+                "to": {
+                  "model": "Handoff",
+                  "namespace": "public"
+                }
+              },
               "sessions": {
                 "cardinality": "1:N",
                 "on": {
@@ -1460,6 +2004,275 @@
               },
               "uniques": []
             },
+            "EvalResult": {
+              "columns": {
+                "answer": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "caseId": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "category": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "citationOk": {
+                  "codecId": "pg/bool@1",
+                  "nativeType": "bool",
+                  "nullable": true
+                },
+                "costMicros": {
+                  "codecId": "pg/int4@1",
+                  "nativeType": "int4",
+                  "nullable": false
+                },
+                "error": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "factsOk": {
+                  "codecId": "pg/bool@1",
+                  "nativeType": "bool",
+                  "nullable": true
+                },
+                "firstTokenMs": {
+                  "codecId": "pg/int4@1",
+                  "nativeType": "int4",
+                  "nullable": true
+                },
+                "id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "intent": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "intentOk": {
+                  "codecId": "pg/bool@1",
+                  "nativeType": "bool",
+                  "nullable": false
+                },
+                "invalidCitations": {
+                  "codecId": "pg/int4@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": 0
+                  },
+                  "nativeType": "int4",
+                  "nullable": false
+                },
+                "leadOk": {
+                  "codecId": "pg/bool@1",
+                  "nativeType": "bool",
+                  "nullable": true
+                },
+                "notFoundOk": {
+                  "codecId": "pg/bool@1",
+                  "nativeType": "bool",
+                  "nullable": true
+                },
+                "passed": {
+                  "codecId": "pg/bool@1",
+                  "nativeType": "bool",
+                  "nullable": false
+                },
+                "reciprocalRank": {
+                  "codecId": "pg/float8@1",
+                  "nativeType": "float8",
+                  "nullable": true
+                },
+                "retrievalHit": {
+                  "codecId": "pg/bool@1",
+                  "nativeType": "bool",
+                  "nullable": true
+                },
+                "runId": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "tokens": {
+                  "codecId": "pg/int4@1",
+                  "nativeType": "int4",
+                  "nullable": false
+                },
+                "totalMs": {
+                  "codecId": "pg/int4@1",
+                  "nativeType": "int4",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "runId"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "EvalResult"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "EvalRun"
+                  }
+                }
+              ],
+              "indexes": [
+                {
+                  "columns": [
+                    "runId"
+                  ],
+                  "name": "EvalResult_runId_idx_a6016437",
+                  "prefix": "EvalResult_runId_idx",
+                  "unique": false
+                }
+              ],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ]
+              },
+              "uniques": []
+            },
+            "EvalRun": {
+              "columns": {
+                "answerPromptVersion": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "avgTokensPerCase": {
+                  "codecId": "pg/int4@1",
+                  "nativeType": "int4",
+                  "nullable": false
+                },
+                "cases": {
+                  "codecId": "pg/int4@1",
+                  "nativeType": "int4",
+                  "nullable": false
+                },
+                "chatModel": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "citationRate": {
+                  "codecId": "pg/float8@1",
+                  "nativeType": "float8",
+                  "nullable": true
+                },
+                "costMicros": {
+                  "codecId": "pg/int4@1",
+                  "nativeType": "int4",
+                  "nullable": false
+                },
+                "createdAt": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "factRate": {
+                  "codecId": "pg/float8@1",
+                  "nativeType": "float8",
+                  "nullable": true
+                },
+                "firstTokenP50": {
+                  "codecId": "pg/int4@1",
+                  "nativeType": "int4",
+                  "nullable": true
+                },
+                "firstTokenP95": {
+                  "codecId": "pg/int4@1",
+                  "nativeType": "int4",
+                  "nullable": true
+                },
+                "id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "intentRate": {
+                  "codecId": "pg/float8@1",
+                  "nativeType": "float8",
+                  "nullable": false
+                },
+                "label": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "leadRate": {
+                  "codecId": "pg/float8@1",
+                  "nativeType": "float8",
+                  "nullable": true
+                },
+                "mrr": {
+                  "codecId": "pg/float8@1",
+                  "nativeType": "float8",
+                  "nullable": true
+                },
+                "notFoundRate": {
+                  "codecId": "pg/float8@1",
+                  "nativeType": "float8",
+                  "nullable": true
+                },
+                "passRate": {
+                  "codecId": "pg/float8@1",
+                  "nativeType": "float8",
+                  "nullable": false
+                },
+                "refusalRate": {
+                  "codecId": "pg/float8@1",
+                  "nativeType": "float8",
+                  "nullable": true
+                },
+                "retrievalHitRate": {
+                  "codecId": "pg/float8@1",
+                  "nativeType": "float8",
+                  "nullable": true
+                },
+                "searchMode": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "splitDepth": {
+                  "codecId": "pg/int4@1",
+                  "nativeType": "int4",
+                  "nullable": false
+                },
+                "subset": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ]
+              },
+              "uniques": []
+            },
             "Handoff": {
               "checks": [
                 {
@@ -1498,6 +2311,11 @@
                   "nativeType": "timestamptz",
                   "nullable": true
                 },
+                "resolvedById": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": true
+                },
                 "status": {
                   "codecId": "pg/text@1",
                   "default": {
@@ -1515,6 +2333,23 @@
                 }
               },
               "foreignKeys": [
+                {
+                  "onDelete": "setNull",
+                  "source": {
+                    "columns": [
+                      "resolvedById"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "Handoff"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "User"
+                  }
+                },
                 {
                   "onDelete": "cascade",
                   "source": {
@@ -1534,6 +2369,14 @@
                 }
               ],
               "indexes": [
+                {
+                  "columns": [
+                    "resolvedById"
+                  ],
+                  "name": "Handoff_resolvedById_idx_fc75edc7",
+                  "prefix": "Handoff_resolvedById_idx",
+                  "unique": false
+                },
                 {
                   "columns": [
                     "status",
@@ -1820,6 +2663,14 @@
                   "name": "LlmCall_createdAt_idx_9575dbd7",
                   "prefix": "LlmCall_createdAt_idx",
                   "unique": false
+                },
+                {
+                  "columns": [
+                    "requestId"
+                  ],
+                  "name": "LlmCall_requestId_idx_fd667f92",
+                  "prefix": "LlmCall_requestId_idx",
+                  "unique": false
                 }
               ],
               "primaryKey": {
@@ -1877,6 +2728,11 @@
                   "nativeType": "text",
                   "nullable": true
                 },
+                "requestId": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
                 "retrieveMs": {
                   "codecId": "pg/int4@1",
                   "nativeType": "int4",
@@ -1892,6 +2748,11 @@
                     "namespaceId": "public",
                     "plane": "storage"
                   }
+                },
+                "routeMs": {
+                  "codecId": "pg/int4@1",
+                  "nativeType": "int4",
+                  "nullable": true
                 },
                 "totalMs": {
                   "codecId": "pg/int4@1",
@@ -1934,6 +2795,14 @@
                   ],
                   "name": "Message_conversationId_idx_669215a6",
                   "prefix": "Message_conversationId_idx",
+                  "unique": false
+                },
+                {
+                  "columns": [
+                    "requestId"
+                  ],
+                  "name": "Message_requestId_idx_fd667f92",
+                  "prefix": "Message_requestId_idx",
                   "unique": false
                 }
               ],
@@ -2132,7 +3001,7 @@
                   "nativeType": "vector",
                   "nullable": false,
                   "typeParams": {
-                    "length": 768
+                    "length": 2048
                   }
                 },
                 "embeddingModel": {
@@ -2409,10 +3278,10 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "98d553d811777c7f0316448a1c1bf866207185e3b5d2028586fae5021ad9c9ad"
+    "storageHash": "54754972a75a896c85194c0a7a4788c5d680816c6b24fb61d7831c628d88e988"
   },
   "execution": {
-    "executionHash": "a80d2ef6dee1e0835493107b1d90b0d4ab811ac78f43fe45669a2ef35468d10e",
+    "executionHash": "6d597816ada81f61c9babb9d2c6b23e1577065bf7ce14fd27cf1701b73b8dc77",
     "mutations": {
       "defaults": [
         {
@@ -2422,6 +3291,28 @@
           },
           "ref": {
             "entry": "Conversation",
+            "field": "id",
+            "namespace": "public"
+          }
+        },
+        {
+          "onCreate": {
+            "id": "uuidv4",
+            "kind": "generator"
+          },
+          "ref": {
+            "entry": "EvalResult",
+            "field": "id",
+            "namespace": "public"
+          }
+        },
+        {
+          "onCreate": {
+            "id": "uuidv4",
+            "kind": "generator"
+          },
+          "ref": {
+            "entry": "EvalRun",
             "field": "id",
             "namespace": "public"
           }

@@ -1,0 +1,45 @@
+name: maintenance
+
+on:
+  schedule:
+    - cron: "17 * * * *" # hourly: re-queue leads whose email never went out
+    - cron: "41 3 * * *" # daily 03:41 UTC: delete old conversations without a lead
+  workflow_dispatch:
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      NODE_ENV: production
+      PORT: "4000"
+      CORS_ORIGIN: ${{ vars.CORS_ORIGIN }}
+      SITE_URL: ${{ vars.SITE_URL }}
+      DATABASE_URL: ${{ secrets.PROD_DATABASE_URL }}
+      REDIS_HOST: ${{ secrets.PROD_REDIS_HOST }}
+      REDIS_PORT: ${{ secrets.PROD_REDIS_PORT }}
+      REDIS_USERNAME: ${{ secrets.PROD_REDIS_USERNAME }}
+      REDIS_PASSWORD: ${{ secrets.PROD_REDIS_PASSWORD }}
+      JWT_SECRET: ${{ secrets.PROD_JWT_SECRET }}
+      JWT_REFRESH_SECRET: ${{ secrets.PROD_JWT_REFRESH_SECRET }}
+      STAFF_NOTIFY_EMAIL: ${{ vars.STAFF_NOTIFY_EMAIL }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+      GEMINI_CHAT_MODEL: ${{ vars.GEMINI_CHAT_MODEL }}
+      GEMINI_EMBEDDING_MODEL: ${{ vars.GEMINI_EMBEDDING_MODEL }}
+      GROQ_CHAT_MODEL: ${{ vars.GROQ_CHAT_MODEL }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm turbo run build --filter=api --ui=stream
+      - name: Re-notify leads
+        if: github.event.schedule == '17 * * * *' || github.event_name == 'workflow_dispatch'
+        run: pnpm --filter api leads:renotify
+      - name: Retention
+        if: github.event.schedule == '41 3 * * *' || github.event_name == 'workflow_dispatch'
+        run: pnpm --filter api retention --days 90

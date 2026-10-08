@@ -1,0 +1,48 @@
+[
+  {
+    "id": "alterType.Section.embedding",
+    "label": "Alter type of \"Section\".\"embedding\" to vector(2048)",
+    "operationClass": "destructive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "embedding",
+        "table": "Section"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"embedding\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "Section",
+          "embedding"
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "alter type of \"embedding\"",
+        "sql": "ALTER TABLE \"public\".\"Section\" ALTER COLUMN \"embedding\" TYPE vector(2048) USING \"embedding\"::vector(2048)"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"embedding\" has type \"vector(2048)\"",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_attribute\" AS \"a\" INNER JOIN \"pg_class\" AS \"c\" ON \"c\".\"oid\" = \"a\".\"attrelid\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"relnamespace\" WHERE (\"n\".\"nspname\" = $1 AND \"c\".\"relname\" = $2 AND \"a\".\"attname\" = $3 AND (format_type(\"a\".\"atttypid\", \"a\".\"atttypmod\")) = $4 AND NOT (\"a\".\"attisdropped\"))) AS \"result\"",
+        "params": [
+          "public",
+          "Section",
+          "embedding",
+          "vector(2048)"
+        ]
+      }
+    ],
+    "meta": {
+      "warning": "TABLE_REWRITE"
+    }
+  }
+]

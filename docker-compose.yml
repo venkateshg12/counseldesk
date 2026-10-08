@@ -32,6 +32,72 @@ services:
       timeout: 3s
       retries: 5
 
+  # One-shot: applies pending migrations, then exits. Uses the build stage (needs the Prisma CLI).
+  migrate:
+    profiles: ["app"]
+    build:
+      context: .
+      target: build
+    working_dir: /repo/apps/api
+    command: ["pnpm", "db:migrate"]
+    # The same env as the API: `run --rm migrate pnpm ingest` also uses this service, and ingestion
+    # needs the Gemini key and everything env.ts validates.
+    env_file: apps/api/.env
+    environment:
+      DATABASE_URL: postgresql://counseldesk:counseldesk@postgres:5432/counseldesk
+      REDIS_HOST: redis
+      REDIS_PORT: "6379"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  api:
+    profiles: ["app"]
+    build:
+      context: .
+      target: runtime
+    env_file: apps/api/.env
+    environment:
+      # Inside the Compose network, services are reached by name on their internal ports.
+      DATABASE_URL: postgresql://counseldesk:counseldesk@postgres:5432/counseldesk
+      REDIS_HOST: redis
+      REDIS_PORT: "6379"
+      PORT: "4000"
+      # development, not production: the local stack is plain http, and production cookies are
+      # Secure (browsers won't store them over http). The image itself is the production build.
+      NODE_ENV: development
+    ports:
+      - "4000:4000"
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+      redis:
+        condition: service_healthy
+    healthcheck:
+      # node:22-slim has no curl; Node's fetch does the same job.
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://localhost:4000/health').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  web:
+    profiles: ["app"]
+    build:
+      context: .
+      target: web
+    ports:
+      - "3000:3000"
+    depends_on:
+      api:
+        condition: service_healthy
+
 volumes:
   postgres_data:
   redis_data:
+

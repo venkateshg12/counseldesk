@@ -39,9 +39,9 @@ import type {
 } from "@prisma/orm-postgres/contract/types";
 
 export type StorageHash =
-  StorageHashBase<"98d553d811777c7f0316448a1c1bf866207185e3b5d2028586fae5021ad9c9ad">;
+  StorageHashBase<"54754972a75a896c85194c0a7a4788c5d680816c6b24fb61d7831c628d88e988">;
 export type ExecutionHash =
-  ExecutionHashBase<"a80d2ef6dee1e0835493107b1d90b0d4ab811ac78f43fe45669a2ef35468d10e">;
+  ExecutionHashBase<"6d597816ada81f61c9babb9d2c6b23e1577065bf7ce14fd27cf1701b73b8dc77">;
 export type ProfileHash =
   ProfileHashBase<"3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2">;
 
@@ -551,6 +551,52 @@ export type FieldOutputTypes = {
       readonly updatedAt: CodecTypes["pg/timestamptz-string@1"]["output"];
       readonly visitorId: CodecTypes["pg/text@1"]["output"];
     };
+    readonly EvalResult: {
+      readonly answer: CodecTypes["pg/text@1"]["output"];
+      readonly caseId: CodecTypes["pg/text@1"]["output"];
+      readonly category: CodecTypes["pg/text@1"]["output"];
+      readonly citationOk: CodecTypes["pg/bool@1"]["output"] | null;
+      readonly costMicros: CodecTypes["pg/int4@1"]["output"];
+      readonly error: CodecTypes["pg/text@1"]["output"] | null;
+      readonly factsOk: CodecTypes["pg/bool@1"]["output"] | null;
+      readonly firstTokenMs: CodecTypes["pg/int4@1"]["output"] | null;
+      readonly id: CodecTypes["pg/uuid@1"]["output"];
+      readonly intent: CodecTypes["pg/text@1"]["output"] | null;
+      readonly intentOk: CodecTypes["pg/bool@1"]["output"];
+      readonly invalidCitations: CodecTypes["pg/int4@1"]["output"];
+      readonly leadOk: CodecTypes["pg/bool@1"]["output"] | null;
+      readonly notFoundOk: CodecTypes["pg/bool@1"]["output"] | null;
+      readonly passed: CodecTypes["pg/bool@1"]["output"];
+      readonly reciprocalRank: CodecTypes["pg/float8@1"]["output"] | null;
+      readonly retrievalHit: CodecTypes["pg/bool@1"]["output"] | null;
+      readonly runId: CodecTypes["pg/uuid@1"]["output"];
+      readonly tokens: CodecTypes["pg/int4@1"]["output"];
+      readonly totalMs: CodecTypes["pg/int4@1"]["output"];
+    };
+    readonly EvalRun: {
+      readonly answerPromptVersion: CodecTypes["pg/text@1"]["output"];
+      readonly avgTokensPerCase: CodecTypes["pg/int4@1"]["output"];
+      readonly cases: CodecTypes["pg/int4@1"]["output"];
+      readonly chatModel: CodecTypes["pg/text@1"]["output"];
+      readonly citationRate: CodecTypes["pg/float8@1"]["output"] | null;
+      readonly costMicros: CodecTypes["pg/int4@1"]["output"];
+      readonly createdAt: CodecTypes["pg/timestamptz-string@1"]["output"];
+      readonly factRate: CodecTypes["pg/float8@1"]["output"] | null;
+      readonly firstTokenP50: CodecTypes["pg/int4@1"]["output"] | null;
+      readonly firstTokenP95: CodecTypes["pg/int4@1"]["output"] | null;
+      readonly id: CodecTypes["pg/uuid@1"]["output"];
+      readonly intentRate: CodecTypes["pg/float8@1"]["output"];
+      readonly label: CodecTypes["pg/text@1"]["output"];
+      readonly leadRate: CodecTypes["pg/float8@1"]["output"] | null;
+      readonly mrr: CodecTypes["pg/float8@1"]["output"] | null;
+      readonly notFoundRate: CodecTypes["pg/float8@1"]["output"] | null;
+      readonly passRate: CodecTypes["pg/float8@1"]["output"];
+      readonly refusalRate: CodecTypes["pg/float8@1"]["output"] | null;
+      readonly retrievalHitRate: CodecTypes["pg/float8@1"]["output"] | null;
+      readonly searchMode: CodecTypes["pg/text@1"]["output"];
+      readonly splitDepth: CodecTypes["pg/int4@1"]["output"];
+      readonly subset: CodecTypes["pg/text@1"]["output"];
+    };
     readonly Handoff: {
       readonly conversationId: CodecTypes["pg/uuid@1"]["output"];
       readonly createdAt: CodecTypes["pg/timestamptz-string@1"]["output"];
@@ -558,6 +604,7 @@ export type FieldOutputTypes = {
       readonly reason: CodecTypes["pg/text@1"]["output"];
       readonly resolvedAt:
         CodecTypes["pg/timestamptz-string@1"]["output"] | null;
+      readonly resolvedById: CodecTypes["pg/uuid@1"]["output"] | null;
       readonly status: "pending" | "resolved";
     };
     readonly Lead: {
@@ -605,8 +652,10 @@ export type FieldOutputTypes = {
       readonly id: CodecTypes["pg/uuid@1"]["output"];
       readonly intent: CodecTypes["pg/text@1"]["output"] | null;
       readonly promptVersion: CodecTypes["pg/text@1"]["output"] | null;
+      readonly requestId: CodecTypes["pg/text@1"]["output"] | null;
       readonly retrieveMs: CodecTypes["pg/int4@1"]["output"] | null;
       readonly role: "user" | "assistant";
+      readonly routeMs: CodecTypes["pg/int4@1"]["output"] | null;
       readonly totalMs: CodecTypes["pg/int4@1"]["output"] | null;
     };
     readonly MessageCitation: {
@@ -630,7 +679,7 @@ export type FieldOutputTypes = {
       readonly content: CodecTypes["pg/text@1"]["output"];
       readonly contentHash: CodecTypes["pg/text@1"]["output"];
       readonly createdAt: CodecTypes["pg/timestamptz-string@1"]["output"];
-      readonly embedding: Vector<768>;
+      readonly embedding: Vector<2048>;
       readonly embeddingModel: CodecTypes["pg/text@1"]["output"];
       readonly heading: CodecTypes["pg/text@1"]["output"];
       readonly id: CodecTypes["pg/uuid@1"]["output"];
@@ -667,6 +716,52 @@ export type FieldInputTypes = {
       readonly updatedAt: CodecTypes["pg/timestamptz-string@1"]["input"];
       readonly visitorId: CodecTypes["pg/text@1"]["input"];
     };
+    readonly EvalResult: {
+      readonly answer: CodecTypes["pg/text@1"]["input"];
+      readonly caseId: CodecTypes["pg/text@1"]["input"];
+      readonly category: CodecTypes["pg/text@1"]["input"];
+      readonly citationOk: CodecTypes["pg/bool@1"]["input"] | null;
+      readonly costMicros: CodecTypes["pg/int4@1"]["input"];
+      readonly error: CodecTypes["pg/text@1"]["input"] | null;
+      readonly factsOk: CodecTypes["pg/bool@1"]["input"] | null;
+      readonly firstTokenMs: CodecTypes["pg/int4@1"]["input"] | null;
+      readonly id: CodecTypes["pg/uuid@1"]["input"];
+      readonly intent: CodecTypes["pg/text@1"]["input"] | null;
+      readonly intentOk: CodecTypes["pg/bool@1"]["input"];
+      readonly invalidCitations: CodecTypes["pg/int4@1"]["input"];
+      readonly leadOk: CodecTypes["pg/bool@1"]["input"] | null;
+      readonly notFoundOk: CodecTypes["pg/bool@1"]["input"] | null;
+      readonly passed: CodecTypes["pg/bool@1"]["input"];
+      readonly reciprocalRank: CodecTypes["pg/float8@1"]["input"] | null;
+      readonly retrievalHit: CodecTypes["pg/bool@1"]["input"] | null;
+      readonly runId: CodecTypes["pg/uuid@1"]["input"];
+      readonly tokens: CodecTypes["pg/int4@1"]["input"];
+      readonly totalMs: CodecTypes["pg/int4@1"]["input"];
+    };
+    readonly EvalRun: {
+      readonly answerPromptVersion: CodecTypes["pg/text@1"]["input"];
+      readonly avgTokensPerCase: CodecTypes["pg/int4@1"]["input"];
+      readonly cases: CodecTypes["pg/int4@1"]["input"];
+      readonly chatModel: CodecTypes["pg/text@1"]["input"];
+      readonly citationRate: CodecTypes["pg/float8@1"]["input"] | null;
+      readonly costMicros: CodecTypes["pg/int4@1"]["input"];
+      readonly createdAt: CodecTypes["pg/timestamptz-string@1"]["input"];
+      readonly factRate: CodecTypes["pg/float8@1"]["input"] | null;
+      readonly firstTokenP50: CodecTypes["pg/int4@1"]["input"] | null;
+      readonly firstTokenP95: CodecTypes["pg/int4@1"]["input"] | null;
+      readonly id: CodecTypes["pg/uuid@1"]["input"];
+      readonly intentRate: CodecTypes["pg/float8@1"]["input"];
+      readonly label: CodecTypes["pg/text@1"]["input"];
+      readonly leadRate: CodecTypes["pg/float8@1"]["input"] | null;
+      readonly mrr: CodecTypes["pg/float8@1"]["input"] | null;
+      readonly notFoundRate: CodecTypes["pg/float8@1"]["input"] | null;
+      readonly passRate: CodecTypes["pg/float8@1"]["input"];
+      readonly refusalRate: CodecTypes["pg/float8@1"]["input"] | null;
+      readonly retrievalHitRate: CodecTypes["pg/float8@1"]["input"] | null;
+      readonly searchMode: CodecTypes["pg/text@1"]["input"];
+      readonly splitDepth: CodecTypes["pg/int4@1"]["input"];
+      readonly subset: CodecTypes["pg/text@1"]["input"];
+    };
     readonly Handoff: {
       readonly conversationId: CodecTypes["pg/uuid@1"]["input"];
       readonly createdAt: CodecTypes["pg/timestamptz-string@1"]["input"];
@@ -674,6 +769,7 @@ export type FieldInputTypes = {
       readonly reason: CodecTypes["pg/text@1"]["input"];
       readonly resolvedAt:
         CodecTypes["pg/timestamptz-string@1"]["input"] | null;
+      readonly resolvedById: CodecTypes["pg/uuid@1"]["input"] | null;
       readonly status: "pending" | "resolved";
     };
     readonly Lead: {
@@ -721,8 +817,10 @@ export type FieldInputTypes = {
       readonly id: CodecTypes["pg/uuid@1"]["input"];
       readonly intent: CodecTypes["pg/text@1"]["input"] | null;
       readonly promptVersion: CodecTypes["pg/text@1"]["input"] | null;
+      readonly requestId: CodecTypes["pg/text@1"]["input"] | null;
       readonly retrieveMs: CodecTypes["pg/int4@1"]["input"] | null;
       readonly role: "user" | "assistant";
+      readonly routeMs: CodecTypes["pg/int4@1"]["input"] | null;
       readonly totalMs: CodecTypes["pg/int4@1"]["input"] | null;
     };
     readonly MessageCitation: {
@@ -782,6 +880,52 @@ export type StorageColumnTypes = {
       readonly updatedAt: CodecTypes["pg/timestamptz-string@1"]["output"];
       readonly visitorId: CodecTypes["pg/text@1"]["output"];
     };
+    readonly EvalResult: {
+      readonly answer: CodecTypes["pg/text@1"]["output"];
+      readonly caseId: CodecTypes["pg/text@1"]["output"];
+      readonly category: CodecTypes["pg/text@1"]["output"];
+      readonly citationOk: CodecTypes["pg/bool@1"]["output"] | null;
+      readonly costMicros: CodecTypes["pg/int4@1"]["output"];
+      readonly error: CodecTypes["pg/text@1"]["output"] | null;
+      readonly factsOk: CodecTypes["pg/bool@1"]["output"] | null;
+      readonly firstTokenMs: CodecTypes["pg/int4@1"]["output"] | null;
+      readonly id: CodecTypes["pg/uuid@1"]["output"];
+      readonly intent: CodecTypes["pg/text@1"]["output"] | null;
+      readonly intentOk: CodecTypes["pg/bool@1"]["output"];
+      readonly invalidCitations: CodecTypes["pg/int4@1"]["output"];
+      readonly leadOk: CodecTypes["pg/bool@1"]["output"] | null;
+      readonly notFoundOk: CodecTypes["pg/bool@1"]["output"] | null;
+      readonly passed: CodecTypes["pg/bool@1"]["output"];
+      readonly reciprocalRank: CodecTypes["pg/float8@1"]["output"] | null;
+      readonly retrievalHit: CodecTypes["pg/bool@1"]["output"] | null;
+      readonly runId: CodecTypes["pg/uuid@1"]["output"];
+      readonly tokens: CodecTypes["pg/int4@1"]["output"];
+      readonly totalMs: CodecTypes["pg/int4@1"]["output"];
+    };
+    readonly EvalRun: {
+      readonly answerPromptVersion: CodecTypes["pg/text@1"]["output"];
+      readonly avgTokensPerCase: CodecTypes["pg/int4@1"]["output"];
+      readonly cases: CodecTypes["pg/int4@1"]["output"];
+      readonly chatModel: CodecTypes["pg/text@1"]["output"];
+      readonly citationRate: CodecTypes["pg/float8@1"]["output"] | null;
+      readonly costMicros: CodecTypes["pg/int4@1"]["output"];
+      readonly createdAt: CodecTypes["pg/timestamptz-string@1"]["output"];
+      readonly factRate: CodecTypes["pg/float8@1"]["output"] | null;
+      readonly firstTokenP50: CodecTypes["pg/int4@1"]["output"] | null;
+      readonly firstTokenP95: CodecTypes["pg/int4@1"]["output"] | null;
+      readonly id: CodecTypes["pg/uuid@1"]["output"];
+      readonly intentRate: CodecTypes["pg/float8@1"]["output"];
+      readonly label: CodecTypes["pg/text@1"]["output"];
+      readonly leadRate: CodecTypes["pg/float8@1"]["output"] | null;
+      readonly mrr: CodecTypes["pg/float8@1"]["output"] | null;
+      readonly notFoundRate: CodecTypes["pg/float8@1"]["output"] | null;
+      readonly passRate: CodecTypes["pg/float8@1"]["output"];
+      readonly refusalRate: CodecTypes["pg/float8@1"]["output"] | null;
+      readonly retrievalHitRate: CodecTypes["pg/float8@1"]["output"] | null;
+      readonly searchMode: CodecTypes["pg/text@1"]["output"];
+      readonly splitDepth: CodecTypes["pg/int4@1"]["output"];
+      readonly subset: CodecTypes["pg/text@1"]["output"];
+    };
     readonly Handoff: {
       readonly conversationId: CodecTypes["pg/uuid@1"]["output"];
       readonly createdAt: CodecTypes["pg/timestamptz-string@1"]["output"];
@@ -789,6 +933,7 @@ export type StorageColumnTypes = {
       readonly reason: CodecTypes["pg/text@1"]["output"];
       readonly resolvedAt:
         CodecTypes["pg/timestamptz-string@1"]["output"] | null;
+      readonly resolvedById: CodecTypes["pg/uuid@1"]["output"] | null;
       readonly status: "pending" | "resolved";
     };
     readonly Lead: {
@@ -836,8 +981,10 @@ export type StorageColumnTypes = {
       readonly id: CodecTypes["pg/uuid@1"]["output"];
       readonly intent: CodecTypes["pg/text@1"]["output"] | null;
       readonly promptVersion: CodecTypes["pg/text@1"]["output"] | null;
+      readonly requestId: CodecTypes["pg/text@1"]["output"] | null;
       readonly retrieveMs: CodecTypes["pg/int4@1"]["output"] | null;
       readonly role: "user" | "assistant";
+      readonly routeMs: CodecTypes["pg/int4@1"]["output"] | null;
       readonly totalMs: CodecTypes["pg/int4@1"]["output"] | null;
     };
     readonly MessageCitation: {
@@ -861,7 +1008,7 @@ export type StorageColumnTypes = {
       readonly content: CodecTypes["pg/text@1"]["output"];
       readonly contentHash: CodecTypes["pg/text@1"]["output"];
       readonly createdAt: CodecTypes["pg/timestamptz-string@1"]["output"];
-      readonly embedding: Vector<768>;
+      readonly embedding: Vector<2048>;
       readonly embeddingModel: CodecTypes["pg/text@1"]["output"];
       readonly heading: CodecTypes["pg/text@1"]["output"];
       readonly id: CodecTypes["pg/uuid@1"]["output"];
@@ -898,6 +1045,52 @@ export type StorageColumnInputTypes = {
       readonly updatedAt: CodecTypes["pg/timestamptz-string@1"]["input"];
       readonly visitorId: CodecTypes["pg/text@1"]["input"];
     };
+    readonly EvalResult: {
+      readonly answer: CodecTypes["pg/text@1"]["input"];
+      readonly caseId: CodecTypes["pg/text@1"]["input"];
+      readonly category: CodecTypes["pg/text@1"]["input"];
+      readonly citationOk: CodecTypes["pg/bool@1"]["input"] | null;
+      readonly costMicros: CodecTypes["pg/int4@1"]["input"];
+      readonly error: CodecTypes["pg/text@1"]["input"] | null;
+      readonly factsOk: CodecTypes["pg/bool@1"]["input"] | null;
+      readonly firstTokenMs: CodecTypes["pg/int4@1"]["input"] | null;
+      readonly id: CodecTypes["pg/uuid@1"]["input"];
+      readonly intent: CodecTypes["pg/text@1"]["input"] | null;
+      readonly intentOk: CodecTypes["pg/bool@1"]["input"];
+      readonly invalidCitations: CodecTypes["pg/int4@1"]["input"];
+      readonly leadOk: CodecTypes["pg/bool@1"]["input"] | null;
+      readonly notFoundOk: CodecTypes["pg/bool@1"]["input"] | null;
+      readonly passed: CodecTypes["pg/bool@1"]["input"];
+      readonly reciprocalRank: CodecTypes["pg/float8@1"]["input"] | null;
+      readonly retrievalHit: CodecTypes["pg/bool@1"]["input"] | null;
+      readonly runId: CodecTypes["pg/uuid@1"]["input"];
+      readonly tokens: CodecTypes["pg/int4@1"]["input"];
+      readonly totalMs: CodecTypes["pg/int4@1"]["input"];
+    };
+    readonly EvalRun: {
+      readonly answerPromptVersion: CodecTypes["pg/text@1"]["input"];
+      readonly avgTokensPerCase: CodecTypes["pg/int4@1"]["input"];
+      readonly cases: CodecTypes["pg/int4@1"]["input"];
+      readonly chatModel: CodecTypes["pg/text@1"]["input"];
+      readonly citationRate: CodecTypes["pg/float8@1"]["input"] | null;
+      readonly costMicros: CodecTypes["pg/int4@1"]["input"];
+      readonly createdAt: CodecTypes["pg/timestamptz-string@1"]["input"];
+      readonly factRate: CodecTypes["pg/float8@1"]["input"] | null;
+      readonly firstTokenP50: CodecTypes["pg/int4@1"]["input"] | null;
+      readonly firstTokenP95: CodecTypes["pg/int4@1"]["input"] | null;
+      readonly id: CodecTypes["pg/uuid@1"]["input"];
+      readonly intentRate: CodecTypes["pg/float8@1"]["input"];
+      readonly label: CodecTypes["pg/text@1"]["input"];
+      readonly leadRate: CodecTypes["pg/float8@1"]["input"] | null;
+      readonly mrr: CodecTypes["pg/float8@1"]["input"] | null;
+      readonly notFoundRate: CodecTypes["pg/float8@1"]["input"] | null;
+      readonly passRate: CodecTypes["pg/float8@1"]["input"];
+      readonly refusalRate: CodecTypes["pg/float8@1"]["input"] | null;
+      readonly retrievalHitRate: CodecTypes["pg/float8@1"]["input"] | null;
+      readonly searchMode: CodecTypes["pg/text@1"]["input"];
+      readonly splitDepth: CodecTypes["pg/int4@1"]["input"];
+      readonly subset: CodecTypes["pg/text@1"]["input"];
+    };
     readonly Handoff: {
       readonly conversationId: CodecTypes["pg/uuid@1"]["input"];
       readonly createdAt: CodecTypes["pg/timestamptz-string@1"]["input"];
@@ -905,6 +1098,7 @@ export type StorageColumnInputTypes = {
       readonly reason: CodecTypes["pg/text@1"]["input"];
       readonly resolvedAt:
         CodecTypes["pg/timestamptz-string@1"]["input"] | null;
+      readonly resolvedById: CodecTypes["pg/uuid@1"]["input"] | null;
       readonly status: "pending" | "resolved";
     };
     readonly Lead: {
@@ -952,8 +1146,10 @@ export type StorageColumnInputTypes = {
       readonly id: CodecTypes["pg/uuid@1"]["input"];
       readonly intent: CodecTypes["pg/text@1"]["input"] | null;
       readonly promptVersion: CodecTypes["pg/text@1"]["input"] | null;
+      readonly requestId: CodecTypes["pg/text@1"]["input"] | null;
       readonly retrieveMs: CodecTypes["pg/int4@1"]["input"] | null;
       readonly role: "user" | "assistant";
+      readonly routeMs: CodecTypes["pg/int4@1"]["input"] | null;
       readonly totalMs: CodecTypes["pg/int4@1"]["input"] | null;
     };
     readonly MessageCitation: {
@@ -1018,15 +1214,67 @@ export namespace Models {
     messages: public_Message[];
     readonly [RelationKeys]?: "handoff" | "lead" | "llmCalls" | "messages";
   };
+  export type public_EvalResult = {
+    answer: CodecTypes["pg/text@1"]["output"];
+    caseId: CodecTypes["pg/text@1"]["output"];
+    category: CodecTypes["pg/text@1"]["output"];
+    citationOk: CodecTypes["pg/bool@1"]["output"] | null;
+    costMicros: CodecTypes["pg/int4@1"]["output"];
+    error: CodecTypes["pg/text@1"]["output"] | null;
+    factsOk: CodecTypes["pg/bool@1"]["output"] | null;
+    firstTokenMs: CodecTypes["pg/int4@1"]["output"] | null;
+    id: CodecTypes["pg/uuid@1"]["output"];
+    intent: CodecTypes["pg/text@1"]["output"] | null;
+    intentOk: CodecTypes["pg/bool@1"]["output"];
+    invalidCitations: CodecTypes["pg/int4@1"]["output"];
+    leadOk: CodecTypes["pg/bool@1"]["output"] | null;
+    notFoundOk: CodecTypes["pg/bool@1"]["output"] | null;
+    passed: CodecTypes["pg/bool@1"]["output"];
+    reciprocalRank: CodecTypes["pg/float8@1"]["output"] | null;
+    retrievalHit: CodecTypes["pg/bool@1"]["output"] | null;
+    runId: CodecTypes["pg/uuid@1"]["output"];
+    tokens: CodecTypes["pg/int4@1"]["output"];
+    totalMs: CodecTypes["pg/int4@1"]["output"];
+    run: public_EvalRun;
+    readonly [RelationKeys]?: "run";
+  };
+  export type public_EvalRun = {
+    answerPromptVersion: CodecTypes["pg/text@1"]["output"];
+    avgTokensPerCase: CodecTypes["pg/int4@1"]["output"];
+    cases: CodecTypes["pg/int4@1"]["output"];
+    chatModel: CodecTypes["pg/text@1"]["output"];
+    citationRate: CodecTypes["pg/float8@1"]["output"] | null;
+    costMicros: CodecTypes["pg/int4@1"]["output"];
+    createdAt: CodecTypes["pg/timestamptz-string@1"]["output"];
+    factRate: CodecTypes["pg/float8@1"]["output"] | null;
+    firstTokenP50: CodecTypes["pg/int4@1"]["output"] | null;
+    firstTokenP95: CodecTypes["pg/int4@1"]["output"] | null;
+    id: CodecTypes["pg/uuid@1"]["output"];
+    intentRate: CodecTypes["pg/float8@1"]["output"];
+    label: CodecTypes["pg/text@1"]["output"];
+    leadRate: CodecTypes["pg/float8@1"]["output"] | null;
+    mrr: CodecTypes["pg/float8@1"]["output"] | null;
+    notFoundRate: CodecTypes["pg/float8@1"]["output"] | null;
+    passRate: CodecTypes["pg/float8@1"]["output"];
+    refusalRate: CodecTypes["pg/float8@1"]["output"] | null;
+    retrievalHitRate: CodecTypes["pg/float8@1"]["output"] | null;
+    searchMode: CodecTypes["pg/text@1"]["output"];
+    splitDepth: CodecTypes["pg/int4@1"]["output"];
+    subset: CodecTypes["pg/text@1"]["output"];
+    results: public_EvalResult[];
+    readonly [RelationKeys]?: "results";
+  };
   export type public_Handoff = {
     conversationId: CodecTypes["pg/uuid@1"]["output"];
     createdAt: CodecTypes["pg/timestamptz-string@1"]["output"];
     id: CodecTypes["pg/uuid@1"]["output"];
     reason: CodecTypes["pg/text@1"]["output"];
     resolvedAt: CodecTypes["pg/timestamptz-string@1"]["output"] | null;
+    resolvedById: CodecTypes["pg/uuid@1"]["output"] | null;
     status: "pending" | "resolved";
     conversation: public_Conversation;
-    readonly [RelationKeys]?: "conversation";
+    resolvedBy: public_User | null;
+    readonly [RelationKeys]?: "conversation" | "resolvedBy";
   };
   export type public_Lead = {
     caseType:
@@ -1075,8 +1323,10 @@ export namespace Models {
     id: CodecTypes["pg/uuid@1"]["output"];
     intent: CodecTypes["pg/text@1"]["output"] | null;
     promptVersion: CodecTypes["pg/text@1"]["output"] | null;
+    requestId: CodecTypes["pg/text@1"]["output"] | null;
     retrieveMs: CodecTypes["pg/int4@1"]["output"] | null;
     role: "user" | "assistant";
+    routeMs: CodecTypes["pg/int4@1"]["output"] | null;
     totalMs: CodecTypes["pg/int4@1"]["output"] | null;
     citations: public_MessageCitation[];
     conversation: public_Conversation;
@@ -1108,7 +1358,7 @@ export namespace Models {
     content: CodecTypes["pg/text@1"]["output"];
     contentHash: CodecTypes["pg/text@1"]["output"];
     createdAt: CodecTypes["pg/timestamptz-string@1"]["output"];
-    embedding: Vector<768>;
+    embedding: Vector<2048>;
     embeddingModel: CodecTypes["pg/text@1"]["output"];
     heading: CodecTypes["pg/text@1"]["output"];
     id: CodecTypes["pg/uuid@1"]["output"];
@@ -1137,14 +1387,17 @@ export namespace Models {
     id: CodecTypes["pg/uuid@1"]["output"];
     name: CodecTypes["pg/text@1"]["output"];
     passwordHash: CodecTypes["pg/text@1"]["output"];
+    resolvedHandoffs: public_Handoff[];
     sessions: public_Session[];
-    readonly [RelationKeys]?: "sessions";
+    readonly [RelationKeys]?: "resolvedHandoffs" | "sessions";
   };
 }
 
 export declare const models: {
   public: {
     Conversation: Models.public_Conversation;
+    EvalResult: Models.public_EvalResult;
+    EvalRun: Models.public_EvalRun;
     Handoff: Models.public_Handoff;
     Lead: Models.public_Lead;
     LlmCall: Models.public_LlmCall;
@@ -1233,6 +1486,260 @@ type ContractBase = Omit<
               ];
               foreignKeys: readonly [];
             };
+            readonly EvalResult: {
+              columns: {
+                readonly answer: {
+                  readonly nativeType: "text";
+                  readonly codecId: "pg/text@1";
+                  readonly nullable: false;
+                };
+                readonly caseId: {
+                  readonly nativeType: "text";
+                  readonly codecId: "pg/text@1";
+                  readonly nullable: false;
+                };
+                readonly category: {
+                  readonly nativeType: "text";
+                  readonly codecId: "pg/text@1";
+                  readonly nullable: false;
+                };
+                readonly citationOk: {
+                  readonly nativeType: "bool";
+                  readonly codecId: "pg/bool@1";
+                  readonly nullable: true;
+                };
+                readonly costMicros: {
+                  readonly nativeType: "int4";
+                  readonly codecId: "pg/int4@1";
+                  readonly nullable: false;
+                };
+                readonly error: {
+                  readonly nativeType: "text";
+                  readonly codecId: "pg/text@1";
+                  readonly nullable: true;
+                };
+                readonly factsOk: {
+                  readonly nativeType: "bool";
+                  readonly codecId: "pg/bool@1";
+                  readonly nullable: true;
+                };
+                readonly firstTokenMs: {
+                  readonly nativeType: "int4";
+                  readonly codecId: "pg/int4@1";
+                  readonly nullable: true;
+                };
+                readonly id: {
+                  readonly nativeType: "uuid";
+                  readonly codecId: "pg/uuid@1";
+                  readonly nullable: false;
+                };
+                readonly intent: {
+                  readonly nativeType: "text";
+                  readonly codecId: "pg/text@1";
+                  readonly nullable: true;
+                };
+                readonly intentOk: {
+                  readonly nativeType: "bool";
+                  readonly codecId: "pg/bool@1";
+                  readonly nullable: false;
+                };
+                readonly invalidCitations: {
+                  readonly nativeType: "int4";
+                  readonly codecId: "pg/int4@1";
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: "literal";
+                    readonly value: DefaultLiteralValue<"pg/int4@1", 0>;
+                  };
+                };
+                readonly leadOk: {
+                  readonly nativeType: "bool";
+                  readonly codecId: "pg/bool@1";
+                  readonly nullable: true;
+                };
+                readonly notFoundOk: {
+                  readonly nativeType: "bool";
+                  readonly codecId: "pg/bool@1";
+                  readonly nullable: true;
+                };
+                readonly passed: {
+                  readonly nativeType: "bool";
+                  readonly codecId: "pg/bool@1";
+                  readonly nullable: false;
+                };
+                readonly reciprocalRank: {
+                  readonly nativeType: "float8";
+                  readonly codecId: "pg/float8@1";
+                  readonly nullable: true;
+                };
+                readonly retrievalHit: {
+                  readonly nativeType: "bool";
+                  readonly codecId: "pg/bool@1";
+                  readonly nullable: true;
+                };
+                readonly runId: {
+                  readonly nativeType: "uuid";
+                  readonly codecId: "pg/uuid@1";
+                  readonly nullable: false;
+                };
+                readonly tokens: {
+                  readonly nativeType: "int4";
+                  readonly codecId: "pg/int4@1";
+                  readonly nullable: false;
+                };
+                readonly totalMs: {
+                  readonly nativeType: "int4";
+                  readonly codecId: "pg/int4@1";
+                  readonly nullable: false;
+                };
+              };
+              primaryKey: { readonly columns: readonly ["id"] };
+              uniques: readonly [];
+              indexes: readonly [
+                {
+                  readonly name: "EvalResult_runId_idx_a6016437";
+                  readonly prefix: "EvalResult_runId_idx";
+                  readonly columns: readonly ["runId"];
+                  readonly unique: false;
+                },
+              ];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: "public" & NamespaceId;
+                    readonly tableName: "EvalResult";
+                    readonly columns: readonly ["runId"];
+                  };
+                  readonly target: {
+                    readonly namespaceId: "public" & NamespaceId;
+                    readonly tableName: "EvalRun";
+                    readonly columns: readonly ["id"];
+                  };
+                },
+              ];
+            };
+            readonly EvalRun: {
+              columns: {
+                readonly answerPromptVersion: {
+                  readonly nativeType: "text";
+                  readonly codecId: "pg/text@1";
+                  readonly nullable: false;
+                };
+                readonly avgTokensPerCase: {
+                  readonly nativeType: "int4";
+                  readonly codecId: "pg/int4@1";
+                  readonly nullable: false;
+                };
+                readonly cases: {
+                  readonly nativeType: "int4";
+                  readonly codecId: "pg/int4@1";
+                  readonly nullable: false;
+                };
+                readonly chatModel: {
+                  readonly nativeType: "text";
+                  readonly codecId: "pg/text@1";
+                  readonly nullable: false;
+                };
+                readonly citationRate: {
+                  readonly nativeType: "float8";
+                  readonly codecId: "pg/float8@1";
+                  readonly nullable: true;
+                };
+                readonly costMicros: {
+                  readonly nativeType: "int4";
+                  readonly codecId: "pg/int4@1";
+                  readonly nullable: false;
+                };
+                readonly createdAt: {
+                  readonly nativeType: "timestamptz";
+                  readonly codecId: "pg/timestamptz-string@1";
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: "function";
+                    readonly expression: "now()";
+                  };
+                };
+                readonly factRate: {
+                  readonly nativeType: "float8";
+                  readonly codecId: "pg/float8@1";
+                  readonly nullable: true;
+                };
+                readonly firstTokenP50: {
+                  readonly nativeType: "int4";
+                  readonly codecId: "pg/int4@1";
+                  readonly nullable: true;
+                };
+                readonly firstTokenP95: {
+                  readonly nativeType: "int4";
+                  readonly codecId: "pg/int4@1";
+                  readonly nullable: true;
+                };
+                readonly id: {
+                  readonly nativeType: "uuid";
+                  readonly codecId: "pg/uuid@1";
+                  readonly nullable: false;
+                };
+                readonly intentRate: {
+                  readonly nativeType: "float8";
+                  readonly codecId: "pg/float8@1";
+                  readonly nullable: false;
+                };
+                readonly label: {
+                  readonly nativeType: "text";
+                  readonly codecId: "pg/text@1";
+                  readonly nullable: false;
+                };
+                readonly leadRate: {
+                  readonly nativeType: "float8";
+                  readonly codecId: "pg/float8@1";
+                  readonly nullable: true;
+                };
+                readonly mrr: {
+                  readonly nativeType: "float8";
+                  readonly codecId: "pg/float8@1";
+                  readonly nullable: true;
+                };
+                readonly notFoundRate: {
+                  readonly nativeType: "float8";
+                  readonly codecId: "pg/float8@1";
+                  readonly nullable: true;
+                };
+                readonly passRate: {
+                  readonly nativeType: "float8";
+                  readonly codecId: "pg/float8@1";
+                  readonly nullable: false;
+                };
+                readonly refusalRate: {
+                  readonly nativeType: "float8";
+                  readonly codecId: "pg/float8@1";
+                  readonly nullable: true;
+                };
+                readonly retrievalHitRate: {
+                  readonly nativeType: "float8";
+                  readonly codecId: "pg/float8@1";
+                  readonly nullable: true;
+                };
+                readonly searchMode: {
+                  readonly nativeType: "text";
+                  readonly codecId: "pg/text@1";
+                  readonly nullable: false;
+                };
+                readonly splitDepth: {
+                  readonly nativeType: "int4";
+                  readonly codecId: "pg/int4@1";
+                  readonly nullable: false;
+                };
+                readonly subset: {
+                  readonly nativeType: "text";
+                  readonly codecId: "pg/text@1";
+                  readonly nullable: false;
+                };
+              };
+              primaryKey: { readonly columns: readonly ["id"] };
+              uniques: readonly [];
+              indexes: readonly [];
+              foreignKeys: readonly [];
+            };
             readonly Handoff: {
               columns: {
                 readonly conversationId: {
@@ -1264,6 +1771,11 @@ type ContractBase = Omit<
                   readonly codecId: "pg/timestamptz-string@1";
                   readonly nullable: true;
                 };
+                readonly resolvedById: {
+                  readonly nativeType: "uuid";
+                  readonly codecId: "pg/uuid@1";
+                  readonly nullable: true;
+                };
                 readonly status: {
                   readonly nativeType: "text";
                   readonly codecId: "pg/text@1";
@@ -1280,6 +1792,12 @@ type ContractBase = Omit<
               ];
               indexes: readonly [
                 {
+                  readonly name: "Handoff_resolvedById_idx_fc75edc7";
+                  readonly prefix: "Handoff_resolvedById_idx";
+                  readonly columns: readonly ["resolvedById"];
+                  readonly unique: false;
+                },
+                {
                   readonly name: "Handoff_status_createdAt_idx_58610442";
                   readonly prefix: "Handoff_status_createdAt_idx";
                   readonly columns: readonly ["status", "createdAt"];
@@ -1287,6 +1805,18 @@ type ContractBase = Omit<
                 },
               ];
               foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: "public" & NamespaceId;
+                    readonly tableName: "Handoff";
+                    readonly columns: readonly ["resolvedById"];
+                  };
+                  readonly target: {
+                    readonly namespaceId: "public" & NamespaceId;
+                    readonly tableName: "User";
+                    readonly columns: readonly ["id"];
+                  };
+                },
                 {
                   readonly source: {
                     readonly namespaceId: "public" & NamespaceId;
@@ -1498,6 +2028,12 @@ type ContractBase = Omit<
                   readonly columns: readonly ["createdAt"];
                   readonly unique: false;
                 },
+                {
+                  readonly name: "LlmCall_requestId_idx_fd667f92";
+                  readonly prefix: "LlmCall_requestId_idx";
+                  readonly columns: readonly ["requestId"];
+                  readonly unique: false;
+                },
               ];
               foreignKeys: readonly [
                 {
@@ -1555,6 +2091,11 @@ type ContractBase = Omit<
                   readonly codecId: "pg/text@1";
                   readonly nullable: true;
                 };
+                readonly requestId: {
+                  readonly nativeType: "text";
+                  readonly codecId: "pg/text@1";
+                  readonly nullable: true;
+                };
                 readonly retrieveMs: {
                   readonly nativeType: "int4";
                   readonly codecId: "pg/int4@1";
@@ -1564,6 +2105,11 @@ type ContractBase = Omit<
                   readonly nativeType: "text";
                   readonly codecId: "pg/text@1";
                   readonly nullable: false;
+                };
+                readonly routeMs: {
+                  readonly nativeType: "int4";
+                  readonly codecId: "pg/int4@1";
+                  readonly nullable: true;
                 };
                 readonly totalMs: {
                   readonly nativeType: "int4";
@@ -1584,6 +2130,12 @@ type ContractBase = Omit<
                   readonly name: "Message_conversationId_idx_669215a6";
                   readonly prefix: "Message_conversationId_idx";
                   readonly columns: readonly ["conversationId"];
+                  readonly unique: false;
+                },
+                {
+                  readonly name: "Message_requestId_idx_fd667f92";
+                  readonly prefix: "Message_requestId_idx";
+                  readonly columns: readonly ["requestId"];
                   readonly unique: false;
                 },
               ];
@@ -1756,7 +2308,7 @@ type ContractBase = Omit<
                   readonly nativeType: "vector";
                   readonly codecId: "pg/vector@1";
                   readonly nullable: false;
-                  readonly typeParams: { readonly length: 768 };
+                  readonly typeParams: { readonly length: 2048 };
                 };
                 readonly embeddingModel: {
                   readonly nativeType: "text";
@@ -1992,6 +2544,14 @@ type ContractBase = Omit<
       readonly namespace: "public" & NamespaceId;
       readonly model: "Conversation";
     };
+    readonly EvalResult: {
+      readonly namespace: "public" & NamespaceId;
+      readonly model: "EvalResult";
+    };
+    readonly EvalRun: {
+      readonly namespace: "public" & NamespaceId;
+      readonly model: "EvalRun";
+    };
     readonly Handoff: {
       readonly namespace: "public" & NamespaceId;
       readonly model: "Handoff";
@@ -2131,6 +2691,397 @@ type ContractBase = Omit<
               };
             };
           };
+          readonly EvalResult: {
+            readonly fields: {
+              readonly answer: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/text@1";
+                };
+              };
+              readonly caseId: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/text@1";
+                };
+              };
+              readonly category: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/text@1";
+                };
+              };
+              readonly citationOk: {
+                readonly nullable: true;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/bool@1";
+                };
+              };
+              readonly costMicros: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/int4@1";
+                };
+              };
+              readonly error: {
+                readonly nullable: true;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/text@1";
+                };
+              };
+              readonly factsOk: {
+                readonly nullable: true;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/bool@1";
+                };
+              };
+              readonly firstTokenMs: {
+                readonly nullable: true;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/int4@1";
+                };
+              };
+              readonly id: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/uuid@1";
+                };
+              };
+              readonly intent: {
+                readonly nullable: true;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/text@1";
+                };
+              };
+              readonly intentOk: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/bool@1";
+                };
+              };
+              readonly invalidCitations: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/int4@1";
+                };
+              };
+              readonly leadOk: {
+                readonly nullable: true;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/bool@1";
+                };
+              };
+              readonly notFoundOk: {
+                readonly nullable: true;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/bool@1";
+                };
+              };
+              readonly passed: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/bool@1";
+                };
+              };
+              readonly reciprocalRank: {
+                readonly nullable: true;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/float8@1";
+                };
+              };
+              readonly retrievalHit: {
+                readonly nullable: true;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/bool@1";
+                };
+              };
+              readonly runId: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/uuid@1";
+                };
+              };
+              readonly tokens: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/int4@1";
+                };
+              };
+              readonly totalMs: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/int4@1";
+                };
+              };
+            };
+            readonly relations: {
+              readonly run: {
+                readonly to: {
+                  readonly namespace: "public" & NamespaceId;
+                  readonly model: "EvalRun";
+                };
+                readonly cardinality: "N:1";
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ["runId"];
+                  readonly targetFields: readonly ["id"];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: "EvalResult";
+              readonly namespaceId: "public";
+              readonly fields: {
+                readonly answer: { readonly column: "answer" };
+                readonly caseId: { readonly column: "caseId" };
+                readonly category: { readonly column: "category" };
+                readonly citationOk: { readonly column: "citationOk" };
+                readonly costMicros: { readonly column: "costMicros" };
+                readonly error: { readonly column: "error" };
+                readonly factsOk: { readonly column: "factsOk" };
+                readonly firstTokenMs: { readonly column: "firstTokenMs" };
+                readonly id: { readonly column: "id" };
+                readonly intent: { readonly column: "intent" };
+                readonly intentOk: { readonly column: "intentOk" };
+                readonly invalidCitations: {
+                  readonly column: "invalidCitations";
+                };
+                readonly leadOk: { readonly column: "leadOk" };
+                readonly notFoundOk: { readonly column: "notFoundOk" };
+                readonly passed: { readonly column: "passed" };
+                readonly reciprocalRank: { readonly column: "reciprocalRank" };
+                readonly retrievalHit: { readonly column: "retrievalHit" };
+                readonly runId: { readonly column: "runId" };
+                readonly tokens: { readonly column: "tokens" };
+                readonly totalMs: { readonly column: "totalMs" };
+              };
+            };
+          };
+          readonly EvalRun: {
+            readonly fields: {
+              readonly answerPromptVersion: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/text@1";
+                };
+              };
+              readonly avgTokensPerCase: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/int4@1";
+                };
+              };
+              readonly cases: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/int4@1";
+                };
+              };
+              readonly chatModel: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/text@1";
+                };
+              };
+              readonly citationRate: {
+                readonly nullable: true;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/float8@1";
+                };
+              };
+              readonly costMicros: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/int4@1";
+                };
+              };
+              readonly createdAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/timestamptz-string@1";
+                };
+              };
+              readonly factRate: {
+                readonly nullable: true;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/float8@1";
+                };
+              };
+              readonly firstTokenP50: {
+                readonly nullable: true;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/int4@1";
+                };
+              };
+              readonly firstTokenP95: {
+                readonly nullable: true;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/int4@1";
+                };
+              };
+              readonly id: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/uuid@1";
+                };
+              };
+              readonly intentRate: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/float8@1";
+                };
+              };
+              readonly label: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/text@1";
+                };
+              };
+              readonly leadRate: {
+                readonly nullable: true;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/float8@1";
+                };
+              };
+              readonly mrr: {
+                readonly nullable: true;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/float8@1";
+                };
+              };
+              readonly notFoundRate: {
+                readonly nullable: true;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/float8@1";
+                };
+              };
+              readonly passRate: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/float8@1";
+                };
+              };
+              readonly refusalRate: {
+                readonly nullable: true;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/float8@1";
+                };
+              };
+              readonly retrievalHitRate: {
+                readonly nullable: true;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/float8@1";
+                };
+              };
+              readonly searchMode: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/text@1";
+                };
+              };
+              readonly splitDepth: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/int4@1";
+                };
+              };
+              readonly subset: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/text@1";
+                };
+              };
+            };
+            readonly relations: {
+              readonly results: {
+                readonly to: {
+                  readonly namespace: "public" & NamespaceId;
+                  readonly model: "EvalResult";
+                };
+                readonly cardinality: "1:N";
+                readonly on: {
+                  readonly localFields: readonly ["id"];
+                  readonly targetFields: readonly ["runId"];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: "EvalRun";
+              readonly namespaceId: "public";
+              readonly fields: {
+                readonly answerPromptVersion: {
+                  readonly column: "answerPromptVersion";
+                };
+                readonly avgTokensPerCase: {
+                  readonly column: "avgTokensPerCase";
+                };
+                readonly cases: { readonly column: "cases" };
+                readonly chatModel: { readonly column: "chatModel" };
+                readonly citationRate: { readonly column: "citationRate" };
+                readonly costMicros: { readonly column: "costMicros" };
+                readonly createdAt: { readonly column: "createdAt" };
+                readonly factRate: { readonly column: "factRate" };
+                readonly firstTokenP50: { readonly column: "firstTokenP50" };
+                readonly firstTokenP95: { readonly column: "firstTokenP95" };
+                readonly id: { readonly column: "id" };
+                readonly intentRate: { readonly column: "intentRate" };
+                readonly label: { readonly column: "label" };
+                readonly leadRate: { readonly column: "leadRate" };
+                readonly mrr: { readonly column: "mrr" };
+                readonly notFoundRate: { readonly column: "notFoundRate" };
+                readonly passRate: { readonly column: "passRate" };
+                readonly refusalRate: { readonly column: "refusalRate" };
+                readonly retrievalHitRate: {
+                  readonly column: "retrievalHitRate";
+                };
+                readonly searchMode: { readonly column: "searchMode" };
+                readonly splitDepth: { readonly column: "splitDepth" };
+                readonly subset: { readonly column: "subset" };
+              };
+            };
+          };
           readonly Handoff: {
             readonly fields: {
               readonly conversationId: {
@@ -2168,6 +3119,13 @@ type ContractBase = Omit<
                   readonly codecId: "pg/timestamptz-string@1";
                 };
               };
+              readonly resolvedById: {
+                readonly nullable: true;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/uuid@1";
+                };
+              };
               readonly status: {
                 readonly nullable: false;
                 readonly type: {
@@ -2189,6 +3147,18 @@ type ContractBase = Omit<
                   readonly targetFields: readonly ["id"];
                 };
               };
+              readonly resolvedBy: {
+                readonly to: {
+                  readonly namespace: "public" & NamespaceId;
+                  readonly model: "User";
+                };
+                readonly cardinality: "N:1";
+                readonly nullable: true;
+                readonly on: {
+                  readonly localFields: readonly ["resolvedById"];
+                  readonly targetFields: readonly ["id"];
+                };
+              };
             };
             readonly storage: {
               readonly table: "Handoff";
@@ -2199,6 +3169,7 @@ type ContractBase = Omit<
                 readonly id: { readonly column: "id" };
                 readonly reason: { readonly column: "reason" };
                 readonly resolvedAt: { readonly column: "resolvedAt" };
+                readonly resolvedById: { readonly column: "resolvedById" };
                 readonly status: { readonly column: "status" };
               };
             };
@@ -2502,6 +3473,13 @@ type ContractBase = Omit<
                   readonly codecId: "pg/text@1";
                 };
               };
+              readonly requestId: {
+                readonly nullable: true;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/text@1";
+                };
+              };
               readonly retrieveMs: {
                 readonly nullable: true;
                 readonly type: {
@@ -2514,6 +3492,13 @@ type ContractBase = Omit<
                 readonly type: {
                   readonly kind: "scalar";
                   readonly codecId: "pg/text@1";
+                };
+              };
+              readonly routeMs: {
+                readonly nullable: true;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/int4@1";
                 };
               };
               readonly totalMs: {
@@ -2560,8 +3545,10 @@ type ContractBase = Omit<
                 readonly id: { readonly column: "id" };
                 readonly intent: { readonly column: "intent" };
                 readonly promptVersion: { readonly column: "promptVersion" };
+                readonly requestId: { readonly column: "requestId" };
                 readonly retrieveMs: { readonly column: "retrieveMs" };
                 readonly role: { readonly column: "role" };
+                readonly routeMs: { readonly column: "routeMs" };
                 readonly totalMs: { readonly column: "totalMs" };
               };
             };
@@ -2756,7 +3743,7 @@ type ContractBase = Omit<
                 readonly type: {
                   readonly kind: "scalar";
                   readonly codecId: "pg/vector@1";
-                  readonly typeParams: { readonly length: 768 };
+                  readonly typeParams: { readonly length: 2048 };
                 };
               };
               readonly embeddingModel: {
@@ -2972,6 +3959,17 @@ type ContractBase = Omit<
               };
             };
             readonly relations: {
+              readonly resolvedHandoffs: {
+                readonly to: {
+                  readonly namespace: "public" & NamespaceId;
+                  readonly model: "Handoff";
+                };
+                readonly cardinality: "1:N";
+                readonly on: {
+                  readonly localFields: readonly ["id"];
+                  readonly targetFields: readonly ["resolvedById"];
+                };
+              };
               readonly sessions: {
                 readonly to: {
                   readonly namespace: "public" & NamespaceId;
@@ -3139,6 +4137,28 @@ type ContractBase = Omit<
           };
           readonly ref: {
             readonly entry: "Conversation";
+            readonly field: "id";
+            readonly namespace: "public";
+          };
+        },
+        {
+          readonly onCreate: {
+            readonly id: "uuidv4";
+            readonly kind: "generator";
+          };
+          readonly ref: {
+            readonly entry: "EvalResult";
+            readonly field: "id";
+            readonly namespace: "public";
+          };
+        },
+        {
+          readonly onCreate: {
+            readonly id: "uuidv4";
+            readonly kind: "generator";
+          };
+          readonly ref: {
+            readonly entry: "EvalRun";
             readonly field: "id";
             readonly namespace: "public";
           };
