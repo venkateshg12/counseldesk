@@ -75,6 +75,8 @@ storybook-static/
 /.agents/
 /.skills/
 /.claude/
+apps/**/AGENTS.md
+packages/**/AGENTS.md
 
 # Internal documentation and tracking (keep local only)
 /docs/
