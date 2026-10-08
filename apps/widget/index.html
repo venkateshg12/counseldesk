@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Widget dev page</title>
+    <style>
+      /* Hostile host styles: the widget must look the same anyway. */
+      * {
+        font-family: "Comic Sans MS", cursive !important;
+        color: purple;
+      }
+      button {
+        background: yellow;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Some other website</h1>
+    <script
+      type="module"
+      src="/src/main.ts"
+      data-api-url="http://localhost:4000"
+      data-site-url="http://localhost:3000"
+    ></script>
+  </body>
+</html>

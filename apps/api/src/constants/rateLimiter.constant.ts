@@ -11,6 +11,7 @@ export const AUTH_REFRESH_SOURCE_PREFIX = "rl:auth:refresh:source";
 export const CHAT_VISITOR_PREFIX = "rl:chat:visitor";
 export const CHAT_IP_PREFIX = "rl:chat:ip";
 export const CHAT_DAILY_PREFIX = "rl:chat:daily";
+export const STAFF_API_PREFIX = "rl:staff";
 export const LOCKOUT_PREFIX = "rl:lockout";
 
 export const HTTP_HEADERS = {

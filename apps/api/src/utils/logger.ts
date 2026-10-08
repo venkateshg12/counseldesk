@@ -22,6 +22,12 @@ const REDACTED_KEYS = new Set([
   "authorization",
   "cookie",
   "apikey",
+  // Personal data (leads, visitor details). Logs are kept longer and read by more people than the DB.
+  "email",
+  "phone",
+  "name",
+  "content",
+  "message",
 ]);
 
 const redact = (value: unknown): unknown => {

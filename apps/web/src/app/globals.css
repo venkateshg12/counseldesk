@@ -1,0 +1,6 @@
+@import "tailwindcss";
+
+/* A citation link lands on a heading; make it obvious which one. */
+:target {
+  scroll-margin-top: 6rem;
+}

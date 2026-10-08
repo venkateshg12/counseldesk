@@ -18,6 +18,9 @@ import { pool } from "./config/db.js";
 import { SERVICE_UNAVAILABLE } from "./constants/http.js";
 
 import { authRoutes } from "./routes/auth.route.js";
+import { debugRoutes } from "./routes/debug.route.js";
+import { chatRoutes } from "./routes/chat.route.js";
+import { staffRoutes } from "./routes/staff.route.js";
 import { trustProxy } from "./utils/rateLimiter/index.js";
 import { visitorIdMiddleware } from "./middleware/visitorId.js";
 import { globalLimiter } from "./config/rateLimiter.js";
@@ -130,6 +133,9 @@ export function createApp() {
 
   // Feature routers are mounted here, one phase at a time.
   app.use("/auth", authRoutes);
+  app.use("/debug", debugRoutes);
+  app.use("/chat", chatRoutes);
+  app.use("/staff", staffRoutes);
 
   app.use(notFound);
   app.use(errorHandler);

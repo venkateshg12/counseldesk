@@ -8,21 +8,35 @@
     "build": "tsc",
     "start": "node dist/index.js",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint .",
+    "lint": "eslint . --max-warnings=0",
     "db:emit": "prisma contract emit",
     "db:plan": "prisma contract emit && prisma migration plan --name",
     "db:migrate": "prisma db migrate",
     "db:verify": "prisma db verify",
     "db:sql": "tsx src/scripts/write-migration-sql.ts",
     "seed:staff": "tsx src/scripts/seed-staff.ts",
-    "worker": "tsx watch src/worker.ts"
+    "worker": "tsx watch src/worker.ts",
+    "ingest": "tsx src/scripts/ingest.ts",
+    "search": "tsx src/scripts/search.ts",
+    "llm:smoke": "tsx src/scripts/llm-smoke.ts",
+    "ask": "tsx src/scripts/ask.ts",
+    "leads:renotify": "tsx src/scripts/renotify-leads.ts",
+    "report": "tsx src/scripts/report.ts",
+    "eval:check": "tsx src/evals/check.ts",
+    "eval": "tsx src/evals/run.ts",
+    "retention": "tsx src/scripts/retention.ts",
+    "e2e:prepare": "node --env-file=.env.test --import tsx src/scripts/e2e-prepare.ts",
+    "test": "vitest run",
+    "test:integration": "vitest run --config vitest.integration.config.ts"
   },
   "dependencies": {
     "@bull-board/api": "^8.6.1",
     "@bull-board/express": "^8.6.1",
+    "@google/genai": "^2.27.0",
     "@prisma/cli-engine": "0.6.2",
     "@prisma/orm-extension-pgvector": "8.0.0-rc.14",
     "@prisma/orm-postgres": "8.0.0-rc.14",
+    "@repo/content": "workspace:^",
     "@repo/types": "workspace:*",
     "bcrypt": "^6.0.0",
     "bullmq": "^5.81.5",
@@ -53,6 +67,7 @@
     "eslint": "^9.39.5",
     "prisma": "8.0.0-rc.20",
     "tsx": "^4.23.15",
-    "typescript": "5.9.3"
+    "typescript": "5.9.3",
+    "vitest": "^5.0.3"
   }
 }

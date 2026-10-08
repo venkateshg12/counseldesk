@@ -1,6 +1,6 @@
 import { createHash } from "node:crypto";
 import { existsSync, readdirSync, readFileSync } from "node:fs";
-import { join, relative, sep } from "node:path";
+import { dirname, join, relative, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 
 export type Page = {
@@ -12,7 +12,7 @@ export type Page = {
 };
 
 // Resolved from this file, so it works from src/ (tsx, tests) and dist/ (built) alike.
-const PAGES_DIR = fileURLToPath(new URL("../pages/", import.meta.url));
+const PAGES_DIR = join(dirname(fileURLToPath(import.meta.url)), "../pages");
 
 const listMarkdownFiles = (dir: string): string[] => {
   if (!existsSync(dir)) return [];

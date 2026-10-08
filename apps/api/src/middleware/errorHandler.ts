@@ -2,7 +2,11 @@ import type { NextFunction, Request, Response } from "express";
 import { ZodError } from "zod";
 import { AppError } from "../utils/errors/index.js";
 import { fail } from "../utils/api/index.js";
-import { BAD_REQUEST, INTERNAL_SERVER_ERROR } from "../constants/http.js";
+import {
+  BAD_REQUEST,
+  INTERNAL_SERVER_ERROR,
+  PAYLOAD_TOO_LARGE,
+} from "../constants/http.js";
 import { logger } from "../utils/logger.js";
 
 import { clearAuthCookies, REFRESH_PATH } from "../utils/auth/index.js";
@@ -27,6 +31,19 @@ export function errorHandler(
 
   if (req.path === REFRESH_PATH) {
     clearAuthCookies(res);
+  }
+
+  // express.json() errors carry a `type`. They're the client's fault, not a 500.
+  const bodyError = error as { type?: string } | null;
+  if (bodyError?.type === "entity.too.large") {
+    return res
+      .status(PAYLOAD_TOO_LARGE)
+      .json(fail("Request body is too large.", "PAYLOAD_TOO_LARGE"));
+  }
+  if (bodyError?.type === "entity.parse.failed") {
+    return res
+      .status(BAD_REQUEST)
+      .json(fail("Malformed JSON.", "INVALID_JSON"));
   }
 
   if (error instanceof AppError) {

@@ -1,7 +1,20 @@
 {
   "$schema": "https://turborepo.dev/schema.json",
   "ui": "tui",
-  "globalEnv": ["DATABASE_URL"],
+  "globalEnv": [
+    "DATABASE_URL",
+    "NVIDIA_API_KEY",
+    "NVIDIA_EMBEDDING_API_KEY",
+    "NVIDIA_CHAT_API_KEY",
+    "NVIDIA_EMBEDDING_MODEL",
+    "NVIDIA_CHAT_MODEL",
+    "GEMINI_API_KEY",
+    "GEMINI_EMBEDDING_MODEL",
+    "SITE_URL",
+    "ANSWER_PROMPT_VERSION",
+    "API_ORIGIN",
+    "PUBLIC_PATH_PREFIX"
+  ],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],

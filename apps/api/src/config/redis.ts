@@ -1,5 +1,6 @@
 import type { RedisOptions } from "ioredis";
 import {
+  REDIS_DB,
   REDIS_HOST,
   REDIS_PASSWORD,
   REDIS_PORT,
@@ -9,6 +10,7 @@ import {
 export const getRedisConfig = (): RedisOptions => ({
   host: REDIS_HOST,
   port: Number(REDIS_PORT),
+  db: Number(REDIS_DB),
   username: REDIS_USERNAME || undefined,
   password: REDIS_PASSWORD || undefined,
   maxRetriesPerRequest: null,
@@ -18,6 +20,7 @@ export const getRedisConfig = (): RedisOptions => ({
 export const getRateLimiterRedisConfig = (): RedisOptions => ({
   host: REDIS_HOST,
   port: Number(REDIS_PORT),
+  db: Number(REDIS_DB),
   username: REDIS_USERNAME || undefined,
   password: REDIS_PASSWORD || undefined,
   maxRetriesPerRequest: 1, // Fail fast so circuit breaker trips to memory store

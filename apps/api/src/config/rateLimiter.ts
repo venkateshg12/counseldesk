@@ -18,6 +18,7 @@ import {
   GLOBAL_IP_PREFIX,
   GLOBAL_VISITOR_PREFIX,
   ONE_DAY_MS,
+  STAFF_API_PREFIX,
   TEN_MINUTES_MS,
   THIRTY_MINUTES_MS,
 } from "../constants/rateLimiter.constant.js";
@@ -165,4 +166,12 @@ export const chatDailyLimiter = createRateLimiter({
   windowMs: ONE_DAY_MS,
   max: 100,
   keyResolver: (req: Request) => `guest:${visitorKeyResolver(req)}`,
+});
+
+// Staff API limiter: 300 requests per 5 minutes per staff user. Keyed by req.userId after authenticate.
+export const staffApiLimiter = createRateLimiter({
+  prefix: STAFF_API_PREFIX,
+  windowMs: FIVE_MINUTES_MS,
+  max: 300,
+  keyResolver: (req: Request) => `user:${req.userId || extractClientIp(req)}`,
 });
