@@ -54,8 +54,17 @@ export const REDIS_USERNAME = getEnv("REDIS_USERNAME", "");
 export const REDIS_PASSWORD = getEnv("REDIS_PASSWORD", "");
 export const TRUSTED_PROXY_CIDRS = getEnv("TRUSTED_PROXY_CIDRS", "");
 
-export const RESEND_API_KEY = getEnv("RESEND_API_KEY", "");
-export const EMAIL_FROM = getEnv("EMAIL_FROM", "onboarding@resend.dev");
+// Gmail API sender (see docs/gmail-api-email-sender.md). All optional so the server boots before
+// the one-time authorization has produced a refresh token; sending fails cleanly until then.
+export const GMAIL_CLIENT_ID = getEnv("GMAIL_CLIENT_ID", "");
+export const GMAIL_CLIENT_SECRET = getEnv("GMAIL_CLIENT_SECRET", "");
+export const GMAIL_REDIRECT_URI = getEnv("GMAIL_REDIRECT_URI", "");
+export const GMAIL_REFRESH_TOKEN = getEnv("GMAIL_REFRESH_TOKEN", "");
+// The mailbox that sends, e.g. noreply.yourfirm@gmail.com. Gmail forces this as the From address.
+export const GMAIL_SENDER_ADDRESS = getEnv("GMAIL_SENDER_ADDRESS", "");
+export const GMAIL_SENDER_NAME = getEnv("GMAIL_SENDER_NAME", "");
+// The authorization routes are always on outside production; "true" only while re-authorizing there.
+export const GMAIL_OAUTH_SETUP = getEnv("GMAIL_OAUTH_SETUP", "false");
 export const STAFF_NOTIFY_EMAIL = getEnv("STAFF_NOTIFY_EMAIL");
 // Where staff open a conversation (Phase 36). Defaults to the first allowed origin.
 export const STAFF_APP_URL = getEnv(
@@ -108,4 +117,4 @@ export const ANSWER_PROMPT_VERSION = getEnv(
 // Experiment knobs (Phase 23). Defaults are the chosen production configuration.
 export const KEYWORD_QUERY = getEnv("KEYWORD_QUERY", "or");
 export const GEMINI_THINKING_LEVEL = getEnv("GEMINI_THINKING_LEVEL", "low");
-export const LLM_PRIMARY = getEnv("LLM_PRIMARY", "gemini");
+export const LLM_PRIMARY = getEnv("LLM_PRIMARY", "nvidia");

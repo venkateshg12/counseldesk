@@ -1,7 +1,8 @@
 import { ZodError } from "zod";
-import { createGeminiProvider } from "./providers/gemini.js";
+// Gemini is switched off for now (NVIDIA is free); re-enable together with the provider list below.
+// import { createGeminiProvider } from "./providers/gemini.js";
 import { createNvidiaProvider } from "./providers/nvidia.js";
-import { isRetryable, withRetry } from "./reliability.js";
+import { isBadModelOutput, isRetryable, withRetry } from "./reliability.js";
 import type {
   ChatMessage,
   LlmProvider,
@@ -11,8 +12,8 @@ import type {
 } from "./types.js";
 import type { z } from "zod";
 import {
-  GEMINI_CHAT_MODEL,
-  LLM_PRIMARY,
+  // GEMINI_CHAT_MODEL,
+  // LLM_PRIMARY,
   LLM_PROVIDER,
   NVIDIA_CHAT_MODEL,
 } from "../constants/env.js";
@@ -29,19 +30,25 @@ import { appErrorCode } from "../constants/appErrorCode.js";
 import { logger } from "../utils/logger.js";
 import { createFakeProvider } from "./providers/fake.js";
 
-// Order is preference: the primary first, then fallbacks.
+// Order is preference: the primary first, then fallbacks. NVIDIA only for now.
 const providers: LlmProvider[] =
   LLM_PROVIDER === "fake"
     ? [createFakeProvider()]
-    : LLM_PRIMARY === "gemini"
-      ? [
-          createGeminiProvider(GEMINI_CHAT_MODEL),
-          createNvidiaProvider(NVIDIA_CHAT_MODEL),
-        ]
-      : [
-          createNvidiaProvider(NVIDIA_CHAT_MODEL),
-          createGeminiProvider(GEMINI_CHAT_MODEL),
-        ];
+    : [createNvidiaProvider(NVIDIA_CHAT_MODEL)];
+
+// Gemini variant, kept for when it is switched back on (restore the imports above too):
+// const providers: LlmProvider[] =
+//   LLM_PROVIDER === "fake"
+//     ? [createFakeProvider()]
+//     : LLM_PRIMARY === "gemini"
+//       ? [
+//           createGeminiProvider(GEMINI_CHAT_MODEL),
+//           createNvidiaProvider(NVIDIA_CHAT_MODEL),
+//         ]
+//       : [
+//           createNvidiaProvider(NVIDIA_CHAT_MODEL),
+//           createGeminiProvider(GEMINI_CHAT_MODEL),
+//         ];
 
 type Purpose = "route" | "answer" | "lead";
 
@@ -73,7 +80,7 @@ const logProviderFailure = (
     errorCode: errorCodeOf(error),
     error,
   };
-  if (isRetryable(error))
+  if (isRetryable(error) || isBadModelOutput(error))
     logger.warn("llm provider failed, trying next", fields);
   else logger.error("llm provider failed, trying next", fields);
 };
@@ -110,6 +117,8 @@ const runWithFallback = async <T>(
           attempts: JSON_ATTEMPTS,
           timeoutMs: JSON_TIMEOUT_MS,
           signal: meta.signal,
+          // Structured calls also retry when the model's JSON is malformed or off-schema.
+          retryIf: (error) => isRetryable(error) || isBadModelOutput(error),
         },
       );
       await recordLlmCall({

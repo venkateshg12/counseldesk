@@ -1,5 +1,6 @@
+import { ZodError } from "zod";
 import { describe, expect, it, vi } from "vitest";
-import { isRetryable, withRetry } from "./reliability.js";
+import { isBadModelOutput, isRetryable, withRetry } from "./reliability.js";
 
 const httpError = (status: number) => Object.assign(new Error("x"), { status });
 
@@ -24,8 +25,36 @@ describe("isRetryable", () => {
   });
 });
 
+describe("isBadModelOutput", () => {
+  it("recognises malformed JSON and off-schema output, and nothing else", () => {
+    expect(isBadModelOutput(new SyntaxError("bad json"))).toBe(true);
+    expect(isBadModelOutput(new ZodError([]))).toBe(true);
+    expect(isBadModelOutput(httpError(503))).toBe(false);
+    expect(isBadModelOutput(new Error("boom"))).toBe(false);
+  });
+});
+
 describe("withRetry", () => {
   const options = { attempts: 3, timeoutMs: 1_000 };
+
+  it("retries bad model output only when asked to", async () => {
+    vi.spyOn(Math, "random").mockReturnValue(0);
+    const flaky = () =>
+      vi
+        .fn()
+        .mockRejectedValueOnce(new SyntaxError("bad json"))
+        .mockResolvedValue("ok");
+
+    const without = flaky();
+    await expect(withRetry(without, options)).rejects.toThrow("bad json");
+    expect(without).toHaveBeenCalledTimes(1);
+
+    const withRule = flaky();
+    await expect(
+      withRetry(withRule, { ...options, retryIf: isBadModelOutput }),
+    ).resolves.toBe("ok");
+    expect(withRule).toHaveBeenCalledTimes(2);
+  });
 
   it("returns the first success without retrying", async () => {
     const fn = vi.fn().mockResolvedValue("ok");

@@ -11,9 +11,10 @@ export default defineConfig({
   projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
   webServer: [
     {
-      // The API with the fake LLM against the test database, on its own port.
+      // The API with the fake LLM against the test database, on its own port. The `--` matters: without
+      // it pnpm 9 swallows --env-file as its own option and Node never sees it.
       command:
-        "pnpm --filter api e2e:prepare && pnpm --filter api exec node --env-file=.env.test --import tsx src/index.ts",
+        "pnpm --filter api e2e:prepare && pnpm --filter api exec -- node --env-file=.env.test --import tsx src/index.ts",
       url: `${API}/health`,
       reuseExistingServer: !process.env.CI,
       timeout: 120_000,

@@ -5,11 +5,15 @@ import {
 } from "../middleware/rateLimiter.js";
 import { extractClientIp } from "../utils/rateLimiter/ipExtractor.js";
 import {
+  AUTH_FORGOT_ACCOUNT_PREFIX,
+  AUTH_FORGOT_PREFIX,
+  AUTH_FORGOT_SOURCE_PREFIX,
   AUTH_LOGIN_ACCOUNT_PREFIX,
   AUTH_LOGIN_PREFIX,
   AUTH_LOGIN_SOURCE_PREFIX,
   AUTH_REFRESH_PREFIX,
   AUTH_REFRESH_SOURCE_PREFIX,
+  AUTH_RESET_SOURCE_PREFIX,
   CHAT_DAILY_PREFIX,
   CHAT_IP_PREFIX,
   CHAT_VISITOR_PREFIX,
@@ -126,6 +130,41 @@ export const loginSourceLimiter = createRateLimiter({
   prefix: AUTH_LOGIN_SOURCE_PREFIX,
   windowMs: FIFTEEN_MINUTES_MS,
   max: 50,
+  keyResolver: ipKeyResolver,
+});
+
+/*
+  Forgot password. Each accepted request sends an email, so unlike login these protect other people's
+  inboxes (and the mail quota), not the account. The same three axes as login. All answer 429 for
+  unknown addresses exactly as for real ones, so the limit itself reveals nothing.
+ */
+// Non-punitive for the same reason as loginAccountLimiter: the key is only an email anyone can type.
+export const forgotAccountLimiter = createRateLimiter({
+  prefix: AUTH_FORGOT_ACCOUNT_PREFIX,
+  windowMs: FIFTEEN_MINUTES_MS,
+  max: 3,
+  keyResolver: emailKeyResolver,
+});
+
+export const forgotLimiter = createRateLimiter({
+  prefix: AUTH_FORGOT_PREFIX,
+  windowMs: FIFTEEN_MINUTES_MS,
+  max: 5,
+  keyResolver: ipAndEmailKeyResolver,
+});
+
+export const forgotSourceLimiter = createRateLimiter({
+  prefix: AUTH_FORGOT_SOURCE_PREFIX,
+  windowMs: FIFTEEN_MINUTES_MS,
+  max: 20,
+  keyResolver: ipKeyResolver,
+});
+
+// Links are unguessable, so this only stops a source hammering the endpoint.
+export const resetSourceLimiter = createRateLimiter({
+  prefix: AUTH_RESET_SOURCE_PREFIX,
+  windowMs: FIFTEEN_MINUTES_MS,
+  max: 30,
   keyResolver: ipKeyResolver,
 });
 

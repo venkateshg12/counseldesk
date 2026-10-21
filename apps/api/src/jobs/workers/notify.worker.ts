@@ -1,7 +1,13 @@
 import { type Job, Worker } from "bullmq";
 import { JOB_NAMES, QUEUE_NAMES } from "../../constants/queue.js";
-import { processNewLead } from "../processors/notify.processor.js";
-import type { NewLeadPayload } from "../interfaces/jobPayload.js";
+import {
+  processNewLead,
+  processPasswordReset,
+} from "../processors/notify.processor.js";
+import type {
+  NewLeadPayload,
+  PasswordResetPayload,
+} from "../interfaces/jobPayload.js";
 import { redisConnection } from "../redis/connection.js";
 import { logger } from "../../utils/logger.js";
 
@@ -11,6 +17,8 @@ export const notifyWorker = new Worker(
     switch (job.name) {
       case JOB_NAMES.NOTIFY.NEW_LEAD:
         return processNewLead(job as Job<NewLeadPayload>);
+      case JOB_NAMES.NOTIFY.PASSWORD_RESET:
+        return processPasswordReset(job as Job<PasswordResetPayload>);
       default:
         throw new Error(`Unknown job name: ${job.name}`);
     }

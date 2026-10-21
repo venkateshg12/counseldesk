@@ -1,0 +1,446 @@
+[
+  {
+    "id": "table.EvalResult",
+    "label": "Create table \"EvalResult\"",
+    "summary": "Creates table \"EvalResult\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "EvalResult"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"EvalResult\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"EvalResult\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"EvalResult\"",
+        "sql": "CREATE TABLE \"public\".\"EvalResult\" (\n  \"answer\" text NOT NULL,\n  \"caseId\" text NOT NULL,\n  \"category\" text NOT NULL,\n  \"citationOk\" bool,\n  \"costMicros\" int4 NOT NULL,\n  \"error\" text,\n  \"factsOk\" bool,\n  \"firstTokenMs\" int4,\n  \"id\" uuid NOT NULL,\n  \"intent\" text,\n  \"intentOk\" bool NOT NULL,\n  \"invalidCitations\" int4 DEFAULT 0 NOT NULL,\n  \"leadOk\" bool,\n  \"notFoundOk\" bool,\n  \"passed\" bool NOT NULL,\n  \"reciprocalRank\" float8,\n  \"retrievalHit\" bool,\n  \"runId\" uuid NOT NULL,\n  \"tokens\" int4 NOT NULL,\n  \"totalMs\" int4 NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"EvalResult\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"EvalResult\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.EvalRun",
+    "label": "Create table \"EvalRun\"",
+    "summary": "Creates table \"EvalRun\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "EvalRun"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"EvalRun\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"EvalRun\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"EvalRun\"",
+        "sql": "CREATE TABLE \"public\".\"EvalRun\" (\n  \"answerPromptVersion\" text NOT NULL,\n  \"avgTokensPerCase\" int4 NOT NULL,\n  \"cases\" int4 NOT NULL,\n  \"chatModel\" text NOT NULL,\n  \"citationRate\" float8,\n  \"costMicros\" int4 NOT NULL,\n  \"createdAt\" timestamptz DEFAULT (now()) NOT NULL,\n  \"factRate\" float8,\n  \"firstTokenP50\" int4,\n  \"firstTokenP95\" int4,\n  \"id\" uuid NOT NULL,\n  \"intentRate\" float8 NOT NULL,\n  \"label\" text NOT NULL,\n  \"leadRate\" float8,\n  \"mrr\" float8,\n  \"notFoundRate\" float8,\n  \"passRate\" float8 NOT NULL,\n  \"refusalRate\" float8,\n  \"retrievalHitRate\" float8,\n  \"searchMode\" text NOT NULL,\n  \"splitDepth\" int4 NOT NULL,\n  \"subset\" text NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"EvalRun\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"EvalRun\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "column.public.Handoff.resolvedById",
+    "label": "Add column \"resolvedById\" to \"Handoff\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "resolvedById",
+        "table": "Handoff"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"resolvedById\" is missing",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "Handoff",
+          "resolvedById"
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add column \"resolvedById\"",
+        "sql": "ALTER TABLE \"public\".\"Handoff\" ADD COLUMN \"resolvedById\" uuid"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"resolvedById\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "Handoff",
+          "resolvedById"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "column.public.Message.requestId",
+    "label": "Add column \"requestId\" to \"Message\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "requestId",
+        "table": "Message"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"requestId\" is missing",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "Message",
+          "requestId"
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add column \"requestId\"",
+        "sql": "ALTER TABLE \"public\".\"Message\" ADD COLUMN \"requestId\" text"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"requestId\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "Message",
+          "requestId"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "column.public.Message.routeMs",
+    "label": "Add column \"routeMs\" to \"Message\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "routeMs",
+        "table": "Message"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"routeMs\" is missing",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "Message",
+          "routeMs"
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add column \"routeMs\"",
+        "sql": "ALTER TABLE \"public\".\"Message\" ADD COLUMN \"routeMs\" int4"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"routeMs\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "Message",
+          "routeMs"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.EvalResult.EvalResult_runId_idx_a6016437",
+    "label": "Create index \"EvalResult_runId_idx_a6016437\" on \"EvalResult\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "EvalResult_runId_idx_a6016437",
+        "table": "EvalResult"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"EvalResult_runId_idx_a6016437\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"EvalResult_runId_idx_a6016437\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"EvalResult_runId_idx_a6016437\"",
+        "sql": "CREATE INDEX \"EvalResult_runId_idx_a6016437\" ON \"public\".\"EvalResult\" (\"runId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"EvalResult_runId_idx_a6016437\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"EvalResult_runId_idx_a6016437\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.Handoff.Handoff_resolvedById_idx_fc75edc7",
+    "label": "Create index \"Handoff_resolvedById_idx_fc75edc7\" on \"Handoff\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "Handoff_resolvedById_idx_fc75edc7",
+        "table": "Handoff"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"Handoff_resolvedById_idx_fc75edc7\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Handoff_resolvedById_idx_fc75edc7\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"Handoff_resolvedById_idx_fc75edc7\"",
+        "sql": "CREATE INDEX \"Handoff_resolvedById_idx_fc75edc7\" ON \"public\".\"Handoff\" (\"resolvedById\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"Handoff_resolvedById_idx_fc75edc7\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Handoff_resolvedById_idx_fc75edc7\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.LlmCall.LlmCall_requestId_idx_fd667f92",
+    "label": "Create index \"LlmCall_requestId_idx_fd667f92\" on \"LlmCall\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "LlmCall_requestId_idx_fd667f92",
+        "table": "LlmCall"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"LlmCall_requestId_idx_fd667f92\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"LlmCall_requestId_idx_fd667f92\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"LlmCall_requestId_idx_fd667f92\"",
+        "sql": "CREATE INDEX \"LlmCall_requestId_idx_fd667f92\" ON \"public\".\"LlmCall\" (\"requestId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"LlmCall_requestId_idx_fd667f92\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"LlmCall_requestId_idx_fd667f92\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.Message.Message_requestId_idx_fd667f92",
+    "label": "Create index \"Message_requestId_idx_fd667f92\" on \"Message\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "Message_requestId_idx_fd667f92",
+        "table": "Message"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"Message_requestId_idx_fd667f92\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Message_requestId_idx_fd667f92\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"Message_requestId_idx_fd667f92\"",
+        "sql": "CREATE INDEX \"Message_requestId_idx_fd667f92\" ON \"public\".\"Message\" (\"requestId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"Message_requestId_idx_fd667f92\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Message_requestId_idx_fd667f92\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.EvalResult.EvalResult_runId_fkey",
+    "label": "Add foreign key \"EvalResult_runId_fkey\" on \"EvalResult\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "EvalResult_runId_fkey",
+        "table": "EvalResult"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"EvalResult_runId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "EvalResult_runId_fkey",
+          "public",
+          "\"public\".\"EvalResult\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"EvalResult_runId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"EvalResult\"\nADD CONSTRAINT \"EvalResult_runId_fkey\"\nFOREIGN KEY (\"runId\")\nREFERENCES \"public\".\"EvalRun\" (\"id\")\nON DELETE CASCADE"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"EvalResult_runId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "EvalResult_runId_fkey",
+          "public",
+          "\"public\".\"EvalResult\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.Handoff.Handoff_resolvedById_fkey",
+    "label": "Add foreign key \"Handoff_resolvedById_fkey\" on \"Handoff\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "Handoff_resolvedById_fkey",
+        "table": "Handoff"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"Handoff_resolvedById_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Handoff_resolvedById_fkey",
+          "public",
+          "\"public\".\"Handoff\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"Handoff_resolvedById_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"Handoff\"\nADD CONSTRAINT \"Handoff_resolvedById_fkey\"\nFOREIGN KEY (\"resolvedById\")\nREFERENCES \"public\".\"User\" (\"id\")\nON DELETE SET NULL"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"Handoff_resolvedById_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Handoff_resolvedById_fkey",
+          "public",
+          "\"public\".\"Handoff\""
+        ]
+      }
+    ]
+  }
+]

@@ -46,18 +46,19 @@ jobs:
       JWT_REFRESH_SECRET: ci-refresh-secret-0123456789abcdef0123456789abcd
       STAFF_NOTIFY_EMAIL: staff@ci.local
       SITE_URL: http://localhost:3000
+      NVIDIA_API_KEY: ${{ secrets.NVIDIA_API_KEY }}
+      NVIDIA_CHAT_MODEL: ${{ vars.NVIDIA_CHAT_MODEL }}
+      NVIDIA_EMBEDDING_MODEL: ${{ vars.NVIDIA_EMBEDDING_MODEL }}
+      # Optional fallback provider.
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-      GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
       GEMINI_CHAT_MODEL: ${{ vars.GEMINI_CHAT_MODEL }}
-      GEMINI_EMBEDDING_MODEL: ${{ vars.GEMINI_EMBEDDING_MODEL }}
-      GROQ_CHAT_MODEL: ${{ vars.GROQ_CHAT_MODEL }}
 
     steps:
       - name: Skip without secrets (forks)
         id: secrets
         run: |
-          if [ -z "$GEMINI_API_KEY" ]; then
-            echo "::notice::GEMINI_API_KEY not available; skipping the eval gate."
+          if [ -z "$NVIDIA_API_KEY" ]; then
+            echo "::notice::NVIDIA_API_KEY not available; skipping the eval gate."
             echo "present=false" >> "$GITHUB_OUTPUT"
           else
             echo "present=true" >> "$GITHUB_OUTPUT"

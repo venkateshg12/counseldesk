@@ -1,17 +1,23 @@
 import { Router } from "express";
 import {
+  forgotPasswordHandler,
   loginHandler,
   logoutHandler,
   meHandler,
   refreshHandler,
+  resetPasswordHandler,
 } from "../controllers/auth.controller.js";
 import authenticate from "../middleware/authenticate.js";
 import {
+  forgotAccountLimiter,
+  forgotLimiter,
+  forgotSourceLimiter,
   loginAccountLimiter,
   loginLimiter,
   loginSourceLimiter,
   refreshTokenLimiter,
   refreshTokenSourceLimiter,
+  resetSourceLimiter,
 } from "../config/rateLimiter.js";
 
 export const authRoutes = Router();
@@ -33,3 +39,14 @@ authRoutes.get(
   refreshHandler,
 );
 authRoutes.get("/me", authenticate, meHandler);
+
+// Both are POST with the secret in the body. The forgot limiters exist mostly to keep the endpoint
+// from being used to flood one person's inbox.
+authRoutes.post(
+  "/password/forgot",
+  forgotSourceLimiter,
+  forgotAccountLimiter,
+  forgotLimiter,
+  forgotPasswordHandler,
+);
+authRoutes.post("/password/reset", resetSourceLimiter, resetPasswordHandler);

@@ -121,7 +121,11 @@ API.interceptors.response.use(
       } catch (refreshError) {
         processQueue(refreshError);
         useAuthStore.getState().clearAuth();
-        queryClient.clear();
+        // Forget cached staff data, but keep the session check ("me"): it is still pending on this very
+        // request, and removing it would leave the gate waiting forever instead of redirecting to login.
+        queryClient.removeQueries({
+          predicate: (query) => query.queryKey[0] !== "me",
+        });
         return Promise.reject<ApiError>({
           status: 401,
           message: "Session expired. Please log in again.",

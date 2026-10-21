@@ -64,7 +64,9 @@ describe("lead capture", () => {
       status: "needs_human",
       handoff: "pending",
     });
-    expect(await notifyQueue.getJob(`lead:${rows[0].leadId}`)).toBeDefined();
+    expect(
+      await notifyQueue.getJob(`lead:${rows[0].leadId}:email`),
+    ).toBeDefined();
 
     // Asking again in the same conversation: no tool call, no second lead.
     const meta = events[0];

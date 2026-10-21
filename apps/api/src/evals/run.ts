@@ -12,7 +12,8 @@ import { db, orm, pool } from "../prisma/db.js";
 import { closeDB } from "../config/db.js";
 import { redisConnection } from "../jobs/redis/connection.js";
 import { invalidCitationNumbers } from "../utils/citations.js";
-import { ANSWER_PROMPT_VERSION, GEMINI_CHAT_MODEL } from "../constants/env.js";
+import { ANSWER_PROMPT_VERSION, NVIDIA_CHAT_MODEL } from "../constants/env.js";
+// import { GEMINI_CHAT_MODEL } from "../constants/env.js"; // Gemini is switched off for now
 import { SEARCH_MODES, type SearchMode } from "../constants/search.js";
 
 // Usage: pnpm --filter api eval --label baseline [--subset ci] [--mode hybrid|keyword|vector] [--depth 3] [--case id] [--gate]
@@ -140,7 +141,7 @@ const summary = {
   searchMode: mode,
   splitDepth: Number(values.depth),
   answerPromptVersion: ANSWER_PROMPT_VERSION,
-  chatModel: GEMINI_CHAT_MODEL,
+  chatModel: NVIDIA_CHAT_MODEL, // was GEMINI_CHAT_MODEL
   cases: results.length,
   passRate: rate(results.map((r) => r.passed))!,
   retrievalHitRate: rate(results.map((r) => r.retrievalHit)),

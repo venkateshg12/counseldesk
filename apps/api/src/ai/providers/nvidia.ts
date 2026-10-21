@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { NVIDIA_CHAT_API_KEY } from "../../constants/env.js";
 import { NVIDIA_BASE_URL } from "../nvidia.js";
+import { describeJsonReply, parseModelJson } from "../modelJson.js";
 import type { ChatMessage, LlmProvider, Usage } from "../types.js";
 
 // Carries the HTTP status so isRetryable and the telemetry error code can read it.
@@ -90,15 +91,17 @@ export const createNvidiaProvider = (model: string): LlmProvider => ({
   model,
 
   async generateJson({ system, messages, schema, signal }) {
-    const { $schema: _ignored, ...jsonSchema } = z.toJSONSchema(schema);
     const response = await postChat(
       {
         model,
         temperature: 0,
-        // Guarantees syntactically valid JSON; the shape is asked for in the prompt and checked by Zod.
+        // Asks for JSON, but this endpoint does not guarantee it: parseModelJson repairs the common slips and Zod checks the shape.
         response_format: { type: "json_object" },
+        // This is classification, not reasoning. With thinking on, the model spends many seconds (and
+        // often the whole 15 s timeout) on hidden reasoning tokens; off, it answers in 2-5 s.
+        chat_template_kwargs: { enable_thinking: false },
         messages: withSystem(
-          `${system}\n\nRespond with only a JSON object that matches this JSON Schema:\n${JSON.stringify(jsonSchema)}`,
+          `${system}\n\n${describeJsonReply(schema)}`,
           messages,
         ),
       },
@@ -106,25 +109,8 @@ export const createNvidiaProvider = (model: string): LlmProvider => ({
     );
     const completion = (await response.json()) as ChatCompletion;
     const content = completion.choices?.[0]?.message?.content ?? "";
-    const parsed = (() => {
-      const trimmed = content.trim();
-      const codeBlockMatch = trimmed.match(
-        /^```(?:json)?\s*([\s\S]*?)\s*```$/i,
-      );
-      const text = codeBlockMatch ? codeBlockMatch[1]! : trimmed;
-      try {
-        return JSON.parse(text);
-      } catch (err) {
-        const first = text.indexOf("{");
-        const last = text.lastIndexOf("}");
-        if (first !== -1 && last > first) {
-          return JSON.parse(text.slice(first, last + 1));
-        }
-        throw err;
-      }
-    })();
     return {
-      data: schema.parse(parsed),
+      data: parseModelJson(content, schema),
       usage: toUsage(completion.usage),
     };
   },
