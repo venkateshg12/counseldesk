@@ -5,6 +5,10 @@ export const GLOBAL_IP_PREFIX = "rl:global:ip";
 export const AUTH_LOGIN_PREFIX = "rl:auth:login";
 export const AUTH_LOGIN_ACCOUNT_PREFIX = "rl:auth:login:account";
 export const AUTH_LOGIN_SOURCE_PREFIX = "rl:auth:login:source";
+export const AUTH_FORGOT_PREFIX = "rl:auth:forgot";
+export const AUTH_FORGOT_ACCOUNT_PREFIX = "rl:auth:forgot:account";
+export const AUTH_FORGOT_SOURCE_PREFIX = "rl:auth:forgot:source";
+export const AUTH_RESET_SOURCE_PREFIX = "rl:auth:reset:source";
 export const AUTH_REFRESH_PREFIX = "rl:auth:refresh";
 export const AUTH_REFRESH_SOURCE_PREFIX = "rl:auth:refresh:source";
 

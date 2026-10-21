@@ -23,11 +23,18 @@ jobs:
       JWT_SECRET: ${{ secrets.PROD_JWT_SECRET }}
       JWT_REFRESH_SECRET: ${{ secrets.PROD_JWT_REFRESH_SECRET }}
       STAFF_NOTIFY_EMAIL: ${{ vars.STAFF_NOTIFY_EMAIL }}
+      # leads:renotify sends the missed lead emails through the Gmail API.
+      GMAIL_CLIENT_ID: ${{ secrets.GMAIL_CLIENT_ID }}
+      GMAIL_CLIENT_SECRET: ${{ secrets.GMAIL_CLIENT_SECRET }}
+      GMAIL_REFRESH_TOKEN: ${{ secrets.GMAIL_REFRESH_TOKEN }}
+      GMAIL_SENDER_ADDRESS: ${{ vars.GMAIL_SENDER_ADDRESS }}
+      GMAIL_SENDER_NAME: ${{ vars.GMAIL_SENDER_NAME }}
+      NVIDIA_API_KEY: ${{ secrets.NVIDIA_API_KEY }}
+      NVIDIA_CHAT_MODEL: ${{ vars.NVIDIA_CHAT_MODEL }}
+      NVIDIA_EMBEDDING_MODEL: ${{ vars.NVIDIA_EMBEDDING_MODEL }}
+      # Optional fallback provider.
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-      GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
       GEMINI_CHAT_MODEL: ${{ vars.GEMINI_CHAT_MODEL }}
-      GEMINI_EMBEDDING_MODEL: ${{ vars.GEMINI_EMBEDDING_MODEL }}
-      GROQ_CHAT_MODEL: ${{ vars.GROQ_CHAT_MODEL }}
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4

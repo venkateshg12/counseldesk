@@ -21,6 +21,7 @@
     "llm:smoke": "tsx src/scripts/llm-smoke.ts",
     "ask": "tsx src/scripts/ask.ts",
     "leads:renotify": "tsx src/scripts/renotify-leads.ts",
+    "mail:smoke": "tsx src/scripts/mail-smoke.ts",
     "report": "tsx src/scripts/report.ts",
     "eval:check": "tsx src/evals/check.ts",
     "eval": "tsx src/evals/run.ts",
@@ -33,6 +34,7 @@
     "@bull-board/api": "^8.6.1",
     "@bull-board/express": "^8.6.1",
     "@google/genai": "^2.27.0",
+    "@googleapis/gmail": "^22.0.2",
     "@prisma/cli-engine": "0.6.2",
     "@prisma/orm-extension-pgvector": "8.0.0-rc.14",
     "@prisma/orm-postgres": "8.0.0-rc.14",
@@ -50,7 +52,6 @@
     "jsonwebtoken": "^9.0.3",
     "pg": "^8.23.1",
     "proxy-addr": "^2.0.8",
-    "resend": "^4.8.0",
     "zod": "^4.6.5"
   },
   "devDependencies": {

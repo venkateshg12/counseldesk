@@ -1,3 +1,4 @@
+import { ZodError } from "zod";
 import { MAX_BACKOFF_MS } from "../constants/llm.js";
 
 const RETRYABLE_STATUS = new Set([408, 429, 500, 502, 503, 504]);
@@ -20,6 +21,14 @@ export const isRetryable = (error: unknown): boolean => {
   );
 };
 
+/*
+  The model answered, but not with usable JSON (cut off, nested wrongly, or off-schema). Models do
+  this intermittently even at temperature 0, and asking again usually fixes it. Opt-in, for calls that
+  expect structured output: a SyntaxError elsewhere (a stream chunk, our own bug) is not worth retrying.
+ */
+export const isBadModelOutput = (error: unknown): boolean =>
+  error instanceof SyntaxError || error instanceof ZodError;
+
 // Full jitter: a random wait between 0 and the exponential cap, so clients don't retry in lockstep.
 const backoffMs = (attempt: number) =>
   Math.random() * Math.min(MAX_BACKOFF_MS, 500 * 2 ** attempt);
@@ -30,6 +39,8 @@ type RetryOptions = {
   attempts: number;
   timeoutMs: number;
   signal?: AbortSignal;
+  // Which failures get another attempt. Defaults to isRetryable.
+  retryIf?: (error: unknown) => boolean;
 };
 
 /*
@@ -39,7 +50,7 @@ type RetryOptions = {
  */
 export const withRetry = async <T>(
   fn: (signal: AbortSignal) => Promise<T>,
-  { attempts, timeoutMs, signal }: RetryOptions,
+  { attempts, timeoutMs, signal, retryIf = isRetryable }: RetryOptions,
 ) => {
   for (let attempt = 1; ; attempt++) {
     const timeout = AbortSignal.timeout(timeoutMs);
@@ -47,7 +58,7 @@ export const withRetry = async <T>(
     try {
       return await fn(attemptSignal);
     } catch (error) {
-      if (signal?.aborted || attempt >= attempts || !isRetryable(error))
+      if (signal?.aborted || attempt >= attempts || !retryIf(error))
         throw error;
       await sleep(backoffMs(attempt));
     }

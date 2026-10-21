@@ -1,13 +1,15 @@
 import crypto from "node:crypto";
 import type { StaffLogin } from "@repo/types";
-import { orm } from "../prisma/db.js";
+import { orm, pool } from "../prisma/db.js";
 import type { Models } from "../prisma/contract.js";
 import { appAssert } from "../utils/errors/index.js";
-import { UNAUTHORIZED } from "../constants/http.js";
+import { BAD_REQUEST, UNAUTHORIZED } from "../constants/http.js";
 import { appErrorCode } from "../constants/appErrorCode.js";
 import {
   compareValue,
   hashValue,
+  isValidPasswordResetSignature,
+  parsePasswordResetToken,
   refreshTokenSignOptions,
   refreshTokenVerifyOptions,
   signToken,
@@ -15,6 +17,8 @@ import {
 } from "../utils/auth/index.js";
 import { thirtyDaysFromNow } from "../utils/date/date.js";
 import type { RefreshTokenPayload } from "../types/auth.types.js";
+import { enqueuePasswordResetEmail } from "../jobs/producers/notify.producer.js";
+import { logger } from "../utils/logger.js";
 
 // Unknown emails are compared against this, so they fail exactly as slowly as a wrong password.
 const dummyPasswordHash = hashValue(crypto.randomBytes(32).toString("hex"));
@@ -153,5 +157,80 @@ export const refreshUserAccessToken = async (refreshToken: string) => {
   return {
     accessToken: signAccessToken(session.userId, session.id),
     newRefreshToken: signRefreshToken(session.id, currentJti),
+  };
+};
+
+// The same answer whether or not the address belongs to an account, so the endpoint can't be used
+// to find out who has one.
+export const FORGOT_PASSWORD_MESSAGE =
+  "If an account exists for that email, a reset link has been sent. Check your spam folder too.";
+
+export const requestPasswordReset = async (email: string) => {
+  const user = await orm.User.where({ email }).select("id").first();
+
+  if (user) {
+    try {
+      await enqueuePasswordResetEmail({
+        userId: user.id,
+        issuedAt: Date.now(),
+      });
+    } catch (error) {
+      // A queue outage must not turn into a different answer for real accounts. The user can ask again.
+      logger.error("could not queue password reset email", { error });
+    }
+  }
+
+  return { message: FORGOT_PASSWORD_MESSAGE };
+};
+
+const INVALID_RESET_LINK = "This reset link is invalid or has expired.";
+
+export const resetPassword = async ({
+  token,
+  password,
+}: {
+  token: string;
+  password: string;
+}) => {
+  const parsed = parsePasswordResetToken(token);
+  appAssert(parsed, BAD_REQUEST, INVALID_RESET_LINK);
+
+  const user = await orm.User.where({ id: parsed.userId })
+    .select("id", "passwordHash")
+    .first();
+  appAssert(
+    user && isValidPasswordResetSignature(parsed, user.passwordHash),
+    BAD_REQUEST,
+    INVALID_RESET_LINK,
+  );
+
+  const newHash = await hashValue(password);
+
+  // One transaction: the new password and the end of every session land together or not at all.
+  // Matching on the old hash is what makes the link single-use under concurrency: of two requests
+  // holding the same link, only the first finds the hash it was signed against.
+  const client = await pool.connect();
+  try {
+    await client.query("BEGIN");
+    const swapped = await client.query(
+      'UPDATE "User" SET "passwordHash" = $1 WHERE id = $2 AND "passwordHash" = $3',
+      [newHash, user.id, user.passwordHash],
+    );
+    if (swapped.rowCount !== 1) {
+      await client.query("ROLLBACK");
+      appAssert(false, BAD_REQUEST, INVALID_RESET_LINK);
+    }
+    // Whoever knew the old password, or held a stolen session, is signed out.
+    await client.query('DELETE FROM "Session" WHERE "userId" = $1', [user.id]);
+    await client.query("COMMIT");
+  } catch (error) {
+    await client.query("ROLLBACK").catch(() => undefined);
+    throw error;
+  } finally {
+    client.release();
+  }
+
+  return {
+    message: "Your password has been changed. Sign in with the new one.",
   };
 };

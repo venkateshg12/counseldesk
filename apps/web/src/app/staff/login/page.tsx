@@ -1,6 +1,7 @@
 "use client";
 
 import { Suspense, useState } from "react";
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { staffLoginSchema } from "@repo/types";
 import { useLogin } from "@/hooks/auth/useLogin";
@@ -73,6 +74,11 @@ function LoginForm() {
           {loginMutation.isPending ? "Signing in…" : "Sign in"}
         </button>
       </form>
+      <p className="mt-4 text-sm">
+        <Link href="/staff/forgot-password" className="underline">
+          Forgot your password?
+        </Link>
+      </p>
     </main>
   );
 }

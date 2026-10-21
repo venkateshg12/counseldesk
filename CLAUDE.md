@@ -13,6 +13,7 @@
 ## Project Overview
 
 CounselDesk is an AI assistant, lead triage, and staff platform for law firms:
+
 - **Monorepo**: Turborepo + pnpm (`pnpm@9.15.4`, Node `>=22.18.0`)
 - **Backend (`apps/api`)**: Express 5 (route → controller → service → database), Prisma 8 + pgvector (PostgreSQL 17), Redis (sliding-window rate limiter), BullMQ (lead notification queue).
 - **Content (`packages/content`)**: Markdown loader, slugger, and heading-based section splitter for firm knowledge pages.

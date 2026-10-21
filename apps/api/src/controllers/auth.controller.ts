@@ -1,10 +1,16 @@
-import { staffLoginSchema } from "@repo/types";
+import {
+  staffForgotPasswordSchema,
+  staffLoginSchema,
+  staffResetPasswordSchema,
+} from "@repo/types";
 import { catchError, appAssert } from "../utils/errors/index.js";
 import { OK, NOT_FOUND, UNAUTHORIZED } from "../constants/http.js";
 import { ok } from "../utils/api/index.js";
 import { orm } from "../prisma/db.js";
 import {
   loginUser,
+  requestPasswordReset,
+  resetPassword,
   revokeSessions,
   refreshUserAccessToken,
 } from "../services/auth.service.js";
@@ -64,4 +70,17 @@ export const meHandler = catchError(async (req, res) => {
     .first();
   appAssert(user, NOT_FOUND, "User not found");
   res.status(OK).json(ok({ user }));
+});
+
+export const forgotPasswordHandler = catchError(async (req, res) => {
+  const { email } = staffForgotPasswordSchema.parse(req.body);
+  res.status(OK).json(ok(await requestPasswordReset(email)));
+});
+
+export const resetPasswordHandler = catchError(async (req, res) => {
+  // The token travels in the body, not the URL, so it stays out of access logs and referrers.
+  const { token, password } = staffResetPasswordSchema.parse(req.body);
+  const result = await resetPassword({ token, password });
+  // Every session was just ended; drop this browser's cookies too.
+  clearAuthCookies(res).status(OK).json(ok(result));
 });

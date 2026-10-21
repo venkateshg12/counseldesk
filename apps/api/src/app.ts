@@ -18,6 +18,7 @@ import { pool } from "./config/db.js";
 import { SERVICE_UNAVAILABLE } from "./constants/http.js";
 
 import { authRoutes } from "./routes/auth.route.js";
+import { gmailRoutes } from "./routes/gmail.route.js";
 import { debugRoutes } from "./routes/debug.route.js";
 import { chatRoutes } from "./routes/chat.route.js";
 import { staffRoutes } from "./routes/staff.route.js";
@@ -132,6 +133,8 @@ export function createApp() {
   });
 
   // Feature routers are mounted here, one phase at a time.
+  // Before /auth: Google's redirect URI is /auth/gmail/callback.
+  app.use("/auth/gmail", gmailRoutes);
   app.use("/auth", authRoutes);
   app.use("/debug", debugRoutes);
   app.use("/chat", chatRoutes);

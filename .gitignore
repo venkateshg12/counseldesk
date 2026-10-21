@@ -69,14 +69,23 @@ storybook-static/
 # Environment files
 .env*
 !.env.example
+# The integration-test env holds throwaway values only; CI needs it checked out.
+!apps/api/.env.test
 
 
 # Claude / AI agent files
 /.agents/
 /.skills/
 /.claude/
-apps/**/AGENTS.md
-packages/**/AGENTS.md
+
+# Markdown: only the three root files below go to GitHub, plus the demo firm's website pages
+# (packages/content/pages), which the app reads at runtime. Every other .md file (nested
+# AGENTS.md / README.md, notes, audits, memory, eval reports, docs) stays local.
+*.md
+!/README.md
+!/CLAUDE.md
+!/AGENTS.md
+!/packages/content/pages/**/*.md
 
 # Internal documentation and tracking (keep local only)
 /docs/
