@@ -11,7 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     env:
-      NODE_ENV: production
+      # NODE_ENV=production is set per step below: at job level it would make
+      # `pnpm install` skip devDependencies (turbo, tsc) and break the build.
       PORT: "4000"
       CORS_ORIGIN: ${{ vars.CORS_ORIGIN }}
       SITE_URL: ${{ vars.SITE_URL }}
@@ -46,7 +47,11 @@ jobs:
       - run: pnpm turbo run build --filter=api --ui=stream
       - name: Re-notify leads
         if: github.event.schedule == '17 * * * *' || github.event_name == 'workflow_dispatch'
+        env:
+          NODE_ENV: production
         run: pnpm --filter api leads:renotify
       - name: Retention
         if: github.event.schedule == '41 3 * * *' || github.event_name == 'workflow_dispatch'
+        env:
+          NODE_ENV: production
         run: pnpm --filter api retention --days 90
