@@ -34,6 +34,22 @@ enum HandoffStatus {
     resolved
 }
 
+enum AppointmentStatus {
+    @@type("pg/text@1")
+
+    booked
+    cancelled
+    completed
+    no_show
+}
+
+enum AppointmentMode {
+    @@type("pg/text@1")
+
+    video
+    in_person
+}
+
 enum LlmPurpose {
     @@type("pg/text@1")
 
@@ -93,6 +109,7 @@ model Conversation {
     messages  Message[]
     lead      Lead?
     handoff   Handoff?
+    appointments Appointment[]
     llmCalls  LlmCall[]
 
     @@index([visitorId])
@@ -152,9 +169,14 @@ model Lead {
     createdAt      TimestamptzString @default(now())
     // Set by the notify worker after the staff email is sent; a retried job checks it first.
     notifiedAt     TimestamptzString?
+    // The attorney chosen by practice area when the lead was saved; staff can reassign.
+    assignedAttorneyId Uuid?
+    assignedAttorney   Attorney?         @relation(fields: [assignedAttorneyId], references: [id], onDelete: SetNull)
     conversation   Conversation      @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+    appointments   Appointment[]
 
     @@index([createdAt])
+    @@index([assignedAttorneyId])
     @@check(expression: "email IS NOT NULL OR phone IS NOT NULL", name: "lead_has_contact")
 }
 
@@ -172,6 +194,75 @@ model Handoff {
     conversation   Conversation      @relation(fields: [conversationId], references: [id], onDelete: Cascade)
 
     @@index([status, createdAt])
+}
+
+// A lawyer who can be booked. `slug` matches the attorney's page on the site (/attorneys/<slug>).
+model Attorney {
+    id            Uuid                   @id @default(uuid())
+    slug          String                 @unique
+    name          String
+    email         String
+    active        Boolean                @default(true)
+    createdAt     TimestamptzString      @default(now())
+    practiceAreas AttorneyPracticeArea[]
+    availability  AvailabilityRule[]
+    appointments  Appointment[]
+    leads         Lead[]
+}
+
+model AttorneyPracticeArea {
+    id         Uuid     @id @default(uuid())
+    attorneyId Uuid
+    caseType   CaseType
+    attorney   Attorney @relation(fields: [attorneyId], references: [id], onDelete: Cascade)
+
+    @@unique([attorneyId, caseType])
+    @@index([caseType])
+}
+
+// Weekly working hours in the firm's time zone: weekday 0 = Sunday ... 6 = Saturday, minutes after midnight.
+model AvailabilityRule {
+    id          Uuid     @id @default(uuid())
+    attorneyId  Uuid
+    weekday     Int
+    startMinute Int
+    endMinute   Int
+    attorney    Attorney @relation(fields: [attorneyId], references: [id], onDelete: Cascade)
+
+    @@index([attorneyId])
+    @@check(expression: "weekday BETWEEN 0 AND 6", name: "availability_weekday")
+}
+
+model Appointment {
+    id             Uuid              @id @default(uuid())
+    attorneyId     Uuid
+    leadId         Uuid?
+    conversationId Uuid?
+    name           String
+    // Null when the visitor only gave a phone number in the chat: staff confirm by phone.
+    email          String?
+    phone          String?
+    caseType       CaseType
+    summary        String?
+    mode           AppointmentMode   @default(video)
+    startsAt       TimestamptzString
+    endsAt         TimestamptzString
+    status         AppointmentStatus @default(booked)
+    // Set to "<attorneyId>|<startsAt>" while booked and NULL once cancelled: the unique index below
+    // lets Postgres itself refuse a second booking of the same slot (NULLs never collide).
+    slotKey        String?           @unique
+    // Bumped on cancel and reschedule, which kills every older manage link.
+    linkVersion    Int               @default(1)
+    // Set once the visitor's confirmation email went out; a retried job checks it first.
+    confirmedAt    TimestamptzString?
+    createdAt      TimestamptzString @default(now())
+    cancelledAt    TimestamptzString?
+    attorney       Attorney          @relation(fields: [attorneyId], references: [id], onDelete: Restrict)
+    lead           Lead?             @relation(fields: [leadId], references: [id], onDelete: SetNull)
+    conversation   Conversation?     @relation(fields: [conversationId], references: [id], onDelete: SetNull)
+
+    @@index([attorneyId, startsAt])
+    @@index([status, startsAt])
 }
 
 model LlmCall {
