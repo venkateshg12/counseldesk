@@ -7,4 +7,8 @@ export enum appErrorCode {
   GmailNotConfigured = "GMAIL_NOT_CONFIGURED",
   GmailAuthInvalid = "GMAIL_AUTH_INVALID",
   GmailSendFailed = "GMAIL_SEND_FAILED",
+  SlotTaken = "SLOT_TAKEN",
+  SlotUnavailable = "SLOT_UNAVAILABLE",
+  InvalidBookingLink = "INVALID_BOOKING_LINK",
+  NoAttorneyAvailable = "NO_ATTORNEY_AVAILABLE",
 }
