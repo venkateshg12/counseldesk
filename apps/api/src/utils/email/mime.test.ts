@@ -157,3 +157,51 @@ describe("input validation", () => {
     expect(parsed).not.toHaveProperty("from");
   });
 });
+
+describe("cc and attachments", () => {
+  it("adds a Cc header", () => {
+    const mime = build({
+      to: "a@b.test",
+      cc: ["staff@firm.test"],
+      subject: "Hi",
+      text: "x",
+    });
+    expect(mime).toContain("Cc: staff@firm.test\r\n");
+  });
+
+  it("rejects a cc address that tries to inject a header", () => {
+    expect(() =>
+      build({
+        to: "a@b.test",
+        cc: ["a@b.test\r\nBcc: evil@evil.test"],
+        subject: "Hi",
+        text: "x",
+      }),
+    ).toThrow();
+  });
+
+  it("wraps the body and a calendar attachment in multipart/mixed", () => {
+    const mime = build({
+      to: "a@b.test",
+      subject: "Invite",
+      text: "plain",
+      html: "<b>rich</b>",
+      attachments: [
+        {
+          filename: "invite.ics",
+          contentType: 'text/calendar; method=REQUEST; charset="UTF-8"',
+          content: "BEGIN:VCALENDAR\r\nEND:VCALENDAR\r\n",
+        },
+      ],
+    });
+    expect(mime).toMatch(/Content-Type: multipart\/mixed; boundary="mix_/);
+    expect(mime).toContain("multipart/alternative");
+    expect(mime).toContain(
+      'Content-Disposition: attachment; filename="invite.ics"',
+    );
+    expect(mime.indexOf("multipart/alternative")).toBeLessThan(
+      mime.indexOf("text/calendar"),
+    );
+    expect(mime.trimEnd().endsWith("--")).toBe(true);
+  });
+});
