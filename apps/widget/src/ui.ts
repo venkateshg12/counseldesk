@@ -86,3 +86,36 @@ export const appendActions = (
   }
   bubble.append(row);
 };
+
+// The firm works in Arizona time; times in the chat are shown in it, named.
+const whenFormat = new Intl.DateTimeFormat("en-US", {
+  timeZone: "America/Phoenix",
+  weekday: "short",
+  month: "short",
+  day: "numeric",
+  hour: "numeric",
+  minute: "2-digit",
+});
+
+export const formatWhen = (iso: string) =>
+  `${whenFormat.format(new Date(iso))} (Arizona time)`;
+
+// Time buttons under a reply. Unlike appendActions the row stays after a click, so a visitor whose
+// first choice was just taken can tap another; the caller removes it once something is booked.
+export const appendSlots = (
+  bubble: HTMLElement,
+  slots: { startsAt: string }[],
+  onPick: (startsAt: string, row: HTMLElement) => void,
+) => {
+  const row = el("div", {
+    class: "slots",
+    role: "group",
+    "aria-label": "Available times",
+  });
+  for (const slot of slots) {
+    const button = el("button", { type: "button" }, formatWhen(slot.startsAt));
+    button.addEventListener("click", () => onPick(slot.startsAt, row));
+    row.append(button);
+  }
+  bubble.append(row);
+};
