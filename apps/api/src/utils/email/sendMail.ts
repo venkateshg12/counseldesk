@@ -5,9 +5,11 @@ import { logger } from "../logger.js";
 
 export interface MailOptions {
   to: string;
+  cc?: string[];
   subject: string;
   text: string;
   html: string;
+  attachments?: { filename: string; contentType: string; content: string }[];
 }
 
 /*
