@@ -1,7 +1,14 @@
 import type { Citation } from "@repo/types";
-import { postChat, ChatHttpError } from "./api";
+import { postChat, bookInChat, ChatHttpError } from "./api";
 import { readEvents } from "./sse";
-import { el, renderAnswer, appendNotice, appendActions } from "./ui";
+import {
+  el,
+  renderAnswer,
+  appendNotice,
+  appendActions,
+  appendSlots,
+  formatWhen,
+} from "./ui";
 import { styles, extraStyles } from "./styles";
 
 const STORAGE_KEY = "counseldesk:conversationId";
@@ -135,6 +142,7 @@ export const mountWidget = ({
 
     let text = "";
     let citations: Citation[] = [];
+    let offeredSlots: { startsAt: string }[] | null = null;
     let firstEventSeen = false;
     const wakeTimer = setTimeout(() => {
       if (!firstEventSeen)
@@ -164,9 +172,34 @@ export const mountWidget = ({
           messages.scrollTop = messages.scrollHeight;
         } else if (event.type === "citations") {
           citations = event.citations;
+        } else if (event.type === "slots") {
+          offeredSlots = event.slots;
         } else if (event.type === "done") {
           renderAnswer(bubble, text, citations, siteOrigin);
           if (event.notice) appendNotice(bubble, event.notice);
+          if (offeredSlots && conversationId) {
+            const id = conversationId;
+            appendSlots(bubble, offeredSlots, (startsAt, row) => {
+              row.setAttribute("aria-busy", "true");
+              bookInChat(apiUrl, id, startsAt)
+                .then((appointment) => {
+                  row.remove();
+                  addMessage(
+                    "assistant",
+                    `You're booked with ${appointment.attorney.name}: ${formatWhen(appointment.startsAt)}. A confirmation email with a calendar invite is on its way.`,
+                  );
+                })
+                .catch((error: unknown) => {
+                  row.removeAttribute("aria-busy");
+                  addMessage(
+                    "assistant",
+                    error instanceof Error
+                      ? error.message
+                      : "Couldn't book that time. Please try another.",
+                  );
+                });
+            });
+          }
         } else if (event.type === "error") {
           if (event.code === "CONVERSATION_TOO_LONG") {
             bubble.textContent = event.message;
