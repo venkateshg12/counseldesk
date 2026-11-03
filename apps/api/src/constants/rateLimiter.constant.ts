@@ -40,3 +40,7 @@ export const CIRCUIT_BREAKER_DEFAULTS = {
   FAILURE_THRESHOLD: 10,
   RESET_TIMEOUT_MS: 30000,
 };
+
+// Booking: reading slots is cheap, holding and booking are what an abuser would hammer.
+export const BOOKING_SLOTS_PREFIX = "rl:booking:slots";
+export const BOOKING_WRITE_PREFIX = "rl:booking:write";
