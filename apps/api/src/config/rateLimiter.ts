@@ -13,6 +13,8 @@ import {
   AUTH_LOGIN_SOURCE_PREFIX,
   AUTH_REFRESH_PREFIX,
   AUTH_REFRESH_SOURCE_PREFIX,
+  BOOKING_SLOTS_PREFIX,
+  BOOKING_WRITE_PREFIX,
   AUTH_RESET_SOURCE_PREFIX,
   CHAT_DAILY_PREFIX,
   CHAT_IP_PREFIX,
@@ -213,4 +215,23 @@ export const staffApiLimiter = createRateLimiter({
   windowMs: FIVE_MINUTES_MS,
   max: 300,
   keyResolver: (req: Request) => `user:${req.userId || extractClientIp(req)}`,
+});
+
+/*
+  Booking. Browsing times is cheap, so that limit is loose. Holding a slot, booking, cancelling and
+  rescheduling each change data (and send email), so they are capped per source: a person books once
+  or twice, so 20 changes in 15 minutes is far above normal use.
+ */
+export const bookingSlotsLimiter = createRateLimiter({
+  prefix: BOOKING_SLOTS_PREFIX,
+  windowMs: FIVE_MINUTES_MS,
+  max: 120,
+  keyResolver: ipKeyResolver,
+});
+
+export const bookingWriteLimiter = createRateLimiter({
+  prefix: BOOKING_WRITE_PREFIX,
+  windowMs: FIFTEEN_MINUTES_MS,
+  max: 20,
+  keyResolver: ipKeyResolver,
 });
