@@ -32,6 +32,12 @@ export type ChatEvent =
   | { type: "meta"; conversationId: string }
   | { type: "token"; text: string }
   | { type: "citations"; citations: Citation[] }
+  // After a lead is saved: the assigned attorney's next free times, for the widget to show as buttons.
+  | {
+      type: "slots";
+      attorney: { name: string };
+      slots: { startsAt: string; endsAt: string }[];
+    }
   | {
       type: "done";
       messageId: string;
