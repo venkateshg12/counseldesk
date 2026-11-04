@@ -21,12 +21,12 @@ export function ServerWakeNotice() {
     <div
       role="status"
       aria-live="polite"
-      className="fixed bottom-4 right-4 z-50 w-80 rounded-xl border border-stone-200 bg-white p-4 text-sm shadow-lg"
+      className="fixed bottom-4 right-4 z-50 w-80 rounded-lg border border-line bg-soft p-4 text-sm shadow-lg"
     >
-      <p className="font-semibold">
+      <p className="font-normal">
         {status === "waking" ? "Waking up the server" : "Server is ready"}
       </p>
-      <p className="mt-1 text-stone-600">
+      <p className="mt-1 text-muted">
         {status === "waking"
           ? "The API runs on a free tier that sleeps when idle; the first request can take up to a minute."
           : "Loading your data now."}

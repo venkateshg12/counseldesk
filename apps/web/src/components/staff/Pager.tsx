@@ -18,7 +18,7 @@ export function Pager({
       aria-label="Pages"
       className="mt-4 flex items-center justify-between text-sm"
     >
-      <span className="text-stone-600">
+      <span className="text-muted">
         Page {meta.page} of {lastPage} · {meta.total} total
       </span>
       <span className="flex gap-3">
