@@ -38,27 +38,27 @@ function LoginForm() {
     formError ?? (loginMutation.error as { message?: string } | null)?.message;
 
   return (
-    <main className="mx-auto mt-24 max-w-sm px-6">
-      <h1 className="text-2xl font-bold">Staff sign in</h1>
+    <main className="mx-auto mt-20 max-w-sm rounded-[14px] border border-line bg-soft px-7 py-8 shadow-sm">
+      <h1 className="text-3xl font-normal tracking-tight">Staff sign in</h1>
       <form onSubmit={onSubmit} className="mt-6 space-y-4" noValidate>
         <label className="block">
-          <span className="text-sm font-medium">Email</span>
+          <span className="text-sm font-normal">Email</span>
           <input
             name="email"
             type="email"
             autoComplete="username"
             required
-            className="mt-1 w-full rounded-lg border border-stone-300 px-3 py-2"
+            className="mt-1 w-full rounded-lg border border-line bg-canvas px-3 py-2 focus:border-brand focus:outline-none"
           />
         </label>
         <label className="block">
-          <span className="text-sm font-medium">Password</span>
+          <span className="text-sm font-normal">Password</span>
           <input
             name="password"
             type="password"
             autoComplete="current-password"
             required
-            className="mt-1 w-full rounded-lg border border-stone-300 px-3 py-2"
+            className="mt-1 w-full rounded-lg border border-line bg-canvas px-3 py-2 focus:border-brand focus:outline-none"
           />
         </label>
         {error ? (
@@ -69,7 +69,7 @@ function LoginForm() {
         <button
           type="submit"
           disabled={loginMutation.isPending}
-          className="w-full rounded-lg bg-teal-800 py-2 font-medium text-white disabled:opacity-50"
+          className="w-full rounded-lg bg-brand py-2.5 transition-colors hover:bg-brand-deep font-normal text-white disabled:opacity-50"
         >
           {loginMutation.isPending ? "Signing in…" : "Sign in"}
         </button>
@@ -87,9 +87,9 @@ export default function LoginPage() {
   return (
     <Suspense
       fallback={
-        <main className="mx-auto mt-24 max-w-sm px-6">
-          <h1 className="text-2xl font-bold">Staff sign in</h1>
-          <p className="mt-6 text-sm text-stone-600">Loading…</p>
+        <main className="mx-auto mt-20 max-w-sm rounded-[14px] border border-line bg-soft px-7 py-8 shadow-sm">
+          <h1 className="text-3xl font-normal tracking-tight">Staff sign in</h1>
+          <p className="mt-6 text-sm text-muted">Loading…</p>
         </main>
       }
     >
