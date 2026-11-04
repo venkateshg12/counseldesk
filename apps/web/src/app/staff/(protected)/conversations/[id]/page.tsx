@@ -19,7 +19,7 @@ export default function TranscriptPage() {
       />
       {data ? (
         <>
-          <p className="mt-2 text-sm text-stone-600">
+          <p className="mt-2 text-sm text-muted">
             Status: {data.conversation.status.replace(/_/g, " ")} · started{" "}
             {new Date(data.conversation.createdAt).toLocaleString()}
             {data.lead
@@ -33,11 +33,11 @@ export default function TranscriptPage() {
                 className={message.role === "user" ? "text-right" : ""}
               >
                 <div
-                  className={`inline-block max-w-[80%] rounded-xl px-4 py-3 text-left text-sm whitespace-pre-wrap ${message.role === "user" ? "bg-teal-800 text-white" : "bg-white border border-stone-200"}`}
+                  className={`inline-block max-w-[80%] rounded-lg px-4 py-3 text-left text-sm whitespace-pre-wrap ${message.role === "user" ? "bg-brand text-white" : "bg-soft border border-line"}`}
                 >
                   {message.content}
                   {message.citations.length ? (
-                    <ul className="mt-2 border-t border-stone-200 pt-2 text-xs">
+                    <ul className="mt-2 border-t border-line pt-2 text-xs">
                       {message.citations.map((c) => (
                         <li key={c.number}>
                           <a
@@ -53,7 +53,7 @@ export default function TranscriptPage() {
                     </ul>
                   ) : null}
                 </div>
-                <p className="mt-1 text-xs text-stone-500">
+                <p className="mt-1 text-xs text-muted">
                   {message.role === "assistant" && message.intent
                     ? `${message.intent.replace(/_/g, " ")} · `
                     : ""}

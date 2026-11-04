@@ -21,7 +21,7 @@ export default function MetricsPage() {
       {data ? (
         <div className="mt-6 space-y-8 text-sm">
           <section>
-            <h2 className="text-lg font-semibold">Answers</h2>
+            <h2 className="text-lg font-normal">Answers</h2>
             <p className="mt-2">
               {data.answers.count} answers · first token p50{" "}
               {ms(data.answers.firstTokenP50)}, p95{" "}
@@ -30,13 +30,13 @@ export default function MetricsPage() {
               routing avg {ms(data.answers.avgRouteMs)} · retrieval avg{" "}
               {ms(data.answers.avgRetrieveMs)}
             </p>
-            <p className="mt-1 text-stone-600">
+            <p className="mt-1 text-muted">
               {data.totals.conversations} conversations · {data.totals.leads}{" "}
               leads · {data.totals.pending_handoffs} waiting for a human
             </p>
           </section>
           <section>
-            <h2 className="text-lg font-semibold">Messages by intent</h2>
+            <h2 className="text-lg font-normal">Messages by intent</h2>
             <ul className="mt-2">
               {data.intents.map((row) => (
                 <li key={row.intent ?? "none"}>
@@ -46,14 +46,14 @@ export default function MetricsPage() {
             </ul>
           </section>
           <section>
-            <h2 className="text-lg font-semibold">Model calls</h2>
-            <p className="text-stone-600">
+            <h2 className="text-lg font-normal">Model calls</h2>
+            <p className="text-muted">
               Cost estimated at paid-tier list prices as of {data.pricesAsOf};
               actual cost on free tiers is $0.
             </p>
             <div className="overflow-x-auto">
               <table className="mt-2 w-full text-left">
-                <thead className="border-b border-stone-300 text-stone-600">
+                <thead className="border-b border-line text-muted">
                   <tr>
                     <th className="py-2">Purpose</th>
                     <th>Provider</th>
@@ -70,7 +70,7 @@ export default function MetricsPage() {
                   {data.calls.map((row) => (
                     <tr
                       key={`${row.purpose}-${row.provider}`}
-                      className="border-b border-stone-200"
+                      className="border-b border-line"
                     >
                       <td className="py-2">{row.purpose}</td>
                       <td>{row.provider}</td>
