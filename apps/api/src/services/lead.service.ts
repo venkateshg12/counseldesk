@@ -12,7 +12,12 @@ import {
   type CreateLeadArgs,
 } from "../ai/prompts/index.js";
 import type { ChatMessage } from "../ai/types.js";
-import { enqueueNewLeadEmail } from "../jobs/producers/notify.producer.js";
+import {
+  enqueueLeadAck,
+  enqueueNewLeadEmail,
+} from "../jobs/producers/notify.producer.js";
+import { assignLead } from "./assignment.service.js";
+import { offerSlots } from "./booking.service.js";
 import { isUniqueViolation } from "../utils/db.js";
 import { logger } from "../utils/logger.js";
 
@@ -85,6 +90,11 @@ export const runLeadStep = async ({
 }): Promise<{
   text: string;
   action: "lead_created" | "lead_exists" | "handoff" | null;
+  // Offered after a lead is saved, so the visitor can pick a consultation time right in the chat.
+  slots?: {
+    attorney: { name: string };
+    slots: { startsAt: string; endsAt: string }[];
+  };
 }> => {
   if (await orm.Lead.where({ conversationId }).select("id").first()) {
     return { text: LEAD_ALREADY_SAVED_REPLY, action: "lead_exists" };
@@ -121,6 +131,13 @@ export const runLeadStep = async ({
 
     const { lead, created } = await saveLead(conversationId, parsed.data);
     if (created) {
+      // Assign before queueing the email: the email goes to the assigned attorney.
+      const attorney = await assignLead(lead.id, lead.caseType).catch(
+        (error: unknown) => {
+          logger.error("failed to assign lead", { error, leadId: lead.id });
+          return null;
+        },
+      );
       if (notifyStaff) {
         // After commit. If this fails, the lead is saved with notifiedAt null and renotify-leads picks it up.
         await enqueueNewLeadEmail({ leadId: lead.id }).catch((error: unknown) =>
@@ -129,8 +146,24 @@ export const runLeadStep = async ({
             leadId: lead.id,
           }),
         );
+        await enqueueLeadAck({ leadId: lead.id }).catch((error: unknown) =>
+          logger.error("failed to queue lead acknowledgement", {
+            error,
+            leadId: lead.id,
+          }),
+        );
       }
-      return { text: leadSavedReply(lead.name), action: "lead_created" };
+      const slots = attorney
+        ? await offerSlots(attorney.id).catch(() => [])
+        : [];
+      return {
+        text: leadSavedReply(lead.name, attorney?.name),
+        action: "lead_created",
+        slots:
+          attorney && slots.length
+            ? { attorney: { name: attorney.name }, slots }
+            : undefined,
+      };
     }
     return { text: LEAD_ALREADY_SAVED_REPLY, action: "lead_exists" };
   }

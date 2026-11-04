@@ -1,3 +1,8 @@
+import type {
+  StaffAppointment,
+  StaffAttorney,
+  AvailabilityRuleInput,
+} from "@repo/types";
 import API from "@/lib/api";
 
 type Envelope<T, M = undefined> = { status: "success"; data: T; meta: M };
@@ -17,6 +22,7 @@ export type LeadRow = {
   caseType: string;
   summary: string | null;
   notifiedAt: string | null;
+  assignedAttorneyId: string | null;
   createdAt: string;
 };
 
@@ -99,3 +105,30 @@ export type StaffStats = {
     estimatedCostUsd: number;
   }[];
 };
+
+export const getAppointments = async (params: {
+  from?: string;
+  to?: string;
+  attorneyId?: string;
+}) =>
+  (
+    await API.get<Envelope<StaffAppointment[]>>("/staff/appointments", {
+      params,
+    })
+  ).data.data;
+
+export const updateAppointment = async (
+  id: string,
+  status: "completed" | "no_show" | "cancelled",
+) => API.patch(`/staff/appointments/${id}`, { status });
+
+export const getAttorneys = async () =>
+  (await API.get<Envelope<StaffAttorney[]>>("/staff/attorneys")).data.data;
+
+export const assignLead = async (leadId: string, attorneyId: string) =>
+  API.post(`/staff/leads/${leadId}/assign`, { attorneyId });
+
+export const saveAvailability = async (
+  attorneyId: string,
+  rules: AvailabilityRuleInput[],
+) => API.put(`/staff/attorneys/${attorneyId}/availability`, { rules });
