@@ -2,6 +2,11 @@ import { Router } from "express";
 import authenticate from "../middleware/authenticate.js";
 import { staffApiLimiter } from "../config/rateLimiter.js";
 import {
+  assignLeadHandler,
+  listAppointmentsHandler,
+  listAttorneysHandler,
+  setAvailabilityHandler,
+  updateAppointmentHandler,
   listHandoffsHandler,
   listLeadsHandler,
   resolveHandoffHandler,
@@ -21,3 +26,9 @@ staffRoutes.get("/conversations/:id", transcriptHandler);
 staffRoutes.post("/handoffs/:id/resolve", resolveHandoffHandler);
 staffRoutes.get("/stats", statsHandler);
 staffRoutes.get("/traces/:id", traceHandler);
+
+staffRoutes.get("/appointments", listAppointmentsHandler);
+staffRoutes.patch("/appointments/:id", updateAppointmentHandler);
+staffRoutes.post("/leads/:id/assign", assignLeadHandler);
+staffRoutes.get("/attorneys", listAttorneysHandler);
+staffRoutes.put("/attorneys/:id/availability", setAvailabilityHandler);
