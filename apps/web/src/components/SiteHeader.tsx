@@ -8,28 +8,29 @@ const NAV = [
   { href: "/contact", label: "Contact" },
 ];
 
+// White bar with a hairline, plain text links, and the outlined-violet action on the right.
 export function SiteHeader() {
   return (
-    <header className="sticky top-0 z-10 border-b border-stone-200 bg-white/90 backdrop-blur">
+    <header className="border-b border-line bg-canvas">
       <nav
-        className="mx-auto flex max-w-5xl flex-wrap items-center gap-x-6 gap-y-2 px-6 py-4"
+        className="mx-auto flex max-w-[1200px] flex-wrap items-center gap-x-7 gap-y-2 px-6 py-5"
         aria-label="Main"
       >
-        <Link href="/" className="mr-auto text-lg font-bold text-teal-900">
+        <Link href="/" className="mr-auto text-xl tracking-[0.01em] text-ink">
           Harbor &amp; Vale Law
         </Link>
         {NAV.map((item) => (
           <Link
             key={item.href}
             href={item.href}
-            className="text-sm text-stone-700 hover:text-teal-800"
+            className="text-base text-ink transition-colors hover:text-link hover:underline underline-offset-4"
           >
             {item.label}
           </Link>
         ))}
         <Link
-          href="/free-consultation"
-          className="rounded-full bg-teal-800 px-4 py-2 text-sm font-medium text-white hover:bg-teal-900"
+          href="/book"
+          className="rounded-lg border-[1.5px] border-brand bg-canvas px-5 py-3 text-base text-link transition-colors hover:bg-soft"
         >
           Free consultation
         </Link>
