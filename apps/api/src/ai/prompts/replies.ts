@@ -11,8 +11,10 @@ export const OUT_OF_SCOPE_REPLY =
 export const SMALL_TALK_REPLY =
   "Hi! I can answer questions about Harbor & Vale Law's services, fees, locations and attorneys, or help you get in touch with our team.";
 
-export const leadSavedReply = (name: string) =>
-  `Thank you, ${name}. I've passed your details to our team, and someone will contact you to arrange your free consultation.`;
+export const leadSavedReply = (name: string, attorneyName?: string) =>
+  attorneyName
+    ? `Thank you, ${name}. I've passed your details to ${attorneyName}, who will contact you. If you'd rather choose a time yourself, pick a free 30-minute consultation below.`
+    : `Thank you, ${name}. I've passed your details to our team, and someone will contact you to arrange your free consultation.`;
 
 export const LEAD_ALREADY_SAVED_REPLY =
   "Our team already has your details and will be in touch. Is there anything else I can help with?";

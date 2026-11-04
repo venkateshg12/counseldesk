@@ -36,3 +36,30 @@ export const postChat = async (
   }
   return response;
 };
+
+// Books the slot the visitor tapped. The server takes the person's details from the lead it already
+// saved for this conversation, so only the chosen time is sent.
+export const bookInChat = async (
+  apiUrl: string,
+  conversationId: string,
+  startsAt: string,
+) => {
+  const response = await fetch(`${apiUrl}/chat/${conversationId}/book`, {
+    method: "POST",
+    credentials: "include",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ startsAt }),
+  });
+  const envelope = (await response.json().catch(() => null)) as {
+    data?: { startsAt: string; attorney: { name: string } };
+    errors?: { message?: string }[];
+  } | null;
+  if (!response.ok || !envelope?.data) {
+    throw new ChatHttpError(
+      envelope?.errors?.[0]?.message ??
+        "Couldn't book that time. Please try another.",
+      response.status,
+    );
+  }
+  return envelope.data;
+};

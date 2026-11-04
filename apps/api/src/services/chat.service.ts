@@ -102,6 +102,7 @@ export const handleMessage = async ({
       notifyStaff,
     });
     emit({ type: "token", text: lead.text });
+    if (lead.slots) emit({ type: "slots", ...lead.slots });
     const saved = await orm.Message.create({
       conversationId: conversation.id,
       role: "assistant",
