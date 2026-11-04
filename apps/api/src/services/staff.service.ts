@@ -22,6 +22,7 @@ export const listLeads = async ({ page, limit }: PaginationQuery) => {
         "caseType",
         "summary",
         "notifiedAt",
+        "assignedAttorneyId",
         "createdAt",
       )
       .limit(limit)

@@ -1,5 +1,9 @@
 import { z } from "zod";
 import {
+  assignLeadSchema,
+  availabilityUpdateSchema,
+  staffAppointmentUpdateSchema,
+  staffAppointmentsQuerySchema,
   handoffListQuerySchema,
   idParamSchema,
   paginationQuerySchema,
@@ -13,6 +17,13 @@ import {
   listLeads,
   resolveHandoff,
 } from "../services/staff.service.js";
+import {
+  assignLeadToAttorney,
+  listAppointments,
+  listAttorneys,
+  setAvailability,
+  updateAppointmentStatus,
+} from "../services/staffBooking.service.js";
 import { getStats, getTrace } from "../services/stats.service.js";
 
 export const listLeadsHandler = catchError(async (req, res) => {
@@ -51,4 +62,34 @@ export const statsHandler = catchError(async (req, res) => {
 export const traceHandler = catchError(async (req, res) => {
   const { id } = idParamSchema.parse(req.params);
   res.status(OK).json(ok(await getTrace(id)));
+});
+
+export const listAppointmentsHandler = catchError(async (req, res) => {
+  const query = staffAppointmentsQuerySchema.parse(req.query);
+  res.status(OK).json(ok(await listAppointments(query)));
+});
+
+export const updateAppointmentHandler = catchError(async (req, res) => {
+  const { id } = idParamSchema.parse(req.params);
+  const { status } = staffAppointmentUpdateSchema.parse(req.body);
+  await updateAppointmentStatus(id, status);
+  res.status(OK).json(ok({ id, status }));
+});
+
+export const assignLeadHandler = catchError(async (req, res) => {
+  const { id } = idParamSchema.parse(req.params);
+  const { attorneyId } = assignLeadSchema.parse(req.body);
+  await assignLeadToAttorney(id, attorneyId);
+  res.status(OK).json(ok({ id, attorneyId }));
+});
+
+export const listAttorneysHandler = catchError(async (_req, res) => {
+  res.status(OK).json(ok(await listAttorneys()));
+});
+
+export const setAvailabilityHandler = catchError(async (req, res) => {
+  const { id } = idParamSchema.parse(req.params);
+  const { rules } = availabilityUpdateSchema.parse(req.body);
+  await setAvailability(id, rules);
+  res.status(OK).json(ok({ id, rules }));
 });
