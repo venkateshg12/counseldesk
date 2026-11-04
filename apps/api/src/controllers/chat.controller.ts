@@ -1,6 +1,9 @@
-import { chatRequestSchema, type ChatEvent } from "@repo/types";
+import { z } from "zod";
+import { chatBookSchema, chatRequestSchema, type ChatEvent } from "@repo/types";
 import { catchError, AppError } from "../utils/errors/index.js";
-import { OK } from "../constants/http.js";
+import { CREATED, OK } from "../constants/http.js";
+import { ok } from "../utils/api/index.js";
+import { bookFromChat } from "../services/booking.service.js";
 import { handleMessage } from "../services/chat.service.js";
 import { logger } from "../utils/logger.js";
 
@@ -57,4 +60,18 @@ export const chatHandler = catchError(async (req, res) => {
     clearInterval(heartbeat);
     res.end();
   }
+});
+
+export const chatBookHandler = catchError(async (req, res) => {
+  const { conversationId } = z
+    .object({ conversationId: z.uuid() })
+    .parse(req.params);
+  const { startsAt, mode } = chatBookSchema.parse(req.body);
+  const appointment = await bookFromChat({
+    conversationId,
+    visitorId: req.visitorId!,
+    startsAt,
+    mode,
+  });
+  res.status(CREATED).json(ok(appointment));
 });
