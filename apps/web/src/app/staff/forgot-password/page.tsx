@@ -28,11 +28,13 @@ export default function ForgotPasswordPage() {
     formError ?? (forgotMutation.error as { message?: string } | null)?.message;
 
   return (
-    <main className="mx-auto mt-24 max-w-sm px-6">
-      <h1 className="text-2xl font-bold">Reset your password</h1>
+    <main className="mx-auto mt-20 max-w-sm rounded-[14px] border border-line bg-soft px-7 py-8 shadow-sm">
+      <h1 className="text-3xl font-normal tracking-tight">
+        Reset your password
+      </h1>
       {forgotMutation.isSuccess ? (
         <div className="mt-6 space-y-4" role="status">
-          <p className="text-sm text-stone-700">{forgotMutation.data}</p>
+          <p className="text-sm text-body">{forgotMutation.data}</p>
           <p className="text-sm">
             <Link href="/staff/login" className="underline">
               Back to sign in
@@ -41,18 +43,18 @@ export default function ForgotPasswordPage() {
         </div>
       ) : (
         <form onSubmit={onSubmit} className="mt-6 space-y-4" noValidate>
-          <p className="text-sm text-stone-600">
+          <p className="text-sm text-muted">
             Enter your staff email and we&apos;ll send you a link to choose a
             new password.
           </p>
           <label className="block">
-            <span className="text-sm font-medium">Email</span>
+            <span className="text-sm font-normal">Email</span>
             <input
               name="email"
               type="email"
               autoComplete="username"
               required
-              className="mt-1 w-full rounded-lg border border-stone-300 px-3 py-2"
+              className="mt-1 w-full rounded-lg border border-line bg-canvas px-3 py-2 focus:border-brand focus:outline-none"
             />
           </label>
           {error ? (
@@ -63,7 +65,7 @@ export default function ForgotPasswordPage() {
           <button
             type="submit"
             disabled={forgotMutation.isPending}
-            className="w-full rounded-lg bg-teal-800 py-2 font-medium text-white disabled:opacity-50"
+            className="w-full rounded-lg bg-brand py-2.5 transition-colors hover:bg-brand-deep font-normal text-white disabled:opacity-50"
           >
             {forgotMutation.isPending ? "Sending…" : "Send reset link"}
           </button>

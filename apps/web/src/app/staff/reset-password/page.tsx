@@ -54,10 +54,10 @@ function ResetForm() {
   if (resetMutation.isSuccess) {
     return (
       <div className="mt-6 space-y-4" role="status">
-        <p className="text-sm text-stone-700">{resetMutation.data}</p>
+        <p className="text-sm text-body">{resetMutation.data}</p>
         <Link
           href="/staff/login"
-          className="block w-full rounded-lg bg-teal-800 py-2 text-center font-medium text-white"
+          className="block w-full rounded-lg bg-brand py-2.5 transition-colors hover:bg-brand-deep text-center font-normal text-white"
         >
           Go to sign in
         </Link>
@@ -72,7 +72,7 @@ function ResetForm() {
     <form onSubmit={onSubmit} className="mt-6 space-y-4" noValidate>
       <div>
         <label className="block">
-          <span className="text-sm font-medium">New password</span>
+          <span className="text-sm font-normal">New password</span>
           <input
             name="password"
             type="password"
@@ -80,21 +80,21 @@ function ResetForm() {
             required
             minLength={MIN_PASSWORD_LENGTH}
             aria-describedby="password-hint"
-            className="mt-1 w-full rounded-lg border border-stone-300 px-3 py-2"
+            className="mt-1 w-full rounded-lg border border-line bg-canvas px-3 py-2 focus:border-brand focus:outline-none"
           />
         </label>
-        <span id="password-hint" className="mt-1 block text-xs text-stone-600">
+        <span id="password-hint" className="mt-1 block text-xs text-muted">
           At least {MIN_PASSWORD_LENGTH} characters.
         </span>
       </div>
       <label className="block">
-        <span className="text-sm font-medium">Confirm new password</span>
+        <span className="text-sm font-normal">Confirm new password</span>
         <input
           name="confirmPassword"
           type="password"
           autoComplete="new-password"
           required
-          className="mt-1 w-full rounded-lg border border-stone-300 px-3 py-2"
+          className="mt-1 w-full rounded-lg border border-line bg-canvas px-3 py-2 focus:border-brand focus:outline-none"
         />
       </label>
       {error ? (
@@ -112,7 +112,7 @@ function ResetForm() {
       <button
         type="submit"
         disabled={resetMutation.isPending}
-        className="w-full rounded-lg bg-teal-800 py-2 font-medium text-white disabled:opacity-50"
+        className="w-full rounded-lg bg-brand py-2.5 transition-colors hover:bg-brand-deep font-normal text-white disabled:opacity-50"
       >
         {resetMutation.isPending ? "Saving…" : "Change password"}
       </button>
@@ -122,11 +122,11 @@ function ResetForm() {
 
 export default function ResetPasswordPage() {
   return (
-    <main className="mx-auto mt-24 max-w-sm px-6">
-      <h1 className="text-2xl font-bold">Choose a new password</h1>
-      <Suspense
-        fallback={<p className="mt-6 text-sm text-stone-600">Loading…</p>}
-      >
+    <main className="mx-auto mt-20 max-w-sm rounded-[14px] border border-line bg-soft px-7 py-8 shadow-sm">
+      <h1 className="text-3xl font-normal tracking-tight">
+        Choose a new password
+      </h1>
+      <Suspense fallback={<p className="mt-6 text-sm text-muted">Loading…</p>}>
         <ResetForm />
       </Suspense>
     </main>
