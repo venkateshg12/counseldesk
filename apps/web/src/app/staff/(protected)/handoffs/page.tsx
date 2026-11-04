@@ -22,14 +22,14 @@ function HandoffsContent() {
         <Link
           href="/staff/handoffs"
           aria-current={status === "pending" ? "page" : undefined}
-          className="aria-[current=page]:font-semibold"
+          className="aria-[current=page]:font-normal"
         >
           Pending
         </Link>
         <Link
           href="/staff/handoffs?status=resolved"
           aria-current={status === "resolved" ? "page" : undefined}
-          className="aria-[current=page]:font-semibold"
+          className="aria-[current=page]:font-normal"
         >
           Resolved
         </Link>
@@ -48,14 +48,14 @@ function HandoffsContent() {
         {data?.data.map((handoff) => (
           <article
             key={handoff.id}
-            className="rounded-xl border border-stone-200 bg-white p-4"
+            className="rounded-lg border border-line bg-soft p-4"
           >
             <div className="flex items-start justify-between gap-4">
               <div>
-                <p className="font-semibold">
+                <p className="font-normal">
                   {handoff.leadName ?? "No contact details given"}
                 </p>
-                <p className="text-sm text-stone-600">
+                <p className="text-sm text-muted">
                   {handoff.reason} ·{" "}
                   {new Date(handoff.createdAt).toLocaleString()}
                 </p>
@@ -80,7 +80,7 @@ function HandoffsContent() {
                         conversationId: handoff.conversationId,
                       })
                     }
-                    className="rounded-lg bg-teal-800 px-3 py-1 text-white disabled:opacity-50"
+                    className="rounded-lg bg-brand px-3 py-1 text-white disabled:opacity-50"
                   >
                     Resolve
                   </button>
@@ -106,7 +106,7 @@ function HandoffsContent() {
 
 export default function HandoffsPage() {
   return (
-    <Suspense fallback={<p className="text-stone-600">Loading…</p>}>
+    <Suspense fallback={<p className="text-muted">Loading…</p>}>
       <HandoffsContent />
     </Suspense>
   );

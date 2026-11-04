@@ -4,6 +4,7 @@ import { Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useLeads } from "@/hooks/staff/useLeads";
+import { useAssignLead, useAttorneys } from "@/hooks/staff/useAttorneys";
 import { Pager } from "@/components/staff/Pager";
 import { QueryState } from "@/components/staff/QueryState";
 
@@ -12,6 +13,8 @@ const formatDate = (iso: string) => new Date(iso).toLocaleString();
 function LeadsContent() {
   const page = Math.max(1, Number(useSearchParams().get("page")) || 1);
   const { data, isPending, error } = useLeads(page);
+  const attorneys = useAttorneys();
+  const assign = useAssignLead();
 
   return (
     <>
@@ -27,12 +30,13 @@ function LeadsContent() {
           <>
             <div className="overflow-x-auto">
               <table className="w-full text-left text-sm">
-                <thead className="border-b border-stone-300 text-stone-600">
+                <thead className="border-b border-line text-muted">
                   <tr>
                     <th className="py-2">Received</th>
                     <th>Name</th>
                     <th>Contact</th>
                     <th>Case</th>
+                    <th>Assigned to</th>
                     <th>Email sent</th>
                     <th />
                   </tr>
@@ -41,7 +45,7 @@ function LeadsContent() {
                   {data.data.map((lead) => (
                     <tr
                       key={lead.id}
-                      className="border-b border-stone-200 align-top"
+                      className="border-b border-line align-top"
                     >
                       <td className="py-2 whitespace-nowrap">
                         {formatDate(lead.createdAt)}
@@ -49,15 +53,35 @@ function LeadsContent() {
                       <td>
                         {lead.name}
                         {lead.summary ? (
-                          <p className="text-xs text-stone-600">
-                            {lead.summary}
-                          </p>
+                          <p className="text-xs text-muted">{lead.summary}</p>
                         ) : null}
                       </td>
                       <td>
                         {[lead.phone, lead.email].filter(Boolean).join(" · ")}
                       </td>
                       <td>{lead.caseType.replace(/_/g, " ")}</td>
+                      <td>
+                        <select
+                          aria-label={`Assign ${lead.name}`}
+                          value={lead.assignedAttorneyId ?? ""}
+                          disabled={assign.isPending}
+                          onChange={(e) =>
+                            e.target.value &&
+                            assign.mutate({
+                              leadId: lead.id,
+                              attorneyId: e.target.value,
+                            })
+                          }
+                          className="rounded-lg border border-fog bg-canvas px-2 py-1"
+                        >
+                          <option value="">Unassigned</option>
+                          {attorneys.data?.map((a) => (
+                            <option key={a.id} value={a.id}>
+                              {a.name}
+                            </option>
+                          ))}
+                        </select>
+                      </td>
                       <td>{lead.notifiedAt ? "Yes" : "Pending"}</td>
                       <td>
                         <Link
@@ -82,7 +106,7 @@ function LeadsContent() {
 
 export default function LeadsPage() {
   return (
-    <Suspense fallback={<p className="text-stone-600">Loading…</p>}>
+    <Suspense fallback={<p className="text-muted">Loading…</p>}>
       <LeadsContent />
     </Suspense>
   );
