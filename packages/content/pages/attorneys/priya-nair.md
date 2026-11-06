@@ -1,15 +1,15 @@
 # Priya Nair
 
-Priya Nair is a partner at Harbor & Vale Law, leading the firm's personal injury advocacy and comprehensive estate planning practice areas.
+Priya Nair is a partner at Harbor & Vale Law. She leads the firm's personal injury and estate planning work.
 
 ## Practice focus
 
-Priya Nair focuses her legal practice on personal injury claims and estate planning. In her injury practice, she advocates for individuals injured in vehicular collisions, pedestrian accidents, slip-and-fall incidents, and premises liability claims. In her estate planning practice, Priya assists individuals and couples in drafting revocable living trusts, last wills and testaments, durable powers of attorney, and healthcare directives.
+Priya focuses on personal injury claims and estate planning. In injury cases she stands up for people hurt in car crashes, pedestrian accidents, slip-and-falls and unsafe property. In estate planning she helps individuals and couples write living trusts, wills, powers of attorney and healthcare directives, which say what medical care you want.
 
 ## Experience
 
-Priya brings broad litigation and transactional experience to the firm, having spent over eleven years negotiating with major insurance carriers and counseling families on long-term wealth preservation. In her personal injury work, she has recovered substantial settlements for injured victims, managing medical evidence, accident reconstruction, and liens. In estate planning, she crafts tailored estate frameworks that prevent costly probate disputes and protect family legacies.
+Priya has more than eleven years of experience, both in court and in drafting documents. She has negotiated with large insurance companies and helped families plan for the long term. In injury cases she has won substantial settlements for her clients and handles the medical evidence, accident reconstruction and liens, which are claims on a settlement by those who paid for treatment. In estate planning she builds plans that avoid expensive probate disputes and protect a family's legacy.
 
 ## Education
 
-Priya earned her Juris Doctor from the University of Arizona James E. Rogers College of Law, where she received awards for legal research and writing. She completed her Bachelor of Arts in Philosophy and English Literature at Northwestern University, graduating with departmental honors.
+Priya earned her law degree (Juris Doctor) at the University of Arizona James E. Rogers College of Law, where she received awards for legal research and writing. She holds a Bachelor of Arts in Philosophy and English Literature from Northwestern University, with departmental honors.

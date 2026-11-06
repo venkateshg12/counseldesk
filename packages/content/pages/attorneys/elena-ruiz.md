@@ -1,15 +1,15 @@
 # Elena Ruiz
 
-Elena Ruiz is a partner at Harbor & Vale Law and heads the firm's defense practice group, defending clients accused of criminal offenses across Arizona.
+Elena Ruiz is a partner at Harbor & Vale Law. She leads the firm's defense team, which stands up for people accused of crimes across Arizona.
 
 ## Practice focus
 
-Elena Ruiz focuses her practice on DUI and criminal defense, defending individuals charged with misdemeanor offenses, felony violations, vehicular crimes, and domestic relations allegations. She is passionate about safeguarding constitutional protections, scrutinizing police investigative procedures, and identifying critical evidentiary vulnerabilities in the state's allegations.
+Elena focuses on DUI and criminal defense. She defends people charged with misdemeanors, felonies, driving crimes and domestic violence. She cares about protecting your constitutional rights, looks closely at how the police handled the investigation, and finds weak spots in the state's evidence.
 
 ## Experience
 
-With 14 years of courtroom experience in Arizona, Elena has represented clients in city, justice, and superior courts throughout the state. Her extensive background includes conducting evidentiary suppression hearings, negotiating complex plea agreements, and trying cases before juries. She is known among colleagues and opposing counsel for her methodical approach to forensic evidence, blood-alcohol testing standards, and field sobriety protocols.
+Elena has 14 years of courtroom experience in Arizona. She has represented clients in city, justice and superior courts across the state. She has argued hearings to keep unfair evidence out, negotiated plea deals and tried cases before juries. Other lawyers know her for her careful work on forensic evidence, blood alcohol testing and roadside sobriety tests.
 
 ## Education
 
-Elena earned her Juris Doctor from the Sandra Day O'Connor College of Law at Arizona State University, where she participated in moot court competitions and criminal legal clinics. Prior to law school, she graduated summa cum laude from the University of Arizona with a Bachelor of Arts in Political Science and Criminology.
+Elena earned her law degree (Juris Doctor) at the Sandra Day O'Connor College of Law at Arizona State University. There she took part in moot court, which is practice court arguments, and in criminal law clinics. Before law school she graduated with top honors (summa cum laude) from the University of Arizona with a Bachelor of Arts in Political Science and Criminology.
