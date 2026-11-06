@@ -6,9 +6,9 @@ export default function NotFound() {
     <>
       <SiteHeader />
       <main className="mx-auto max-w-3xl px-6 py-24">
-        <h1 className="text-3xl font-bold">Page not found</h1>
-        <p className="mt-4 text-stone-700">
-          <Link href="/" className="underline">
+        <h1 className="text-5xl font-normal tracking-tight">Page not found</h1>
+        <p className="mt-6 text-body">
+          <Link href="/" className="text-link underline underline-offset-4">
             Back to the home page
           </Link>
         </p>

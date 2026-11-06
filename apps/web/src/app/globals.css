@@ -1,6 +1,53 @@
 @import "tailwindcss";
 
+/*
+  Design tokens from DESIGN-krepling.md ("quiet white atelier with one violet spark"): a white canvas,
+  black text, Mist Gray tints, hairline borders instead of shadows, and a single violet for actions.
+  The token NAMES are semantic (canvas, soft, ink, brand...), so every component follows the theme.
+
+  One deliberate departure: Bolt Violet (#b154f9) is only 3.8:1 against white, which fails WCAG AA for
+  button text and links. Filled buttons and borders use a slightly deeper violet (--color-brand) and
+  text links a deeper one still (--color-link); Bolt Violet itself stays for focus rings and artwork.
+*/
+@theme inline {
+  --color-canvas: #ffffff; /* Paper White */
+  --color-soft: #f1f1f1; /* Mist Gray */
+  --color-card: #e8e8e8; /* hover wash on Mist Gray (derived) */
+  --color-line: rgb(0 0 0 / 0.12); /* hairline: Ink Black at low opacity */
+  --color-fog: #b3b3b3; /* Fog Gray: input borders */
+  --color-ink: #000000; /* Ink Black */
+  --color-body: #000000;
+  --color-muted: #6c6b6b; /* Steel Gray */
+  --color-bolt: #b154f9; /* Bolt Violet, as specified */
+  --color-brand: #9b3fe8; /* filled actions: white text reaches 4.9:1 */
+  --color-brand-deep: #8431d4; /* pressed */
+  --color-link: #8e35e0; /* violet text on white: 5.6:1 */
+  --color-night: #171717; /* Charcoal: the footer, the only dark surface */
+  --color-on-night: #ffffff;
+  --color-on-night-muted: #b3b3b3;
+  --font-display: var(--font-inter), system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-sans: var(--font-inter), system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
 /* A citation link lands on a heading; make it obvious which one. */
 :target {
   scroll-margin-top: 6rem;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-bolt);
+  outline-offset: 2px;
+}
+
+/* Krepling ships one weight (400): hierarchy comes from size and tracking, never from bold. */
+h1,
+h2,
+h3,
+h4 {
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+::selection {
+  background: rgb(177 84 249 / 0.3);
 }
