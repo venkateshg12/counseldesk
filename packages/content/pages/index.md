@@ -1,15 +1,15 @@
 # Harbor & Vale Law
 
-Harbor & Vale Law is a full-service law firm based in Arizona, dedicated to guiding individuals and families through complex legal matters with clarity and personal attention.
+Harbor & Vale Law is a law firm in Arizona. We help individuals and families with legal problems, and we explain things clearly.
 
 ## How we can help
 
-Our firm provides focused legal representation across five core practice areas: DUI defense, criminal defense, family law, personal injury, and estate planning. Whether you are confronting criminal charges, navigating a family dispute, recovering from an unexpected injury, or organizing your family estate, our attorneys deliver strategic counsel tailored to your specific circumstances.
+We work in five areas: DUI defense, criminal defense, family law, personal injury and estate planning. Maybe you have been charged with a crime, you are going through a family dispute, you were hurt in an accident, or you want to plan for your family's future. Our attorneys will look at your situation and tell you your options.
 
 ## Why clients choose us
 
-Clients choose Harbor & Vale Law because we combine rigorous courtroom preparation with transparent communication. We know that legal challenges create significant uncertainty, so we prioritize honest assessments, direct access to your attorney, and clear explanations at every stage. We focus on protecting your rights, preserving your future, and achieving practical resolutions without unnecessary delay.
+Legal problems are stressful and uncertain. We prepare carefully for court and we talk to you plainly. You get an honest view of your case, direct access to your attorney, and clear explanations at every step. Our goal is to protect your rights and your future and to reach a practical result without needless delay.
 
 ## Start with a free consultation
 
-Taking the first step should never feel overwhelming or financially burdensome. We invite prospective clients to schedule a complimentary initial consultation to discuss their situation, explore available legal avenues, and understand how our team can assist. We listen carefully to your concerns and outline concrete next steps from day one.
+The first step should not be scary or expensive. Your first consultation is free. You tell us what is going on, we explain your options, and you decide what to do next. We listen carefully and give you clear next steps from day one. [Book a free consultation](/book) or ask our chat assistant.

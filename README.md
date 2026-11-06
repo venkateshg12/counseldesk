@@ -10,8 +10,10 @@ A website assistant for a law firm. It answers **only** from the firm's own publ
 
 - **Grounded answers with citations.** Hybrid retrieval over the firm's pages; the model sees only the retrieved sections and cites them as `[1]`, `[2]`. Citations that do not map to a retrieved section are counted as errors.
 - **Deterministic guardrails.** An intent router classifies each message. Legal-advice requests, off-topic requests and small talk get fixed replies from code, never a free-form model answer.
-- **Lead capture and handoff.** Visitors who want a lawyer are guided through structured tool calls (`createLead`, `requestHumanHandoff`) validated with Zod. The lead is saved, the conversation is flagged for a human, and staff are emailed.
-- **Staff portal (`/staff`).** Sign in, review leads, work the handoff queue, read full transcripts, and see usage metrics (tokens, latency, cost).
+- **Lead capture and handoff.** Visitors who want a lawyer are guided through structured tool calls (`createLead`, `requestHumanHandoff`) validated with Zod. The lead is saved, the conversation is flagged for a human, and the visitor gets an acknowledgement email.
+- **Attorney routing.** A new lead goes to the attorney who handles its case type, choosing the one with the least current work. The assigned attorney is emailed, with the intake mailbox copied. Staff can reassign in the portal.
+- **Consultation booking.** Visitors book a free 30-minute slot on `/book` or by tapping a time offered in the chat. Each booking sends a confirmation with a calendar invite (`.ics`), a reminder a day ahead, and a signed link to reschedule or cancel with no account.
+- **Staff portal (`/staff`).** Sign in, review and reassign leads, see the appointment agenda, edit each attorney's weekly hours, work the handoff queue, read full transcripts, and see usage metrics (tokens, latency, cost).
 - **Account recovery.** Forgot/reset password by email, with single-use, expiring links that sign the user out everywhere.
 - **Embeddable chat widget.** A small vanilla-TypeScript bundle in a Shadow DOM (about 3.8 kB gzipped) that streams answers over SSE.
 
@@ -103,6 +105,14 @@ flowchart LR
 
 **Email through the Gmail API.** One dedicated sender mailbox, the `gmail.send` scope only, OAuth consent done once from a server route that is disabled in production by default. Without credentials, development prints the message to the log and production refuses to send.
 
+**Double-booking is prevented by the database, not by the code that checks first.** A visitor who picks a time gets a five-minute hold: a Redis key set only if absent (`SET NX PX`), so a second person is told the time is taken while the first fills in the form. The hold is a convenience. The guarantee is a unique `slotKey` on the appointment, set while it is booked and cleared when it is cancelled (NULLs never collide), so Postgres refuses a second booking of the same slot even if two requests race past every check.
+
+**Manage links store nothing.** The link in a confirmation email is `<appointmentId>.<linkVersion>.<signature>`, an HMAC over the id and the appointment's current link version. Cancelling or rescheduling bumps the version with a compare-and-swap, so a link works once and every older one dies. The same idea as the password-reset link.
+
+**The model never handles booking data.** After the assistant saves a lead, the server offers the assigned attorney's next openings as buttons. Tapping one calls an endpoint that books using the details already saved on the lead, for a conversation that belongs to the caller's browser. A prompt injection can't book as someone else, because the request carries only a time.
+
+**Times are exact.** The firm works in Arizona time, which has no daylight saving, so slot maths is plain UTC arithmetic with a fixed offset. The server accepts a start time only if it is exactly one of the attorney's real slots.
+
 ### Security and reliability
 
 - Sessions use short-lived access tokens and rotating refresh tokens with reuse detection; revoking a session takes effect on the next request.
@@ -172,9 +182,10 @@ cp apps/web/.env.example apps/web/.env.local
 # Postgres (pgvector) and Redis
 docker compose up -d --wait postgres redis
 
-# Schema, content embeddings, and a staff account (prompts for a password)
+# Schema, content embeddings, the three demo attorneys, and a staff account (prompts for a password)
 pnpm --filter api db:migrate
 pnpm --filter api ingest
+pnpm --filter api seed:attorneys --email-base you@example.com
 pnpm --filter api seed:staff --email you@example.com --name "You"
 
 # API :4000, site :3000, widget dev server :5173
@@ -218,6 +229,7 @@ pnpm --filter api eval --label run1                             # full eval (add
 - **Three eval misses.** An attorney-lookup question ("which attorney handles DUI cases?") and a jurisdiction question ("can you take a case in California?") answered "I couldn't find that" even though the site covers them, and a wills question answered correctly but cited a different section than expected. Retrieval ranking for these is not yet diagnosed.
 - **Single-run numbers.** The results above are one run on a hand-written dataset. Ablations (search mode, keyword parser, prompt version, reasoning level) are wired in as settings but have not been re-measured since the model change.
 - **Gmail limits.** A free Gmail sender allows roughly 500 recipients a day and Google shows an "unverified app" screen at consent. Fine for a lead-notification volume, not for bulk mail.
+- **Booking scope.** Slots come from each attorney's weekly hours only; there is no sync with Google Calendar or Outlook, so an attorney's other commitments don't block times. Reminders go out only for appointments booked more than a day ahead.
 - **Link freshness.** Password-reset links are not tracked, so several unexpired links can coexist until one is used or they expire after 10 minutes.
 
 ---
