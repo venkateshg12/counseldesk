@@ -37,6 +37,17 @@ jobs:
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
       GEMINI_CHAT_MODEL: ${{ vars.GEMINI_CHAT_MODEL }}
     steps:
+      # env.ts throws on the first missing value, so list every empty one up front (names only).
+      - name: Check required config
+        run: |
+          missing=""
+          for v in CORS_ORIGIN SITE_URL STAFF_NOTIFY_EMAIL DATABASE_URL REDIS_HOST REDIS_PORT JWT_SECRET JWT_REFRESH_SECRET; do
+            [ -n "${!v}" ] || missing="$missing $v"
+          done
+          if [ -n "$missing" ]; then
+            echo "::error::Empty (set under Settings > Secrets and variables > Actions):$missing"
+            exit 1
+          fi
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
