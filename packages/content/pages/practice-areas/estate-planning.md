@@ -1,15 +1,19 @@
 # Estate Planning in Arizona
 
-A well-crafted estate plan provides peace of mind by ensuring your assets are protected and your personal wishes are honored if you become incapacitated or pass away.
+An estate plan is a set of documents that says who gets what, and who decides for you if you cannot. A good plan gives you peace of mind. It protects your property and makes sure your wishes are followed if you become unable to decide for yourself, or if you die.
 
 ## Wills
 
-A Last Will and Testament serves as a foundational estate document, nominating personal representatives to manage your final estate, designating guardians for minor children, and outlining specific asset bequests. Having a legally valid will executed in accordance with Arizona statutory requirements prevents your property from passing under default state intestate succession rules.
+A will is the basic estate document. In it you name the person who will handle your estate, choose who will care for any young children and say who gets particular items. A will that follows Arizona's rules keeps the state from deciding who gets your property. When someone dies without a will, the state uses a default formula called intestate succession.
 
 ## Trusts
 
-Revocable living trusts allow individuals and couples to maintain complete ownership of their assets while living and transfer property seamlessly to beneficiaries upon death without undergoing probate administration. In Arizona, trusts keep family financial distributions private, reduce administrative costs, and provide structured financial protections for young adult beneficiaries or family members with special needs.
+A revocable living trust lets you keep full control of your property while you are alive. When you die, it passes to the people you chose without going through probate, which is the slow, public court process for settling an estate. In Arizona a trust keeps your family's money matters private, lowers costs, and can protect young adults or family members with special needs.
 
 ## Powers of attorney
 
-Comprehensive estate plans include critical incapacity documents that appoint trusted individuals to act on your behalf if you cannot make decisions yourself. We draft durable financial powers of attorney for banking and business operations, as well as healthcare powers of attorney and living wills detailing your preferences regarding medical treatments and life-sustaining interventions.
+A power of attorney names someone you trust to act for you if you cannot make decisions yourself. We prepare a financial power of attorney, which covers things like banking and running a business. We also prepare a healthcare power of attorney and a living will, which say what medical care you do and do not want.
+
+## What to do next
+
+[Book a free consultation](/book) and we will help you work out which documents you need.
