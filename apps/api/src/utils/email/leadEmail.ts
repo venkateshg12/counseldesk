@@ -10,7 +10,7 @@ type LeadEmailInput = {
 };
 
 // Visitor-provided text goes into HTML, so it is escaped. A name like "<script>" must stay text.
-const escapeHtml = (value: string) =>
+export const escapeHtml = (value: string) =>
   value.replace(
     /[&<>"']/g,
     (c) =>
