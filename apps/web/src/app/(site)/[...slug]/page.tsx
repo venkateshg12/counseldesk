@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { allPages, findPage, toSlug } from "@/lib/content";
 import { SitePage } from "@/components/SitePage";
+import { BookCta } from "@/components/BookCta";
 
 // Only the pages that exist; anything else is a 404 rather than rendered on demand.
 export const dynamicParams = false;
@@ -34,5 +35,10 @@ export default async function ContentPage({ params }: Props) {
   const { slug } = await params;
   const page = findPage(`/${slug.join("/")}`);
   if (!page) notFound();
-  return <SitePage page={page} />;
+  return (
+    <>
+      <SitePage page={page} />
+      <BookCta />
+    </>
+  );
 }
