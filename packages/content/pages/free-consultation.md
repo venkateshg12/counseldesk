@@ -1,15 +1,15 @@
 # Free Consultation
 
-Harbor & Vale Law offers prospective clients an opportunity to discuss their legal issues directly with an experienced Arizona attorney before making any financial commitment.
+Your first meeting with an Arizona attorney at Harbor & Vale Law is free. You can talk about your legal problem before you spend any money.
 
 ## What the consultation includes
 
-We provide a free first consultation, 30 minutes, in person or by video conference. During this confidential meeting, an attorney reviews the facts of your situation, identifies key legal considerations, outlines potential strategies, and answers your preliminary questions about our services and representation.
+The free first consultation lasts 30 minutes. You can meet in person or by video. The meeting is confidential. An attorney will listen to what happened, point out the important legal issues, explain what you could do next and answer your first questions about our services.
 
 ## How to book
 
-Booking your initial session is straightforward. You may call our office during business hours, send an inquiry through our website contact form, or connect with our online intake assistant. Our intake coordinator will gather brief introductory details and schedule a consultation time that fits your calendar.
+The quickest way is to [book a time online](/book). You pick what you need help with, choose a time that suits you and get a confirmation email with a calendar invite. You can also change or cancel from the link in that email. You can also ask our chat assistant on this site to help you pick a time, or call our office during business hours. Our intake coordinator will ask for a few details and set up a time that fits your calendar.
 
 ## What to bring
 
-To maximize the value of your consultation, please gather relevant documentation ahead of time. For criminal or DUI matters, bring your citation, release papers, and court hearing notices. For family law or personal injury inquiries, bring pertinent police reports, correspondence, or court filings.
+Bring any papers that show what happened. For a criminal or DUI case, bring your ticket or citation, your release papers and any court notices. For a family law or injury case, bring police reports, letters and any court papers you have been given.
