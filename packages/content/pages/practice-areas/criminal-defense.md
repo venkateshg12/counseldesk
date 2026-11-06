@@ -1,15 +1,19 @@
 # Criminal Defense in Arizona
 
-Facing criminal charges in Arizona places your freedom, professional standing, and personal reputation at serious risk. Our defense attorneys provide steadfast representation against misdemeanor and felony allegations.
+Being charged with a crime puts your freedom, your job and your good name at risk. Our defense lawyers stand up for you against both misdemeanor (less serious) and felony (more serious) charges.
 
 ## Charges we defend
 
-Our firm represents individuals facing a broad range of state criminal offenses. We defend clients against assault and disorderly conduct charges, drug possession and distribution matters, theft and shoplifting offenses, domestic violence allegations, weapons violations, and criminal property damage. Whether charged in municipal court or superior court, we work diligently to protect our clients' liberties.
+We defend people charged with many kinds of crimes in Arizona. These include assault, drug possession and selling, theft and shoplifting, domestic violence, weapons charges and damaging property. It does not matter whether your case is in a city court or the superior court. We work to protect your freedom.
 
 ## Your first steps after an arrest
 
-If you or a family member has been arrested or questioned by law enforcement, invoking your constitutional rights is essential. You have the right to remain silent and the right to consult an attorney before answering any questions. We advise clients to refrain from discussing case details with investigators, jail personnel, or family members over monitored detention phone lines until counsel is present.
+If you or someone in your family is arrested or questioned by police, remember your rights. You can stay silent. You can ask for a lawyer before you answer any question. Do not talk about your case with police, jail staff or family on jail phone lines, because those calls are recorded. Wait until your lawyer is with you.
 
 ## How we build a defence
 
-A comprehensive criminal defense begins with an independent examination of every piece of state evidence. We review police body camera recordings, dispatch logs, witness statements, and physical evidence custody chains. Where law enforcement conducted unconstitutional searches or coerced statements without proper advisements, we file formal motions to suppress evidence and seek case dismissal or charge reduction.
+We start by checking all of the evidence against you ourselves. That means police body camera video, 911 and dispatch records, what witnesses said and how the evidence was handled. If the police searched you unlawfully or pushed you to talk without telling you your rights, we ask the judge to throw that evidence out. That can get the case dismissed or the charge reduced.
+
+## What to do next
+
+The sooner you have a lawyer, the more we can do. [Book a free consultation](/book) to talk through your situation.
