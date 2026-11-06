@@ -4,7 +4,7 @@ Harbor & Vale Law values your privacy and is committed to protecting information
 
 ## What we collect
 
-When you interact with our website, request a consultation, or communicate with our intake team, we collect contact information such as your name, telephone number, email address, and general background details describing your legal inquiry. We use this information solely to evaluate potential representation, respond to your inquiries, and schedule consultations.
+When you interact with our website, request a consultation, or communicate with our intake team, we collect contact information such as your name, telephone number, email address, and general background details describing your legal inquiry. We use this information solely to evaluate potential representation, respond to your inquiries, and schedule consultations. If you book a consultation, we also keep the time you chose, the attorney assigned to you and the emails we send you about that booking, such as your confirmation and reminder.
 
 ## How the website assistant works
 
