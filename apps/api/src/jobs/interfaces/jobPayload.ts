@@ -10,3 +10,18 @@ export interface PasswordResetPayload {
   userId: string;
   issuedAt: number;
 }
+
+// The acknowledgement a visitor gets after the assistant saves their details.
+export interface LeadAckPayload {
+  leadId: string;
+}
+
+// Appointment emails carry only the id (and the link version for reminders, so a reminder for a
+// rescheduled or cancelled appointment is recognised as stale).
+export interface AppointmentPayload {
+  appointmentId: string;
+}
+
+export interface AppointmentReminderPayload extends AppointmentPayload {
+  linkVersion: number;
+}

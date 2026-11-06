@@ -15,6 +15,7 @@
     "db:verify": "prisma db verify",
     "db:sql": "tsx src/scripts/write-migration-sql.ts",
     "seed:staff": "tsx src/scripts/seed-staff.ts",
+    "seed:attorneys": "tsx src/scripts/seed-attorneys.ts",
     "worker": "tsx watch src/worker.ts",
     "ingest": "tsx src/scripts/ingest.ts",
     "search": "tsx src/scripts/search.ts",
