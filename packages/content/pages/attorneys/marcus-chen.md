@@ -1,15 +1,15 @@
 # Marcus Chen
 
-Marcus Chen is a partner at Harbor & Vale Law, leading the firm's domestic relations and family law practice with an emphasis on resolution-oriented advocacy.
+Marcus Chen is a partner at Harbor & Vale Law. He leads the firm's family law practice and aims to settle disputes calmly and fairly.
 
 ## Practice focus
 
-Marcus Chen concentrates exclusively on family law matters, helping spouses and parents navigate marital dissolution, legal separation, child custody determinations, parenting time disputes, child support enforcement, and spousal maintenance. He also serves as a private mediator for couples seeking to resolve sensitive family transitions cooperatively outside the courtroom.
+Marcus works only on family law. He helps spouses and parents with divorce, legal separation, child custody, parenting time, child support and spousal maintenance. He is also a private mediator, who helps couples settle family matters together outside the courtroom.
 
 ## Experience
 
-Over more than a decade of practicing family law in Maricopa County and throughout Arizona, Marcus has represented individuals across a diverse spectrum of contested and uncontested domestic disputes. His practice encompasses high-asset marital estate divisions, complex business valuation analyses, and high-conflict custody proceedings. Marcus approaches family conflicts with patience, aiming to de-escalate hostility while firmly safeguarding parental rights and children's best interests.
+Marcus has practiced family law for more than a decade in Maricopa County and across Arizona. He has handled cases where the spouses agree and cases where they do not. His work includes dividing large estates, valuing businesses and handling custody cases with a lot of conflict. He is patient and works to calm things down, while firmly protecting parents' rights and what is best for the children.
 
 ## Education
 
-Marcus received his Juris Doctor from the University of Washington School of Law, where he served on the law review editorial staff. He earned his undergraduate degree in Economics from the University of California, Berkeley, providing him with strong quantitative and analytical skills valuable in marital asset divisions.
+Marcus earned his law degree (Juris Doctor) at the University of Washington School of Law, where he worked on the law review editorial staff. He holds an undergraduate degree in Economics from the University of California, Berkeley, which helps him when dividing property and money in a divorce.
