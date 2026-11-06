@@ -39,9 +39,9 @@ import type {
 } from "@prisma/orm-postgres/contract/types";
 
 export type StorageHash =
-  StorageHashBase<"54754972a75a896c85194c0a7a4788c5d680816c6b24fb61d7831c628d88e988">;
+  StorageHashBase<"3d4283d3aae1e46bdb283e859bac488331eb4989ed2245c8a5a56ba25fc6b7fe">;
 export type ExecutionHash =
-  ExecutionHashBase<"6d597816ada81f61c9babb9d2c6b23e1577065bf7ce14fd27cf1701b73b8dc77">;
+  ExecutionHashBase<"d1619e855adede202a50cb17f76e31a786ed049ba6913d7ecbb303d7fd9c9725">;
 export type ProfileHash =
   ProfileHashBase<"3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2">;
 
@@ -544,6 +544,60 @@ type DefaultLiteralValue<
 
 export type FieldOutputTypes = {
   readonly public: {
+    readonly Appointment: {
+      readonly attorneyId: CodecTypes["pg/uuid@1"]["output"];
+      readonly cancelledAt:
+        CodecTypes["pg/timestamptz-string@1"]["output"] | null;
+      readonly caseType:
+        | "dui"
+        | "criminal_defense"
+        | "family_law"
+        | "personal_injury"
+        | "estate_planning"
+        | "other";
+      readonly confirmedAt:
+        CodecTypes["pg/timestamptz-string@1"]["output"] | null;
+      readonly conversationId: CodecTypes["pg/uuid@1"]["output"] | null;
+      readonly createdAt: CodecTypes["pg/timestamptz-string@1"]["output"];
+      readonly email: CodecTypes["pg/text@1"]["output"] | null;
+      readonly endsAt: CodecTypes["pg/timestamptz-string@1"]["output"];
+      readonly id: CodecTypes["pg/uuid@1"]["output"];
+      readonly leadId: CodecTypes["pg/uuid@1"]["output"] | null;
+      readonly linkVersion: CodecTypes["pg/int4@1"]["output"];
+      readonly mode: "video" | "in_person";
+      readonly name: CodecTypes["pg/text@1"]["output"];
+      readonly phone: CodecTypes["pg/text@1"]["output"] | null;
+      readonly slotKey: CodecTypes["pg/text@1"]["output"] | null;
+      readonly startsAt: CodecTypes["pg/timestamptz-string@1"]["output"];
+      readonly status: "booked" | "cancelled" | "completed" | "no_show";
+      readonly summary: CodecTypes["pg/text@1"]["output"] | null;
+    };
+    readonly Attorney: {
+      readonly active: CodecTypes["pg/bool@1"]["output"];
+      readonly createdAt: CodecTypes["pg/timestamptz-string@1"]["output"];
+      readonly email: CodecTypes["pg/text@1"]["output"];
+      readonly id: CodecTypes["pg/uuid@1"]["output"];
+      readonly name: CodecTypes["pg/text@1"]["output"];
+      readonly slug: CodecTypes["pg/text@1"]["output"];
+    };
+    readonly AttorneyPracticeArea: {
+      readonly attorneyId: CodecTypes["pg/uuid@1"]["output"];
+      readonly caseType:
+        | "dui"
+        | "criminal_defense"
+        | "family_law"
+        | "personal_injury"
+        | "estate_planning"
+        | "other";
+      readonly id: CodecTypes["pg/uuid@1"]["output"];
+    };
+    readonly AvailabilityRule: {
+      readonly attorneyId: CodecTypes["pg/uuid@1"]["output"];
+      readonly endMinute: CodecTypes["pg/int4@1"]["output"];
+      readonly id: CodecTypes["pg/uuid@1"]["output"];
+      readonly startMinute: CodecTypes["pg/int4@1"]["output"];
+      readonly weekday: CodecTypes["pg/int4@1"]["output"];
+    };
     readonly Conversation: {
       readonly createdAt: CodecTypes["pg/timestamptz-string@1"]["output"];
       readonly id: CodecTypes["pg/uuid@1"]["output"];
@@ -608,6 +662,7 @@ export type FieldOutputTypes = {
       readonly status: "pending" | "resolved";
     };
     readonly Lead: {
+      readonly assignedAttorneyId: CodecTypes["pg/uuid@1"]["output"] | null;
       readonly caseType:
         | "dui"
         | "criminal_defense"
@@ -709,6 +764,60 @@ export type FieldOutputTypes = {
 };
 export type FieldInputTypes = {
   readonly public: {
+    readonly Appointment: {
+      readonly attorneyId: CodecTypes["pg/uuid@1"]["input"];
+      readonly cancelledAt:
+        CodecTypes["pg/timestamptz-string@1"]["input"] | null;
+      readonly caseType:
+        | "dui"
+        | "criminal_defense"
+        | "family_law"
+        | "personal_injury"
+        | "estate_planning"
+        | "other";
+      readonly confirmedAt:
+        CodecTypes["pg/timestamptz-string@1"]["input"] | null;
+      readonly conversationId: CodecTypes["pg/uuid@1"]["input"] | null;
+      readonly createdAt: CodecTypes["pg/timestamptz-string@1"]["input"];
+      readonly email: CodecTypes["pg/text@1"]["input"] | null;
+      readonly endsAt: CodecTypes["pg/timestamptz-string@1"]["input"];
+      readonly id: CodecTypes["pg/uuid@1"]["input"];
+      readonly leadId: CodecTypes["pg/uuid@1"]["input"] | null;
+      readonly linkVersion: CodecTypes["pg/int4@1"]["input"];
+      readonly mode: "video" | "in_person";
+      readonly name: CodecTypes["pg/text@1"]["input"];
+      readonly phone: CodecTypes["pg/text@1"]["input"] | null;
+      readonly slotKey: CodecTypes["pg/text@1"]["input"] | null;
+      readonly startsAt: CodecTypes["pg/timestamptz-string@1"]["input"];
+      readonly status: "booked" | "cancelled" | "completed" | "no_show";
+      readonly summary: CodecTypes["pg/text@1"]["input"] | null;
+    };
+    readonly Attorney: {
+      readonly active: CodecTypes["pg/bool@1"]["input"];
+      readonly createdAt: CodecTypes["pg/timestamptz-string@1"]["input"];
+      readonly email: CodecTypes["pg/text@1"]["input"];
+      readonly id: CodecTypes["pg/uuid@1"]["input"];
+      readonly name: CodecTypes["pg/text@1"]["input"];
+      readonly slug: CodecTypes["pg/text@1"]["input"];
+    };
+    readonly AttorneyPracticeArea: {
+      readonly attorneyId: CodecTypes["pg/uuid@1"]["input"];
+      readonly caseType:
+        | "dui"
+        | "criminal_defense"
+        | "family_law"
+        | "personal_injury"
+        | "estate_planning"
+        | "other";
+      readonly id: CodecTypes["pg/uuid@1"]["input"];
+    };
+    readonly AvailabilityRule: {
+      readonly attorneyId: CodecTypes["pg/uuid@1"]["input"];
+      readonly endMinute: CodecTypes["pg/int4@1"]["input"];
+      readonly id: CodecTypes["pg/uuid@1"]["input"];
+      readonly startMinute: CodecTypes["pg/int4@1"]["input"];
+      readonly weekday: CodecTypes["pg/int4@1"]["input"];
+    };
     readonly Conversation: {
       readonly createdAt: CodecTypes["pg/timestamptz-string@1"]["input"];
       readonly id: CodecTypes["pg/uuid@1"]["input"];
@@ -773,6 +882,7 @@ export type FieldInputTypes = {
       readonly status: "pending" | "resolved";
     };
     readonly Lead: {
+      readonly assignedAttorneyId: CodecTypes["pg/uuid@1"]["input"] | null;
       readonly caseType:
         | "dui"
         | "criminal_defense"
@@ -873,6 +983,60 @@ export type FieldInputTypes = {
 };
 export type StorageColumnTypes = {
   readonly public: {
+    readonly Appointment: {
+      readonly attorneyId: CodecTypes["pg/uuid@1"]["output"];
+      readonly cancelledAt:
+        CodecTypes["pg/timestamptz-string@1"]["output"] | null;
+      readonly caseType:
+        | "dui"
+        | "criminal_defense"
+        | "family_law"
+        | "personal_injury"
+        | "estate_planning"
+        | "other";
+      readonly confirmedAt:
+        CodecTypes["pg/timestamptz-string@1"]["output"] | null;
+      readonly conversationId: CodecTypes["pg/uuid@1"]["output"] | null;
+      readonly createdAt: CodecTypes["pg/timestamptz-string@1"]["output"];
+      readonly email: CodecTypes["pg/text@1"]["output"] | null;
+      readonly endsAt: CodecTypes["pg/timestamptz-string@1"]["output"];
+      readonly id: CodecTypes["pg/uuid@1"]["output"];
+      readonly leadId: CodecTypes["pg/uuid@1"]["output"] | null;
+      readonly linkVersion: CodecTypes["pg/int4@1"]["output"];
+      readonly mode: "video" | "in_person";
+      readonly name: CodecTypes["pg/text@1"]["output"];
+      readonly phone: CodecTypes["pg/text@1"]["output"] | null;
+      readonly slotKey: CodecTypes["pg/text@1"]["output"] | null;
+      readonly startsAt: CodecTypes["pg/timestamptz-string@1"]["output"];
+      readonly status: "booked" | "cancelled" | "completed" | "no_show";
+      readonly summary: CodecTypes["pg/text@1"]["output"] | null;
+    };
+    readonly Attorney: {
+      readonly active: CodecTypes["pg/bool@1"]["output"];
+      readonly createdAt: CodecTypes["pg/timestamptz-string@1"]["output"];
+      readonly email: CodecTypes["pg/text@1"]["output"];
+      readonly id: CodecTypes["pg/uuid@1"]["output"];
+      readonly name: CodecTypes["pg/text@1"]["output"];
+      readonly slug: CodecTypes["pg/text@1"]["output"];
+    };
+    readonly AttorneyPracticeArea: {
+      readonly attorneyId: CodecTypes["pg/uuid@1"]["output"];
+      readonly caseType:
+        | "dui"
+        | "criminal_defense"
+        | "family_law"
+        | "personal_injury"
+        | "estate_planning"
+        | "other";
+      readonly id: CodecTypes["pg/uuid@1"]["output"];
+    };
+    readonly AvailabilityRule: {
+      readonly attorneyId: CodecTypes["pg/uuid@1"]["output"];
+      readonly endMinute: CodecTypes["pg/int4@1"]["output"];
+      readonly id: CodecTypes["pg/uuid@1"]["output"];
+      readonly startMinute: CodecTypes["pg/int4@1"]["output"];
+      readonly weekday: CodecTypes["pg/int4@1"]["output"];
+    };
     readonly Conversation: {
       readonly createdAt: CodecTypes["pg/timestamptz-string@1"]["output"];
       readonly id: CodecTypes["pg/uuid@1"]["output"];
@@ -937,6 +1101,7 @@ export type StorageColumnTypes = {
       readonly status: "pending" | "resolved";
     };
     readonly Lead: {
+      readonly assignedAttorneyId: CodecTypes["pg/uuid@1"]["output"] | null;
       readonly caseType:
         | "dui"
         | "criminal_defense"
@@ -1038,6 +1203,60 @@ export type StorageColumnTypes = {
 };
 export type StorageColumnInputTypes = {
   readonly public: {
+    readonly Appointment: {
+      readonly attorneyId: CodecTypes["pg/uuid@1"]["input"];
+      readonly cancelledAt:
+        CodecTypes["pg/timestamptz-string@1"]["input"] | null;
+      readonly caseType:
+        | "dui"
+        | "criminal_defense"
+        | "family_law"
+        | "personal_injury"
+        | "estate_planning"
+        | "other";
+      readonly confirmedAt:
+        CodecTypes["pg/timestamptz-string@1"]["input"] | null;
+      readonly conversationId: CodecTypes["pg/uuid@1"]["input"] | null;
+      readonly createdAt: CodecTypes["pg/timestamptz-string@1"]["input"];
+      readonly email: CodecTypes["pg/text@1"]["input"] | null;
+      readonly endsAt: CodecTypes["pg/timestamptz-string@1"]["input"];
+      readonly id: CodecTypes["pg/uuid@1"]["input"];
+      readonly leadId: CodecTypes["pg/uuid@1"]["input"] | null;
+      readonly linkVersion: CodecTypes["pg/int4@1"]["input"];
+      readonly mode: "video" | "in_person";
+      readonly name: CodecTypes["pg/text@1"]["input"];
+      readonly phone: CodecTypes["pg/text@1"]["input"] | null;
+      readonly slotKey: CodecTypes["pg/text@1"]["input"] | null;
+      readonly startsAt: CodecTypes["pg/timestamptz-string@1"]["input"];
+      readonly status: "booked" | "cancelled" | "completed" | "no_show";
+      readonly summary: CodecTypes["pg/text@1"]["input"] | null;
+    };
+    readonly Attorney: {
+      readonly active: CodecTypes["pg/bool@1"]["input"];
+      readonly createdAt: CodecTypes["pg/timestamptz-string@1"]["input"];
+      readonly email: CodecTypes["pg/text@1"]["input"];
+      readonly id: CodecTypes["pg/uuid@1"]["input"];
+      readonly name: CodecTypes["pg/text@1"]["input"];
+      readonly slug: CodecTypes["pg/text@1"]["input"];
+    };
+    readonly AttorneyPracticeArea: {
+      readonly attorneyId: CodecTypes["pg/uuid@1"]["input"];
+      readonly caseType:
+        | "dui"
+        | "criminal_defense"
+        | "family_law"
+        | "personal_injury"
+        | "estate_planning"
+        | "other";
+      readonly id: CodecTypes["pg/uuid@1"]["input"];
+    };
+    readonly AvailabilityRule: {
+      readonly attorneyId: CodecTypes["pg/uuid@1"]["input"];
+      readonly endMinute: CodecTypes["pg/int4@1"]["input"];
+      readonly id: CodecTypes["pg/uuid@1"]["input"];
+      readonly startMinute: CodecTypes["pg/int4@1"]["input"];
+      readonly weekday: CodecTypes["pg/int4@1"]["input"];
+    };
     readonly Conversation: {
       readonly createdAt: CodecTypes["pg/timestamptz-string@1"]["input"];
       readonly id: CodecTypes["pg/uuid@1"]["input"];
@@ -1102,6 +1321,7 @@ export type StorageColumnInputTypes = {
       readonly status: "pending" | "resolved";
     };
     readonly Lead: {
+      readonly assignedAttorneyId: CodecTypes["pg/uuid@1"]["input"] | null;
       readonly caseType:
         | "dui"
         | "criminal_defense"
@@ -1202,17 +1422,85 @@ export type StorageColumnInputTypes = {
 };
 
 export namespace Models {
+  export type public_Appointment = {
+    attorneyId: CodecTypes["pg/uuid@1"]["output"];
+    cancelledAt: CodecTypes["pg/timestamptz-string@1"]["output"] | null;
+    caseType:
+      | "dui"
+      | "criminal_defense"
+      | "family_law"
+      | "personal_injury"
+      | "estate_planning"
+      | "other";
+    confirmedAt: CodecTypes["pg/timestamptz-string@1"]["output"] | null;
+    conversationId: CodecTypes["pg/uuid@1"]["output"] | null;
+    createdAt: CodecTypes["pg/timestamptz-string@1"]["output"];
+    email: CodecTypes["pg/text@1"]["output"] | null;
+    endsAt: CodecTypes["pg/timestamptz-string@1"]["output"];
+    id: CodecTypes["pg/uuid@1"]["output"];
+    leadId: CodecTypes["pg/uuid@1"]["output"] | null;
+    linkVersion: CodecTypes["pg/int4@1"]["output"];
+    mode: "video" | "in_person";
+    name: CodecTypes["pg/text@1"]["output"];
+    phone: CodecTypes["pg/text@1"]["output"] | null;
+    slotKey: CodecTypes["pg/text@1"]["output"] | null;
+    startsAt: CodecTypes["pg/timestamptz-string@1"]["output"];
+    status: "booked" | "cancelled" | "completed" | "no_show";
+    summary: CodecTypes["pg/text@1"]["output"] | null;
+    attorney: public_Attorney;
+    conversation: public_Conversation | null;
+    lead: public_Lead | null;
+    readonly [RelationKeys]?: "attorney" | "conversation" | "lead";
+  };
+  export type public_Attorney = {
+    active: CodecTypes["pg/bool@1"]["output"];
+    createdAt: CodecTypes["pg/timestamptz-string@1"]["output"];
+    email: CodecTypes["pg/text@1"]["output"];
+    id: CodecTypes["pg/uuid@1"]["output"];
+    name: CodecTypes["pg/text@1"]["output"];
+    slug: CodecTypes["pg/text@1"]["output"];
+    appointments: public_Appointment[];
+    availability: public_AvailabilityRule[];
+    leads: public_Lead[];
+    practiceAreas: public_AttorneyPracticeArea[];
+    readonly [RelationKeys]?:
+      "appointments" | "availability" | "leads" | "practiceAreas";
+  };
+  export type public_AttorneyPracticeArea = {
+    attorneyId: CodecTypes["pg/uuid@1"]["output"];
+    caseType:
+      | "dui"
+      | "criminal_defense"
+      | "family_law"
+      | "personal_injury"
+      | "estate_planning"
+      | "other";
+    id: CodecTypes["pg/uuid@1"]["output"];
+    attorney: public_Attorney;
+    readonly [RelationKeys]?: "attorney";
+  };
+  export type public_AvailabilityRule = {
+    attorneyId: CodecTypes["pg/uuid@1"]["output"];
+    endMinute: CodecTypes["pg/int4@1"]["output"];
+    id: CodecTypes["pg/uuid@1"]["output"];
+    startMinute: CodecTypes["pg/int4@1"]["output"];
+    weekday: CodecTypes["pg/int4@1"]["output"];
+    attorney: public_Attorney;
+    readonly [RelationKeys]?: "attorney";
+  };
   export type public_Conversation = {
     createdAt: CodecTypes["pg/timestamptz-string@1"]["output"];
     id: CodecTypes["pg/uuid@1"]["output"];
     status: "open" | "needs_human" | "closed";
     updatedAt: CodecTypes["pg/timestamptz-string@1"]["output"];
     visitorId: CodecTypes["pg/text@1"]["output"];
+    appointments: public_Appointment[];
     handoff: public_Handoff | null;
     lead: public_Lead | null;
     llmCalls: public_LlmCall[];
     messages: public_Message[];
-    readonly [RelationKeys]?: "handoff" | "lead" | "llmCalls" | "messages";
+    readonly [RelationKeys]?:
+      "appointments" | "handoff" | "lead" | "llmCalls" | "messages";
   };
   export type public_EvalResult = {
     answer: CodecTypes["pg/text@1"]["output"];
@@ -1277,6 +1565,7 @@ export namespace Models {
     readonly [RelationKeys]?: "conversation" | "resolvedBy";
   };
   export type public_Lead = {
+    assignedAttorneyId: CodecTypes["pg/uuid@1"]["output"] | null;
     caseType:
       | "dui"
       | "criminal_defense"
@@ -1292,8 +1581,11 @@ export namespace Models {
     notifiedAt: CodecTypes["pg/timestamptz-string@1"]["output"] | null;
     phone: CodecTypes["pg/text@1"]["output"] | null;
     summary: CodecTypes["pg/text@1"]["output"] | null;
+    appointments: public_Appointment[];
+    assignedAttorney: public_Attorney | null;
     conversation: public_Conversation;
-    readonly [RelationKeys]?: "conversation";
+    readonly [RelationKeys]?:
+      "appointments" | "assignedAttorney" | "conversation";
   };
   export type public_LlmCall = {
     conversationId: CodecTypes["pg/uuid@1"]["output"] | null;
@@ -1395,6 +1687,10 @@ export namespace Models {
 
 export declare const models: {
   public: {
+    Appointment: Models.public_Appointment;
+    Attorney: Models.public_Attorney;
+    AttorneyPracticeArea: Models.public_AttorneyPracticeArea;
+    AvailabilityRule: Models.public_AvailabilityRule;
     Conversation: Models.public_Conversation;
     EvalResult: Models.public_EvalResult;
     EvalRun: Models.public_EvalRun;
@@ -1428,6 +1724,338 @@ type ContractBase = Omit<
         readonly kind: "postgres-schema";
         readonly entries: {
           readonly table: {
+            readonly Appointment: {
+              columns: {
+                readonly attorneyId: {
+                  readonly nativeType: "uuid";
+                  readonly codecId: "pg/uuid@1";
+                  readonly nullable: false;
+                };
+                readonly cancelledAt: {
+                  readonly nativeType: "timestamptz";
+                  readonly codecId: "pg/timestamptz-string@1";
+                  readonly nullable: true;
+                };
+                readonly caseType: {
+                  readonly nativeType: "text";
+                  readonly codecId: "pg/text@1";
+                  readonly nullable: false;
+                };
+                readonly confirmedAt: {
+                  readonly nativeType: "timestamptz";
+                  readonly codecId: "pg/timestamptz-string@1";
+                  readonly nullable: true;
+                };
+                readonly conversationId: {
+                  readonly nativeType: "uuid";
+                  readonly codecId: "pg/uuid@1";
+                  readonly nullable: true;
+                };
+                readonly createdAt: {
+                  readonly nativeType: "timestamptz";
+                  readonly codecId: "pg/timestamptz-string@1";
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: "function";
+                    readonly expression: "now()";
+                  };
+                };
+                readonly email: {
+                  readonly nativeType: "text";
+                  readonly codecId: "pg/text@1";
+                  readonly nullable: true;
+                };
+                readonly endsAt: {
+                  readonly nativeType: "timestamptz";
+                  readonly codecId: "pg/timestamptz-string@1";
+                  readonly nullable: false;
+                };
+                readonly id: {
+                  readonly nativeType: "uuid";
+                  readonly codecId: "pg/uuid@1";
+                  readonly nullable: false;
+                };
+                readonly leadId: {
+                  readonly nativeType: "uuid";
+                  readonly codecId: "pg/uuid@1";
+                  readonly nullable: true;
+                };
+                readonly linkVersion: {
+                  readonly nativeType: "int4";
+                  readonly codecId: "pg/int4@1";
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: "literal";
+                    readonly value: DefaultLiteralValue<"pg/int4@1", 1>;
+                  };
+                };
+                readonly mode: {
+                  readonly nativeType: "text";
+                  readonly codecId: "pg/text@1";
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: "literal";
+                    readonly value: DefaultLiteralValue<"pg/text@1", "video">;
+                  };
+                };
+                readonly name: {
+                  readonly nativeType: "text";
+                  readonly codecId: "pg/text@1";
+                  readonly nullable: false;
+                };
+                readonly phone: {
+                  readonly nativeType: "text";
+                  readonly codecId: "pg/text@1";
+                  readonly nullable: true;
+                };
+                readonly slotKey: {
+                  readonly nativeType: "text";
+                  readonly codecId: "pg/text@1";
+                  readonly nullable: true;
+                };
+                readonly startsAt: {
+                  readonly nativeType: "timestamptz";
+                  readonly codecId: "pg/timestamptz-string@1";
+                  readonly nullable: false;
+                };
+                readonly status: {
+                  readonly nativeType: "text";
+                  readonly codecId: "pg/text@1";
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: "literal";
+                    readonly value: DefaultLiteralValue<"pg/text@1", "booked">;
+                  };
+                };
+                readonly summary: {
+                  readonly nativeType: "text";
+                  readonly codecId: "pg/text@1";
+                  readonly nullable: true;
+                };
+              };
+              primaryKey: { readonly columns: readonly ["id"] };
+              uniques: readonly [{ readonly columns: readonly ["slotKey"] }];
+              indexes: readonly [
+                {
+                  readonly name: "Appointment_attorneyId_idx_f73d9f49";
+                  readonly prefix: "Appointment_attorneyId_idx";
+                  readonly columns: readonly ["attorneyId"];
+                  readonly unique: false;
+                },
+                {
+                  readonly name: "Appointment_attorneyId_startsAt_idx_8c07b5bd";
+                  readonly prefix: "Appointment_attorneyId_startsAt_idx";
+                  readonly columns: readonly ["attorneyId", "startsAt"];
+                  readonly unique: false;
+                },
+                {
+                  readonly name: "Appointment_conversationId_idx_669215a6";
+                  readonly prefix: "Appointment_conversationId_idx";
+                  readonly columns: readonly ["conversationId"];
+                  readonly unique: false;
+                },
+                {
+                  readonly name: "Appointment_leadId_idx_9113844c";
+                  readonly prefix: "Appointment_leadId_idx";
+                  readonly columns: readonly ["leadId"];
+                  readonly unique: false;
+                },
+                {
+                  readonly name: "Appointment_status_startsAt_idx_b8c24256";
+                  readonly prefix: "Appointment_status_startsAt_idx";
+                  readonly columns: readonly ["status", "startsAt"];
+                  readonly unique: false;
+                },
+              ];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: "public" & NamespaceId;
+                    readonly tableName: "Appointment";
+                    readonly columns: readonly ["attorneyId"];
+                  };
+                  readonly target: {
+                    readonly namespaceId: "public" & NamespaceId;
+                    readonly tableName: "Attorney";
+                    readonly columns: readonly ["id"];
+                  };
+                },
+                {
+                  readonly source: {
+                    readonly namespaceId: "public" & NamespaceId;
+                    readonly tableName: "Appointment";
+                    readonly columns: readonly ["leadId"];
+                  };
+                  readonly target: {
+                    readonly namespaceId: "public" & NamespaceId;
+                    readonly tableName: "Lead";
+                    readonly columns: readonly ["id"];
+                  };
+                },
+                {
+                  readonly source: {
+                    readonly namespaceId: "public" & NamespaceId;
+                    readonly tableName: "Appointment";
+                    readonly columns: readonly ["conversationId"];
+                  };
+                  readonly target: {
+                    readonly namespaceId: "public" & NamespaceId;
+                    readonly tableName: "Conversation";
+                    readonly columns: readonly ["id"];
+                  };
+                },
+              ];
+            };
+            readonly Attorney: {
+              columns: {
+                readonly active: {
+                  readonly nativeType: "bool";
+                  readonly codecId: "pg/bool@1";
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: "literal";
+                    readonly value: DefaultLiteralValue<"pg/bool@1", true>;
+                  };
+                };
+                readonly createdAt: {
+                  readonly nativeType: "timestamptz";
+                  readonly codecId: "pg/timestamptz-string@1";
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: "function";
+                    readonly expression: "now()";
+                  };
+                };
+                readonly email: {
+                  readonly nativeType: "text";
+                  readonly codecId: "pg/text@1";
+                  readonly nullable: false;
+                };
+                readonly id: {
+                  readonly nativeType: "uuid";
+                  readonly codecId: "pg/uuid@1";
+                  readonly nullable: false;
+                };
+                readonly name: {
+                  readonly nativeType: "text";
+                  readonly codecId: "pg/text@1";
+                  readonly nullable: false;
+                };
+                readonly slug: {
+                  readonly nativeType: "text";
+                  readonly codecId: "pg/text@1";
+                  readonly nullable: false;
+                };
+              };
+              primaryKey: { readonly columns: readonly ["id"] };
+              uniques: readonly [{ readonly columns: readonly ["slug"] }];
+              indexes: readonly [];
+              foreignKeys: readonly [];
+            };
+            readonly AttorneyPracticeArea: {
+              columns: {
+                readonly attorneyId: {
+                  readonly nativeType: "uuid";
+                  readonly codecId: "pg/uuid@1";
+                  readonly nullable: false;
+                };
+                readonly caseType: {
+                  readonly nativeType: "text";
+                  readonly codecId: "pg/text@1";
+                  readonly nullable: false;
+                };
+                readonly id: {
+                  readonly nativeType: "uuid";
+                  readonly codecId: "pg/uuid@1";
+                  readonly nullable: false;
+                };
+              };
+              primaryKey: { readonly columns: readonly ["id"] };
+              uniques: readonly [
+                { readonly columns: readonly ["attorneyId", "caseType"] },
+              ];
+              indexes: readonly [
+                {
+                  readonly name: "AttorneyPracticeArea_attorneyId_idx_f73d9f49";
+                  readonly prefix: "AttorneyPracticeArea_attorneyId_idx";
+                  readonly columns: readonly ["attorneyId"];
+                  readonly unique: false;
+                },
+                {
+                  readonly name: "AttorneyPracticeArea_caseType_idx_d44eddf2";
+                  readonly prefix: "AttorneyPracticeArea_caseType_idx";
+                  readonly columns: readonly ["caseType"];
+                  readonly unique: false;
+                },
+              ];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: "public" & NamespaceId;
+                    readonly tableName: "AttorneyPracticeArea";
+                    readonly columns: readonly ["attorneyId"];
+                  };
+                  readonly target: {
+                    readonly namespaceId: "public" & NamespaceId;
+                    readonly tableName: "Attorney";
+                    readonly columns: readonly ["id"];
+                  };
+                },
+              ];
+            };
+            readonly AvailabilityRule: {
+              columns: {
+                readonly attorneyId: {
+                  readonly nativeType: "uuid";
+                  readonly codecId: "pg/uuid@1";
+                  readonly nullable: false;
+                };
+                readonly endMinute: {
+                  readonly nativeType: "int4";
+                  readonly codecId: "pg/int4@1";
+                  readonly nullable: false;
+                };
+                readonly id: {
+                  readonly nativeType: "uuid";
+                  readonly codecId: "pg/uuid@1";
+                  readonly nullable: false;
+                };
+                readonly startMinute: {
+                  readonly nativeType: "int4";
+                  readonly codecId: "pg/int4@1";
+                  readonly nullable: false;
+                };
+                readonly weekday: {
+                  readonly nativeType: "int4";
+                  readonly codecId: "pg/int4@1";
+                  readonly nullable: false;
+                };
+              };
+              primaryKey: { readonly columns: readonly ["id"] };
+              uniques: readonly [];
+              indexes: readonly [
+                {
+                  readonly name: "AvailabilityRule_attorneyId_idx_f73d9f49";
+                  readonly prefix: "AvailabilityRule_attorneyId_idx";
+                  readonly columns: readonly ["attorneyId"];
+                  readonly unique: false;
+                },
+              ];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: "public" & NamespaceId;
+                    readonly tableName: "AvailabilityRule";
+                    readonly columns: readonly ["attorneyId"];
+                  };
+                  readonly target: {
+                    readonly namespaceId: "public" & NamespaceId;
+                    readonly tableName: "Attorney";
+                    readonly columns: readonly ["id"];
+                  };
+                },
+              ];
+            };
             readonly Conversation: {
               columns: {
                 readonly createdAt: {
@@ -1833,6 +2461,11 @@ type ContractBase = Omit<
             };
             readonly Lead: {
               columns: {
+                readonly assignedAttorneyId: {
+                  readonly nativeType: "uuid";
+                  readonly codecId: "pg/uuid@1";
+                  readonly nullable: true;
+                };
                 readonly caseType: {
                   readonly nativeType: "text";
                   readonly codecId: "pg/text@1";
@@ -1889,6 +2522,12 @@ type ContractBase = Omit<
               ];
               indexes: readonly [
                 {
+                  readonly name: "Lead_assignedAttorneyId_idx_b9e8d3da";
+                  readonly prefix: "Lead_assignedAttorneyId_idx";
+                  readonly columns: readonly ["assignedAttorneyId"];
+                  readonly unique: false;
+                },
+                {
                   readonly name: "Lead_createdAt_idx_9575dbd7";
                   readonly prefix: "Lead_createdAt_idx";
                   readonly columns: readonly ["createdAt"];
@@ -1896,6 +2535,18 @@ type ContractBase = Omit<
                 },
               ];
               foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: "public" & NamespaceId;
+                    readonly tableName: "Lead";
+                    readonly columns: readonly ["assignedAttorneyId"];
+                  };
+                  readonly target: {
+                    readonly namespaceId: "public" & NamespaceId;
+                    readonly tableName: "Attorney";
+                    readonly columns: readonly ["id"];
+                  };
+                },
                 {
                   readonly source: {
                     readonly namespaceId: "public" & NamespaceId;
@@ -2496,6 +3147,19 @@ type ContractBase = Omit<
             };
           };
           readonly valueSet: {
+            readonly AppointmentMode: {
+              readonly kind: "valueSet";
+              readonly values: readonly ["video", "in_person"];
+            };
+            readonly AppointmentStatus: {
+              readonly kind: "valueSet";
+              readonly values: readonly [
+                "booked",
+                "cancelled",
+                "completed",
+                "no_show",
+              ];
+            };
             readonly CaseType: {
               readonly kind: "valueSet";
               readonly values: readonly [
@@ -2540,6 +3204,22 @@ type ContractBase = Omit<
   readonly target: "postgres";
   readonly targetFamily: "sql";
   readonly roots: {
+    readonly Appointment: {
+      readonly namespace: "public" & NamespaceId;
+      readonly model: "Appointment";
+    };
+    readonly Attorney: {
+      readonly namespace: "public" & NamespaceId;
+      readonly model: "Attorney";
+    };
+    readonly AttorneyPracticeArea: {
+      readonly namespace: "public" & NamespaceId;
+      readonly model: "AttorneyPracticeArea";
+    };
+    readonly AvailabilityRule: {
+      readonly namespace: "public" & NamespaceId;
+      readonly model: "AvailabilityRule";
+    };
     readonly Conversation: {
       readonly namespace: "public" & NamespaceId;
       readonly model: "Conversation";
@@ -2593,6 +3273,414 @@ type ContractBase = Omit<
     readonly namespaces: {
       readonly public: {
         readonly models: {
+          readonly Appointment: {
+            readonly fields: {
+              readonly attorneyId: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/uuid@1";
+                };
+              };
+              readonly cancelledAt: {
+                readonly nullable: true;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/timestamptz-string@1";
+                };
+              };
+              readonly caseType: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/text@1";
+                };
+              };
+              readonly confirmedAt: {
+                readonly nullable: true;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/timestamptz-string@1";
+                };
+              };
+              readonly conversationId: {
+                readonly nullable: true;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/uuid@1";
+                };
+              };
+              readonly createdAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/timestamptz-string@1";
+                };
+              };
+              readonly email: {
+                readonly nullable: true;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/text@1";
+                };
+              };
+              readonly endsAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/timestamptz-string@1";
+                };
+              };
+              readonly id: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/uuid@1";
+                };
+              };
+              readonly leadId: {
+                readonly nullable: true;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/uuid@1";
+                };
+              };
+              readonly linkVersion: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/int4@1";
+                };
+              };
+              readonly mode: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/text@1";
+                };
+              };
+              readonly name: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/text@1";
+                };
+              };
+              readonly phone: {
+                readonly nullable: true;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/text@1";
+                };
+              };
+              readonly slotKey: {
+                readonly nullable: true;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/text@1";
+                };
+              };
+              readonly startsAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/timestamptz-string@1";
+                };
+              };
+              readonly status: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/text@1";
+                };
+              };
+              readonly summary: {
+                readonly nullable: true;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/text@1";
+                };
+              };
+            };
+            readonly relations: {
+              readonly attorney: {
+                readonly to: {
+                  readonly namespace: "public" & NamespaceId;
+                  readonly model: "Attorney";
+                };
+                readonly cardinality: "N:1";
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ["attorneyId"];
+                  readonly targetFields: readonly ["id"];
+                };
+              };
+              readonly conversation: {
+                readonly to: {
+                  readonly namespace: "public" & NamespaceId;
+                  readonly model: "Conversation";
+                };
+                readonly cardinality: "N:1";
+                readonly nullable: true;
+                readonly on: {
+                  readonly localFields: readonly ["conversationId"];
+                  readonly targetFields: readonly ["id"];
+                };
+              };
+              readonly lead: {
+                readonly to: {
+                  readonly namespace: "public" & NamespaceId;
+                  readonly model: "Lead";
+                };
+                readonly cardinality: "N:1";
+                readonly nullable: true;
+                readonly on: {
+                  readonly localFields: readonly ["leadId"];
+                  readonly targetFields: readonly ["id"];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: "Appointment";
+              readonly namespaceId: "public";
+              readonly fields: {
+                readonly attorneyId: { readonly column: "attorneyId" };
+                readonly cancelledAt: { readonly column: "cancelledAt" };
+                readonly caseType: { readonly column: "caseType" };
+                readonly confirmedAt: { readonly column: "confirmedAt" };
+                readonly conversationId: { readonly column: "conversationId" };
+                readonly createdAt: { readonly column: "createdAt" };
+                readonly email: { readonly column: "email" };
+                readonly endsAt: { readonly column: "endsAt" };
+                readonly id: { readonly column: "id" };
+                readonly leadId: { readonly column: "leadId" };
+                readonly linkVersion: { readonly column: "linkVersion" };
+                readonly mode: { readonly column: "mode" };
+                readonly name: { readonly column: "name" };
+                readonly phone: { readonly column: "phone" };
+                readonly slotKey: { readonly column: "slotKey" };
+                readonly startsAt: { readonly column: "startsAt" };
+                readonly status: { readonly column: "status" };
+                readonly summary: { readonly column: "summary" };
+              };
+            };
+          };
+          readonly Attorney: {
+            readonly fields: {
+              readonly active: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/bool@1";
+                };
+              };
+              readonly createdAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/timestamptz-string@1";
+                };
+              };
+              readonly email: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/text@1";
+                };
+              };
+              readonly id: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/uuid@1";
+                };
+              };
+              readonly name: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/text@1";
+                };
+              };
+              readonly slug: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/text@1";
+                };
+              };
+            };
+            readonly relations: {
+              readonly appointments: {
+                readonly to: {
+                  readonly namespace: "public" & NamespaceId;
+                  readonly model: "Appointment";
+                };
+                readonly cardinality: "1:N";
+                readonly on: {
+                  readonly localFields: readonly ["id"];
+                  readonly targetFields: readonly ["attorneyId"];
+                };
+              };
+              readonly availability: {
+                readonly to: {
+                  readonly namespace: "public" & NamespaceId;
+                  readonly model: "AvailabilityRule";
+                };
+                readonly cardinality: "1:N";
+                readonly on: {
+                  readonly localFields: readonly ["id"];
+                  readonly targetFields: readonly ["attorneyId"];
+                };
+              };
+              readonly leads: {
+                readonly to: {
+                  readonly namespace: "public" & NamespaceId;
+                  readonly model: "Lead";
+                };
+                readonly cardinality: "1:N";
+                readonly on: {
+                  readonly localFields: readonly ["id"];
+                  readonly targetFields: readonly ["assignedAttorneyId"];
+                };
+              };
+              readonly practiceAreas: {
+                readonly to: {
+                  readonly namespace: "public" & NamespaceId;
+                  readonly model: "AttorneyPracticeArea";
+                };
+                readonly cardinality: "1:N";
+                readonly on: {
+                  readonly localFields: readonly ["id"];
+                  readonly targetFields: readonly ["attorneyId"];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: "Attorney";
+              readonly namespaceId: "public";
+              readonly fields: {
+                readonly active: { readonly column: "active" };
+                readonly createdAt: { readonly column: "createdAt" };
+                readonly email: { readonly column: "email" };
+                readonly id: { readonly column: "id" };
+                readonly name: { readonly column: "name" };
+                readonly slug: { readonly column: "slug" };
+              };
+            };
+          };
+          readonly AttorneyPracticeArea: {
+            readonly fields: {
+              readonly attorneyId: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/uuid@1";
+                };
+              };
+              readonly caseType: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/text@1";
+                };
+              };
+              readonly id: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/uuid@1";
+                };
+              };
+            };
+            readonly relations: {
+              readonly attorney: {
+                readonly to: {
+                  readonly namespace: "public" & NamespaceId;
+                  readonly model: "Attorney";
+                };
+                readonly cardinality: "N:1";
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ["attorneyId"];
+                  readonly targetFields: readonly ["id"];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: "AttorneyPracticeArea";
+              readonly namespaceId: "public";
+              readonly fields: {
+                readonly attorneyId: { readonly column: "attorneyId" };
+                readonly caseType: { readonly column: "caseType" };
+                readonly id: { readonly column: "id" };
+              };
+            };
+          };
+          readonly AvailabilityRule: {
+            readonly fields: {
+              readonly attorneyId: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/uuid@1";
+                };
+              };
+              readonly endMinute: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/int4@1";
+                };
+              };
+              readonly id: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/uuid@1";
+                };
+              };
+              readonly startMinute: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/int4@1";
+                };
+              };
+              readonly weekday: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/int4@1";
+                };
+              };
+            };
+            readonly relations: {
+              readonly attorney: {
+                readonly to: {
+                  readonly namespace: "public" & NamespaceId;
+                  readonly model: "Attorney";
+                };
+                readonly cardinality: "N:1";
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ["attorneyId"];
+                  readonly targetFields: readonly ["id"];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: "AvailabilityRule";
+              readonly namespaceId: "public";
+              readonly fields: {
+                readonly attorneyId: { readonly column: "attorneyId" };
+                readonly endMinute: { readonly column: "endMinute" };
+                readonly id: { readonly column: "id" };
+                readonly startMinute: { readonly column: "startMinute" };
+                readonly weekday: { readonly column: "weekday" };
+              };
+            };
+          };
           readonly Conversation: {
             readonly fields: {
               readonly createdAt: {
@@ -2632,6 +3720,17 @@ type ContractBase = Omit<
               };
             };
             readonly relations: {
+              readonly appointments: {
+                readonly to: {
+                  readonly namespace: "public" & NamespaceId;
+                  readonly model: "Appointment";
+                };
+                readonly cardinality: "1:N";
+                readonly on: {
+                  readonly localFields: readonly ["id"];
+                  readonly targetFields: readonly ["conversationId"];
+                };
+              };
               readonly handoff: {
                 readonly to: {
                   readonly namespace: "public" & NamespaceId;
@@ -3176,6 +4275,13 @@ type ContractBase = Omit<
           };
           readonly Lead: {
             readonly fields: {
+              readonly assignedAttorneyId: {
+                readonly nullable: true;
+                readonly type: {
+                  readonly kind: "scalar";
+                  readonly codecId: "pg/uuid@1";
+                };
+              };
               readonly caseType: {
                 readonly nullable: false;
                 readonly type: {
@@ -3241,6 +4347,29 @@ type ContractBase = Omit<
               };
             };
             readonly relations: {
+              readonly appointments: {
+                readonly to: {
+                  readonly namespace: "public" & NamespaceId;
+                  readonly model: "Appointment";
+                };
+                readonly cardinality: "1:N";
+                readonly on: {
+                  readonly localFields: readonly ["id"];
+                  readonly targetFields: readonly ["leadId"];
+                };
+              };
+              readonly assignedAttorney: {
+                readonly to: {
+                  readonly namespace: "public" & NamespaceId;
+                  readonly model: "Attorney";
+                };
+                readonly cardinality: "N:1";
+                readonly nullable: true;
+                readonly on: {
+                  readonly localFields: readonly ["assignedAttorneyId"];
+                  readonly targetFields: readonly ["id"];
+                };
+              };
               readonly conversation: {
                 readonly to: {
                   readonly namespace: "public" & NamespaceId;
@@ -3258,6 +4387,9 @@ type ContractBase = Omit<
               readonly table: "Lead";
               readonly namespaceId: "public";
               readonly fields: {
+                readonly assignedAttorneyId: {
+                  readonly column: "assignedAttorneyId";
+                };
                 readonly caseType: { readonly column: "caseType" };
                 readonly conversationId: { readonly column: "conversationId" };
                 readonly createdAt: { readonly column: "createdAt" };
@@ -3996,6 +5128,22 @@ type ContractBase = Omit<
           };
         };
         readonly enum: {
+          readonly AppointmentMode: {
+            readonly codecId: "pg/text@1";
+            readonly members: readonly [
+              { readonly name: "video"; readonly value: "video" },
+              { readonly name: "in_person"; readonly value: "in_person" },
+            ];
+          };
+          readonly AppointmentStatus: {
+            readonly codecId: "pg/text@1";
+            readonly members: readonly [
+              { readonly name: "booked"; readonly value: "booked" },
+              { readonly name: "cancelled"; readonly value: "cancelled" },
+              { readonly name: "completed"; readonly value: "completed" },
+              { readonly name: "no_show"; readonly value: "no_show" },
+            ];
+          };
           readonly CaseType: {
             readonly codecId: "pg/text@1";
             readonly members: readonly [
@@ -4130,6 +5278,50 @@ type ContractBase = Omit<
     readonly executionHash: ExecutionHash;
     readonly mutations: {
       readonly defaults: readonly [
+        {
+          readonly onCreate: {
+            readonly id: "uuidv4";
+            readonly kind: "generator";
+          };
+          readonly ref: {
+            readonly entry: "Appointment";
+            readonly field: "id";
+            readonly namespace: "public";
+          };
+        },
+        {
+          readonly onCreate: {
+            readonly id: "uuidv4";
+            readonly kind: "generator";
+          };
+          readonly ref: {
+            readonly entry: "Attorney";
+            readonly field: "id";
+            readonly namespace: "public";
+          };
+        },
+        {
+          readonly onCreate: {
+            readonly id: "uuidv4";
+            readonly kind: "generator";
+          };
+          readonly ref: {
+            readonly entry: "AttorneyPracticeArea";
+            readonly field: "id";
+            readonly namespace: "public";
+          };
+        },
+        {
+          readonly onCreate: {
+            readonly id: "uuidv4";
+            readonly kind: "generator";
+          };
+          readonly ref: {
+            readonly entry: "AvailabilityRule";
+            readonly field: "id";
+            readonly namespace: "public";
+          };
+        },
         {
           readonly onCreate: {
             readonly id: "uuidv4";
