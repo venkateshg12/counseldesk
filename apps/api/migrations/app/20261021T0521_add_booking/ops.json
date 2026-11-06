@@ -1,0 +1,929 @@
+[
+  {
+    "id": "table.Appointment",
+    "label": "Create table \"Appointment\"",
+    "summary": "Creates table \"Appointment\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "Appointment"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"Appointment\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Appointment\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"Appointment\"",
+        "sql": "CREATE TABLE \"public\".\"Appointment\" (\n  \"attorneyId\" uuid NOT NULL,\n  \"cancelledAt\" timestamptz,\n  \"caseType\" text NOT NULL,\n  \"confirmedAt\" timestamptz,\n  \"conversationId\" uuid,\n  \"createdAt\" timestamptz DEFAULT (now()) NOT NULL,\n  \"email\" text,\n  \"endsAt\" timestamptz NOT NULL,\n  \"id\" uuid NOT NULL,\n  \"leadId\" uuid,\n  \"linkVersion\" int4 DEFAULT 1 NOT NULL,\n  \"mode\" text DEFAULT 'video' NOT NULL,\n  \"name\" text NOT NULL,\n  \"phone\" text,\n  \"slotKey\" text,\n  \"startsAt\" timestamptz NOT NULL,\n  \"status\" text DEFAULT 'booked' NOT NULL,\n  \"summary\" text,\n  PRIMARY KEY (\"id\"),\n  CONSTRAINT \"Appointment_caseType_check_a2235d1b\" CHECK (\"caseType\" IN ('dui', 'criminal_defense', 'family_law', 'personal_injury', 'estate_planning', 'other')),\n  CONSTRAINT \"Appointment_mode_check_7b158617\" CHECK (\"mode\" IN ('video', 'in_person')),\n  CONSTRAINT \"Appointment_status_check_e31768d9\" CHECK (\"status\" IN ('booked', 'cancelled', 'completed', 'no_show'))\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"Appointment\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Appointment\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.Attorney",
+    "label": "Create table \"Attorney\"",
+    "summary": "Creates table \"Attorney\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "Attorney"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"Attorney\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Attorney\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"Attorney\"",
+        "sql": "CREATE TABLE \"public\".\"Attorney\" (\n  \"active\" bool DEFAULT true NOT NULL,\n  \"createdAt\" timestamptz DEFAULT (now()) NOT NULL,\n  \"email\" text NOT NULL,\n  \"id\" uuid NOT NULL,\n  \"name\" text NOT NULL,\n  \"slug\" text NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"Attorney\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Attorney\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.AttorneyPracticeArea",
+    "label": "Create table \"AttorneyPracticeArea\"",
+    "summary": "Creates table \"AttorneyPracticeArea\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "AttorneyPracticeArea"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"AttorneyPracticeArea\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"AttorneyPracticeArea\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"AttorneyPracticeArea\"",
+        "sql": "CREATE TABLE \"public\".\"AttorneyPracticeArea\" (\n  \"attorneyId\" uuid NOT NULL,\n  \"caseType\" text NOT NULL,\n  \"id\" uuid NOT NULL,\n  PRIMARY KEY (\"id\"),\n  CONSTRAINT \"AttorneyPracticeArea_caseType_check_a2235d1b\" CHECK (\"caseType\" IN ('dui', 'criminal_defense', 'family_law', 'personal_injury', 'estate_planning', 'other'))\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"AttorneyPracticeArea\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"AttorneyPracticeArea\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.AvailabilityRule",
+    "label": "Create table \"AvailabilityRule\"",
+    "summary": "Creates table \"AvailabilityRule\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "AvailabilityRule"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"AvailabilityRule\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"AvailabilityRule\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"AvailabilityRule\"",
+        "sql": "CREATE TABLE \"public\".\"AvailabilityRule\" (\n  \"attorneyId\" uuid NOT NULL,\n  \"endMinute\" int4 NOT NULL,\n  \"id\" uuid NOT NULL,\n  \"startMinute\" int4 NOT NULL,\n  \"weekday\" int4 NOT NULL,\n  PRIMARY KEY (\"id\"),\n  CONSTRAINT \"availability_weekday_bb77959a\" CHECK (weekday BETWEEN 0 AND 6)\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"AvailabilityRule\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"AvailabilityRule\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "column.public.Lead.assignedAttorneyId",
+    "label": "Add column \"assignedAttorneyId\" to \"Lead\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "assignedAttorneyId",
+        "table": "Lead"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"assignedAttorneyId\" is missing",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "Lead",
+          "assignedAttorneyId"
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add column \"assignedAttorneyId\"",
+        "sql": "ALTER TABLE \"public\".\"Lead\" ADD COLUMN \"assignedAttorneyId\" uuid"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"assignedAttorneyId\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "Lead",
+          "assignedAttorneyId"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "unique.Appointment.Appointment_slotKey_key",
+    "label": "Add unique constraint on \"Appointment\" (slotKey)",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "unique",
+        "name": "Appointment_slotKey_key",
+        "table": "Appointment"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"Appointment_slotKey_key\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Appointment_slotKey_key",
+          "public",
+          "\"public\".\"Appointment\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add unique constraint \"Appointment_slotKey_key\"",
+        "sql": "ALTER TABLE \"public\".\"Appointment\" ADD CONSTRAINT \"Appointment_slotKey_key\" UNIQUE (\"slotKey\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"Appointment_slotKey_key\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Appointment_slotKey_key",
+          "public",
+          "\"public\".\"Appointment\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "unique.Attorney.Attorney_slug_key",
+    "label": "Add unique constraint on \"Attorney\" (slug)",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "unique",
+        "name": "Attorney_slug_key",
+        "table": "Attorney"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"Attorney_slug_key\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Attorney_slug_key",
+          "public",
+          "\"public\".\"Attorney\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add unique constraint \"Attorney_slug_key\"",
+        "sql": "ALTER TABLE \"public\".\"Attorney\" ADD CONSTRAINT \"Attorney_slug_key\" UNIQUE (\"slug\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"Attorney_slug_key\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Attorney_slug_key",
+          "public",
+          "\"public\".\"Attorney\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "unique.AttorneyPracticeArea.AttorneyPracticeArea_attorneyId_caseType_key",
+    "label": "Add unique constraint on \"AttorneyPracticeArea\" (attorneyId, caseType)",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "unique",
+        "name": "AttorneyPracticeArea_attorneyId_caseType_key",
+        "table": "AttorneyPracticeArea"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"AttorneyPracticeArea_attorneyId_caseType_key\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "AttorneyPracticeArea_attorneyId_caseType_key",
+          "public",
+          "\"public\".\"AttorneyPracticeArea\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add unique constraint \"AttorneyPracticeArea_attorneyId_caseType_key\"",
+        "sql": "ALTER TABLE \"public\".\"AttorneyPracticeArea\" ADD CONSTRAINT \"AttorneyPracticeArea_attorneyId_caseType_key\" UNIQUE (\"attorneyId\", \"caseType\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"AttorneyPracticeArea_attorneyId_caseType_key\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "AttorneyPracticeArea_attorneyId_caseType_key",
+          "public",
+          "\"public\".\"AttorneyPracticeArea\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.Appointment.Appointment_attorneyId_idx_f73d9f49",
+    "label": "Create index \"Appointment_attorneyId_idx_f73d9f49\" on \"Appointment\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "Appointment_attorneyId_idx_f73d9f49",
+        "table": "Appointment"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"Appointment_attorneyId_idx_f73d9f49\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Appointment_attorneyId_idx_f73d9f49\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"Appointment_attorneyId_idx_f73d9f49\"",
+        "sql": "CREATE INDEX \"Appointment_attorneyId_idx_f73d9f49\" ON \"public\".\"Appointment\" (\"attorneyId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"Appointment_attorneyId_idx_f73d9f49\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Appointment_attorneyId_idx_f73d9f49\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.Appointment.Appointment_attorneyId_startsAt_idx_8c07b5bd",
+    "label": "Create index \"Appointment_attorneyId_startsAt_idx_8c07b5bd\" on \"Appointment\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "Appointment_attorneyId_startsAt_idx_8c07b5bd",
+        "table": "Appointment"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"Appointment_attorneyId_startsAt_idx_8c07b5bd\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Appointment_attorneyId_startsAt_idx_8c07b5bd\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"Appointment_attorneyId_startsAt_idx_8c07b5bd\"",
+        "sql": "CREATE INDEX \"Appointment_attorneyId_startsAt_idx_8c07b5bd\" ON \"public\".\"Appointment\" (\"attorneyId\", \"startsAt\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"Appointment_attorneyId_startsAt_idx_8c07b5bd\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Appointment_attorneyId_startsAt_idx_8c07b5bd\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.Appointment.Appointment_conversationId_idx_669215a6",
+    "label": "Create index \"Appointment_conversationId_idx_669215a6\" on \"Appointment\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "Appointment_conversationId_idx_669215a6",
+        "table": "Appointment"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"Appointment_conversationId_idx_669215a6\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Appointment_conversationId_idx_669215a6\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"Appointment_conversationId_idx_669215a6\"",
+        "sql": "CREATE INDEX \"Appointment_conversationId_idx_669215a6\" ON \"public\".\"Appointment\" (\"conversationId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"Appointment_conversationId_idx_669215a6\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Appointment_conversationId_idx_669215a6\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.Appointment.Appointment_leadId_idx_9113844c",
+    "label": "Create index \"Appointment_leadId_idx_9113844c\" on \"Appointment\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "Appointment_leadId_idx_9113844c",
+        "table": "Appointment"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"Appointment_leadId_idx_9113844c\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Appointment_leadId_idx_9113844c\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"Appointment_leadId_idx_9113844c\"",
+        "sql": "CREATE INDEX \"Appointment_leadId_idx_9113844c\" ON \"public\".\"Appointment\" (\"leadId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"Appointment_leadId_idx_9113844c\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Appointment_leadId_idx_9113844c\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.Appointment.Appointment_status_startsAt_idx_b8c24256",
+    "label": "Create index \"Appointment_status_startsAt_idx_b8c24256\" on \"Appointment\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "Appointment_status_startsAt_idx_b8c24256",
+        "table": "Appointment"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"Appointment_status_startsAt_idx_b8c24256\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Appointment_status_startsAt_idx_b8c24256\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"Appointment_status_startsAt_idx_b8c24256\"",
+        "sql": "CREATE INDEX \"Appointment_status_startsAt_idx_b8c24256\" ON \"public\".\"Appointment\" (\"status\", \"startsAt\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"Appointment_status_startsAt_idx_b8c24256\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Appointment_status_startsAt_idx_b8c24256\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.AttorneyPracticeArea.AttorneyPracticeArea_attorneyId_idx_f73d9f49",
+    "label": "Create index \"AttorneyPracticeArea_attorneyId_idx_f73d9f49\" on \"AttorneyPracticeArea\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "AttorneyPracticeArea_attorneyId_idx_f73d9f49",
+        "table": "AttorneyPracticeArea"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"AttorneyPracticeArea_attorneyId_idx_f73d9f49\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"AttorneyPracticeArea_attorneyId_idx_f73d9f49\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"AttorneyPracticeArea_attorneyId_idx_f73d9f49\"",
+        "sql": "CREATE INDEX \"AttorneyPracticeArea_attorneyId_idx_f73d9f49\" ON \"public\".\"AttorneyPracticeArea\" (\"attorneyId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"AttorneyPracticeArea_attorneyId_idx_f73d9f49\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"AttorneyPracticeArea_attorneyId_idx_f73d9f49\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.AttorneyPracticeArea.AttorneyPracticeArea_caseType_idx_d44eddf2",
+    "label": "Create index \"AttorneyPracticeArea_caseType_idx_d44eddf2\" on \"AttorneyPracticeArea\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "AttorneyPracticeArea_caseType_idx_d44eddf2",
+        "table": "AttorneyPracticeArea"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"AttorneyPracticeArea_caseType_idx_d44eddf2\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"AttorneyPracticeArea_caseType_idx_d44eddf2\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"AttorneyPracticeArea_caseType_idx_d44eddf2\"",
+        "sql": "CREATE INDEX \"AttorneyPracticeArea_caseType_idx_d44eddf2\" ON \"public\".\"AttorneyPracticeArea\" (\"caseType\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"AttorneyPracticeArea_caseType_idx_d44eddf2\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"AttorneyPracticeArea_caseType_idx_d44eddf2\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.AvailabilityRule.AvailabilityRule_attorneyId_idx_f73d9f49",
+    "label": "Create index \"AvailabilityRule_attorneyId_idx_f73d9f49\" on \"AvailabilityRule\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "AvailabilityRule_attorneyId_idx_f73d9f49",
+        "table": "AvailabilityRule"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"AvailabilityRule_attorneyId_idx_f73d9f49\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"AvailabilityRule_attorneyId_idx_f73d9f49\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"AvailabilityRule_attorneyId_idx_f73d9f49\"",
+        "sql": "CREATE INDEX \"AvailabilityRule_attorneyId_idx_f73d9f49\" ON \"public\".\"AvailabilityRule\" (\"attorneyId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"AvailabilityRule_attorneyId_idx_f73d9f49\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"AvailabilityRule_attorneyId_idx_f73d9f49\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.Lead.Lead_assignedAttorneyId_idx_b9e8d3da",
+    "label": "Create index \"Lead_assignedAttorneyId_idx_b9e8d3da\" on \"Lead\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "Lead_assignedAttorneyId_idx_b9e8d3da",
+        "table": "Lead"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"Lead_assignedAttorneyId_idx_b9e8d3da\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Lead_assignedAttorneyId_idx_b9e8d3da\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"Lead_assignedAttorneyId_idx_b9e8d3da\"",
+        "sql": "CREATE INDEX \"Lead_assignedAttorneyId_idx_b9e8d3da\" ON \"public\".\"Lead\" (\"assignedAttorneyId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"Lead_assignedAttorneyId_idx_b9e8d3da\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Lead_assignedAttorneyId_idx_b9e8d3da\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.Appointment.Appointment_attorneyId_fkey",
+    "label": "Add foreign key \"Appointment_attorneyId_fkey\" on \"Appointment\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "Appointment_attorneyId_fkey",
+        "table": "Appointment"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"Appointment_attorneyId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Appointment_attorneyId_fkey",
+          "public",
+          "\"public\".\"Appointment\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"Appointment_attorneyId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"Appointment\"\nADD CONSTRAINT \"Appointment_attorneyId_fkey\"\nFOREIGN KEY (\"attorneyId\")\nREFERENCES \"public\".\"Attorney\" (\"id\")\nON DELETE RESTRICT"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"Appointment_attorneyId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Appointment_attorneyId_fkey",
+          "public",
+          "\"public\".\"Appointment\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.Appointment.Appointment_leadId_fkey",
+    "label": "Add foreign key \"Appointment_leadId_fkey\" on \"Appointment\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "Appointment_leadId_fkey",
+        "table": "Appointment"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"Appointment_leadId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Appointment_leadId_fkey",
+          "public",
+          "\"public\".\"Appointment\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"Appointment_leadId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"Appointment\"\nADD CONSTRAINT \"Appointment_leadId_fkey\"\nFOREIGN KEY (\"leadId\")\nREFERENCES \"public\".\"Lead\" (\"id\")\nON DELETE SET NULL"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"Appointment_leadId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Appointment_leadId_fkey",
+          "public",
+          "\"public\".\"Appointment\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.Appointment.Appointment_conversationId_fkey",
+    "label": "Add foreign key \"Appointment_conversationId_fkey\" on \"Appointment\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "Appointment_conversationId_fkey",
+        "table": "Appointment"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"Appointment_conversationId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Appointment_conversationId_fkey",
+          "public",
+          "\"public\".\"Appointment\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"Appointment_conversationId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"Appointment\"\nADD CONSTRAINT \"Appointment_conversationId_fkey\"\nFOREIGN KEY (\"conversationId\")\nREFERENCES \"public\".\"Conversation\" (\"id\")\nON DELETE SET NULL"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"Appointment_conversationId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Appointment_conversationId_fkey",
+          "public",
+          "\"public\".\"Appointment\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.AttorneyPracticeArea.AttorneyPracticeArea_attorneyId_fkey",
+    "label": "Add foreign key \"AttorneyPracticeArea_attorneyId_fkey\" on \"AttorneyPracticeArea\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "AttorneyPracticeArea_attorneyId_fkey",
+        "table": "AttorneyPracticeArea"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"AttorneyPracticeArea_attorneyId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "AttorneyPracticeArea_attorneyId_fkey",
+          "public",
+          "\"public\".\"AttorneyPracticeArea\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"AttorneyPracticeArea_attorneyId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"AttorneyPracticeArea\"\nADD CONSTRAINT \"AttorneyPracticeArea_attorneyId_fkey\"\nFOREIGN KEY (\"attorneyId\")\nREFERENCES \"public\".\"Attorney\" (\"id\")\nON DELETE CASCADE"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"AttorneyPracticeArea_attorneyId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "AttorneyPracticeArea_attorneyId_fkey",
+          "public",
+          "\"public\".\"AttorneyPracticeArea\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.AvailabilityRule.AvailabilityRule_attorneyId_fkey",
+    "label": "Add foreign key \"AvailabilityRule_attorneyId_fkey\" on \"AvailabilityRule\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "AvailabilityRule_attorneyId_fkey",
+        "table": "AvailabilityRule"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"AvailabilityRule_attorneyId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "AvailabilityRule_attorneyId_fkey",
+          "public",
+          "\"public\".\"AvailabilityRule\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"AvailabilityRule_attorneyId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"AvailabilityRule\"\nADD CONSTRAINT \"AvailabilityRule_attorneyId_fkey\"\nFOREIGN KEY (\"attorneyId\")\nREFERENCES \"public\".\"Attorney\" (\"id\")\nON DELETE CASCADE"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"AvailabilityRule_attorneyId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "AvailabilityRule_attorneyId_fkey",
+          "public",
+          "\"public\".\"AvailabilityRule\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.Lead.Lead_assignedAttorneyId_fkey",
+    "label": "Add foreign key \"Lead_assignedAttorneyId_fkey\" on \"Lead\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "Lead_assignedAttorneyId_fkey",
+        "table": "Lead"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"Lead_assignedAttorneyId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Lead_assignedAttorneyId_fkey",
+          "public",
+          "\"public\".\"Lead\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"Lead_assignedAttorneyId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"Lead\"\nADD CONSTRAINT \"Lead_assignedAttorneyId_fkey\"\nFOREIGN KEY (\"assignedAttorneyId\")\nREFERENCES \"public\".\"Attorney\" (\"id\")\nON DELETE SET NULL"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"Lead_assignedAttorneyId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Lead_assignedAttorneyId_fkey",
+          "public",
+          "\"public\".\"Lead\""
+        ]
+      }
+    ]
+  }
+]
