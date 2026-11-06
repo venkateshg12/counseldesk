@@ -19,6 +19,7 @@ import { SERVICE_UNAVAILABLE } from "./constants/http.js";
 
 import { authRoutes } from "./routes/auth.route.js";
 import { gmailRoutes } from "./routes/gmail.route.js";
+import { bookingRoutes } from "./routes/booking.route.js";
 import { debugRoutes } from "./routes/debug.route.js";
 import { chatRoutes } from "./routes/chat.route.js";
 import { staffRoutes } from "./routes/staff.route.js";
@@ -138,6 +139,7 @@ export function createApp() {
   app.use("/auth", authRoutes);
   app.use("/debug", debugRoutes);
   app.use("/chat", chatRoutes);
+  app.use("/booking", bookingRoutes);
   app.use("/staff", staffRoutes);
 
   app.use(notFound);
